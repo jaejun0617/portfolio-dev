@@ -9,6 +9,50 @@
 ================================================================================
 */
 
+// ===== 개발 철학 슬라이더 데이터 및 로직 =====
+const quotes = [
+   {
+      text: '말은 쉽지, 코드를 보여줘. \n (Talk is cheap. Show me the code.)',
+      author: 'Linus Torvalds',
+      source: '리눅스 창시자',
+   },
+   {
+      text: '좋은 UI는 농담과 같다. \n 설명할 필요가 없다면, 그만큼 좋은 것이다.',
+      author: 'Martin LeBlanc',
+      source: 'UI/UX 디자이너',
+   },
+   {
+      text: '단순함은 신뢰성의 전제 조건이다. \n (Simplicity is a prerequisite for reliability.)',
+      author: 'Edsger W. Dijkstra',
+      source: '컴퓨터 과학자',
+   },
+   {
+      text: '코드는 사라지기 위해 작성된다. \n 하지만 아키텍처는 영원하다.',
+      author: 'Robert C. Martin',
+      source: "책 '클린 아키텍처'",
+   },
+   {
+      text: "측정할 수 없다면, 개선할 수 없다. \n (You can't improve what you don't measure.)",
+      author: 'Peter Drucker',
+      source: '경영학자 (웹 성능 최적화의 핵심)',
+   },
+   {
+      text: '오늘 하나의 버그를 수정하는 것이, \n 내일 새로운 기능을 추가하는 것보다 낫다.',
+      author: 'Software Engineering Proverb',
+      source: '소프트웨어 공학 격언',
+   },
+   {
+      text: '단순함은 궁극의 정교함이다. \n(Simplicity is the ultimate sophistication.)',
+      author: 'Leonardo da Vinci',
+      source: '예술가',
+   },
+   {
+      text: '두 번 이상 반복한다면, 자동화하라. \n (Once and only once.)',
+      author: 'The Pragmatic Programmer',
+      source: "책 '실용주의 프로그래머'",
+   },
+];
+
 // ===== [클래스] 프로젝트 데이터 관리자 =====
 class ProjectManager {
    constructor() {
@@ -103,7 +147,6 @@ function handleLogout() {
    alert('로그아웃 되었습니다.');
 }
 
-// 범용 모달 열기/닫기 함수 (스크롤 위치 보정)
 function openModal(modalElement) {
    if (!modalElement) return;
    const currentScrollY = AppState.scrollbar.offset.y;
@@ -177,7 +220,6 @@ function renderProjects(projectsToRender) {
    projectsToRender.forEach((p) => {
       const itemEl = document.createElement('div');
       itemEl.className = 'project-item';
-
       const adminButtonsHTML = AppState.isLoggedIn
          ? `
            <div class="admin-actions">
@@ -186,7 +228,6 @@ function renderProjects(projectsToRender) {
            </div>
        `
          : '';
-
       itemEl.innerHTML = `
            <a href="${p.links.site}" target="_blank" class="project-link">
                <div class="project-image"><img src="${p.imageSrc}" alt="${p.title}" loading="lazy"></div>
@@ -215,6 +256,121 @@ function filterAndRenderProjects() {
    }
 }
 
+const quoteTextEl = document.querySelector('.quote-text');
+const quoteAuthorEl = document.querySelector('.quote-author');
+const quoteSourceEl = document.querySelector('.quote-source');
+let currentQuoteIndex = 0;
+
+function showNextQuote() {
+   if (!quoteTextEl) return;
+   quoteTextEl.classList.add('fading-out');
+   setTimeout(() => {
+      currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+      const nextQuote = quotes[currentQuoteIndex];
+      quoteTextEl.textContent = `"${nextQuote.text}"`;
+      quoteAuthorEl.textContent = `- ${nextQuote.author}`;
+      quoteSourceEl.textContent = nextQuote.source;
+      quoteTextEl.classList.remove('fading-out');
+   }, 500);
+}
+
+// ===== [함수] 스킬 차트 생성  =====
+
+function createSkillChart() {
+   const ctx = document.getElementById('skill-radar-chart');
+   if (!ctx) return;
+
+   if (ctx.chart) {
+      ctx.chart.destroy();
+   }
+
+   const getResponsiveFontSize = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth >= 1024) return 14;
+      if (screenWidth >= 768) return 12;
+      return 8;
+   };
+   const currentFontSize = getResponsiveFontSize();
+
+   // ✅ [수정] 기술 스택 데이터 및 대표 색상
+   const skillData = {
+      // X축에 표시될 기술 이름
+      labels: [
+         'HTML/CSS',
+         'JavaScript',
+         'React',
+         'jQuery',
+         'Tailwind CSS',
+         'Figma',
+         'GitHub',
+         'Oracle',
+      ],
+      datasets: [
+         {
+            label: '기술 숙련도',
+            // 위 labels에 순서대로 대응하는 숙련도 점수 (1~5점 척도)
+            data: [4.5, 4, 3, 3.5, 3, 4, 4.5, 2.5],
+
+            // 각 기술의 대표 색상 (배경)
+            backgroundColor: [
+               'rgba(227, 76, 38, 0.6)', // HTML5 (주황)
+               'rgba(247, 223, 30, 0.6)', // JavaScript (노랑)
+               'rgba(97, 218, 251, 0.6)', // React (하늘)
+               'rgba(17, 105, 175, 0.6)', // jQuery (진한 파랑)
+               'rgba(56, 189, 248, 0.6)', // Tailwind CSS (하늘색 계열)
+               'rgba(242, 78, 34, 0.6)', // Figma (주황/빨강)
+               'rgba(24, 23, 23, 0.6)', // GitHub (검정)
+               'rgba(248, 0, 0, 0.6)', // Oracle (빨강)
+            ],
+            // 각 기술의 대표 색상 (테두리)
+            borderColor: [
+               'rgba(227, 76, 38, 1)',
+               'rgba(247, 223, 30, 1)',
+               'rgba(97, 218, 251, 1)',
+               'rgba(17, 105, 175, 1)',
+               'rgba(56, 189, 248, 1)',
+               'rgba(242, 78, 34, 1)',
+               'rgba(24, 23, 23, 1)',
+               'rgba(248, 0, 0, 1)',
+            ],
+            borderWidth: 1,
+            borderRadius: 5,
+         },
+      ],
+   };
+
+   const chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+         x: {
+            grid: { display: false },
+            ticks: { font: { size: currentFontSize, weight: '500' } },
+         },
+         y: {
+            beginAtZero: true,
+            max: 10,
+            ticks: { stepSize: 1 },
+         },
+      },
+      plugins: {
+         legend: { display: false },
+         tooltip: {
+            callbacks: {
+               label: function (context) {
+                  return `숙련도: ${context.parsed.y} / 10 점`;
+               },
+            },
+         },
+      },
+   };
+
+   ctx.chart = new Chart(ctx, {
+      type: 'bar',
+      data: skillData,
+      options: chartOptions,
+   });
+}
 // ===== [함수] 앱 전체를 시작하는 초기화 함수 =====
 async function initializeApp() {
    projectManagerInstance = new ProjectManager();
@@ -230,15 +386,29 @@ async function initializeApp() {
    const projectFormModal = document.getElementById('project-form-modal');
    const projectForm = document.getElementById('project-form');
 
+   const progressBar = document.querySelector('.progress-bar');
+   const sections = document.querySelectorAll('section');
+
    const scrollbar = Scrollbar.init(document.querySelector('.wrapper'), {
       damping: 0.07,
    });
    AppState.scrollbar = scrollbar;
    const scrollPos = localStorage.getItem('scrollPos');
    if (scrollPos) scrollbar.setPosition(0, parseInt(scrollPos));
-   scrollbar.addListener((status) =>
-      localStorage.setItem('scrollPos', status.offset.y),
-   );
+
+   scrollbar.addListener((status) => {
+      localStorage.setItem('scrollPos', status.offset.y);
+      const scrollPercentage = (status.offset.y / status.limit.y) * 100;
+      progressBar.style.width = `${scrollPercentage}%`;
+      let currentSection = sections[0];
+      sections.forEach((section) => {
+         if (section.offsetTop <= status.offset.y + 100) {
+            currentSection = section;
+         }
+      });
+      const newColor = currentSection.dataset.color || '#3498db';
+      progressBar.style.backgroundColor = newColor;
+   });
 
    if (authBtn) {
       authBtn.addEventListener('click', () => {
@@ -249,11 +419,9 @@ async function initializeApp() {
          }
       });
    }
-
    if (createProjectBtn) {
       createProjectBtn.addEventListener('click', openProjectFormModalForCreate);
    }
-
    if (deleteAllBtn) {
       deleteAllBtn.addEventListener('click', () => {
          if (!AppState.isLoggedIn) {
@@ -267,7 +435,6 @@ async function initializeApp() {
          }
       });
    }
-
    if (projectGrid) {
       projectGrid.addEventListener('click', (e) => {
          if (!AppState.isLoggedIn) return;
@@ -287,7 +454,6 @@ async function initializeApp() {
          }
       });
    }
-
    if (adminModal) {
       adminModal
          .querySelector('.modal-close-btn')
@@ -296,7 +462,6 @@ async function initializeApp() {
          if (e.target === adminModal) closeAdminModal();
       });
    }
-
    if (loginForm) {
       loginForm.addEventListener('submit', (e) => {
          e.preventDefault();
@@ -309,7 +474,6 @@ async function initializeApp() {
          }
       });
    }
-
    if (filterButtons) {
       filterButtons.forEach((button) => {
          button.addEventListener('click', (e) => {
@@ -320,7 +484,6 @@ async function initializeApp() {
          });
       });
    }
-
    if (projectFormModal) {
       projectFormModal
          .querySelector('.modal-close-btn')
@@ -329,7 +492,6 @@ async function initializeApp() {
          if (e.target === projectFormModal) closeProjectFormModal();
       });
    }
-
    if (projectForm) {
       projectForm.addEventListener('submit', (e) => {
          e.preventDefault();
@@ -369,6 +531,17 @@ async function initializeApp() {
    }
 
    updateAuthUI();
+
+   // 슬라이더와 차트 초기화
+   setInterval(showNextQuote, 5000);
+   createSkillChart();
+   let resizeTimer;
+   window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+         createSkillChart();
+      }, 150);
+   });
 
    const projectGridInitialHTML =
       document.getElementById('project-grid').innerHTML;

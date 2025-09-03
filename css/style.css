@@ -49,7 +49,7 @@ header {
    left: 0;
    width: 100%;
    height: 60px;
-   z-index: 9999;
+   z-index: 9998;
    background: rgba(255, 255, 255, 0.8);
    backdrop-filter: blur(10px);
 }
@@ -63,9 +63,16 @@ header {
    align-items: center;
 }
 
-.logo a {
-   font-size: 1.5rem;
-   font-weight: 800;
+.logo {
+   width: 50px;
+   height: 100%;
+}
+
+.logo img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+   display: block;
 }
 
 .pc-nav {
@@ -117,15 +124,33 @@ section {
 }
 
 .section-title h2 {
-   font-size: 2.2rem;
+   font-size: 2rem;
    font-weight: 700;
    margin-bottom: 0.5rem;
 }
 
 .section-title p {
-   font-size: 1.1rem;
+   font-size: 0.8rem;
    color: #777;
    line-height: 1.7;
+}
+
+.progress-bar-container {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 5px;
+   z-index: 9999;
+}
+
+.progress-bar {
+   width: 0%;
+   height: 100%;
+   background-color: #3498db;
+   transition:
+      width 0.1s linear,
+      background-color 0.5s ease;
 }
 
 /* =================================================================== */
@@ -137,7 +162,7 @@ section {
    justify-content: center;
    align-items: center;
    text-align: center;
-   background-color: #e9ecef;
+   background-color: #f1f3f5;
 }
 
 .hero-content h1 {
@@ -153,7 +178,274 @@ section {
 }
 
 /* =================================================================== */
-/*  [5] Projects (#projects)                                         */
+/*  [5] About (#about)                                         */
+/* =================================================================== */
+.about-profile-content {
+   width: 100%;
+   height: 100%;
+   display: flex;
+   flex-direction: column;
+}
+.profile-image {
+   max-width: 500px;
+   height: auto;
+   border: 1px solid #2c3e50;
+   border-bottom-left-radius: 1.5rem;
+   border-bottom-right-radius: 1.5rem;
+}
+
+.profile-image,
+.about-profile img {
+   border-top-left-radius: 1.5rem;
+   border-top-right-radius: 1.5rem;
+}
+
+.about-profile img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+   display: block;
+}
+
+.about-info {
+   width: 100%;
+   text-align: center;
+   padding: 1.5rem 1rem;
+   border-bottom: 1px solid #eee;
+   margin-bottom: 2rem;
+}
+
+.name-block {
+   margin-bottom: 1.5rem;
+}
+
+.name-block h4 {
+   font-size: 2rem;
+   font-weight: 800;
+   color: #2c3e50;
+   margin-bottom: 0.1rem;
+}
+
+.name-block .eng-name {
+   font-size: 0.9rem;
+   font-weight: 400;
+   color: #95a5a6;
+   text-transform: uppercase;
+   letter-spacing: 1.5px;
+}
+
+.philosophy-block .slogan {
+   font-size: 1.2rem;
+   font-weight: 600;
+   color: #34495e;
+   margin-bottom: 0.5rem;
+}
+
+.philosophy-block .description {
+   font-size: 0.9rem;
+   font-style: italic;
+   color: #7f8c8d;
+   line-height: 1.7;
+}
+
+.philosophy-block .slogan::before,
+.philosophy-block .slogan::after {
+   content: '';
+   display: inline-block;
+   width: 25px;
+   height: 1px;
+   background-color: #bdc3c7;
+   vertical-align: middle;
+   margin: 0 10px;
+}
+
+.about-links-wrapper {
+   margin-top: 2rem;
+   padding-top: 1.5rem;
+   border-top: 1px solid #eee;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 1.5rem;
+}
+
+/* 이력서 버튼 스타일 */
+.resume-btn {
+   display: inline-block;
+   padding: 0.8rem 2rem;
+   background-color: #34495e;
+   color: #fff;
+   font-weight: 600;
+   border-radius: 5px;
+   transition: all 0.3s ease;
+}
+
+.resume-btn:hover {
+   background-color: #2c3e50;
+   transform: translateY(-2px);
+   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 소셜 링크 아이콘 스타일 */
+.about-social {
+   display: flex;
+   gap: 1.5rem;
+}
+
+.about-social a {
+   display: block;
+   transition: transform 0.2s ease-in-out;
+}
+
+.about-social a:hover {
+   transform: scale(1.1);
+}
+
+.about-social img {
+   width: 40px;
+   height: 40px;
+   object-fit: cover;
+   border-radius: 50%;
+   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.about-slider {
+   text-align: center;
+   padding: 1.5rem 1rem;
+   margin-top: 2rem;
+   border-top: 1px solid #eee;
+   min-height: 150px;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+}
+
+.quote-text {
+   font-size: 1.1rem;
+   font-style: italic;
+   font-weight: 500;
+   color: #34495e;
+   margin-bottom: 1rem;
+   line-height: 1.6;
+   opacity: 1;
+   transition: opacity 0.5s ease-in-out;
+   white-space: pre-wrap;
+}
+
+.quote-text.fading-out {
+   opacity: 0;
+}
+
+.quote-author-info {
+   font-size: 0.9rem;
+   color: #7f8c8d;
+}
+
+.quote-author {
+   font-weight: 600;
+}
+
+.quote-source {
+   margin-left: 0.5rem;
+}
+
+.about-journey {
+   display: flex;
+   flex-direction: column;
+   gap: 2rem;
+   padding: 2rem 1rem;
+}
+
+.journey-phase {
+   display: flex;
+   align-items: center;
+   padding: 0.2rem 0;
+   min-height: 30px;
+   gap: 0.5rem;
+}
+
+.journey-item strong {
+   font-weight: inherit;
+
+   color: #3498db;
+
+   background-image: linear-gradient(
+      to top,
+      rgba(52, 152, 219, 0.1) 50%,
+      transparent 50%
+   );
+   background-size: 100% 100%;
+   background-position: 0 0;
+
+   transition: background-position 0.3s ease-in-out;
+}
+
+.journey-item p:hover strong,
+.journey-item h4:hover strong {
+   background-position: 0 100%;
+   color: #2980b9;
+}
+.chart {
+   margin-top: 3rem;
+   width: 100%;
+
+   height: calc(100vw / 1.5);
+   min-height: 280px;
+   max-height: 400px;
+}
+
+.dot.red {
+   background-color: #e74c3c;
+}
+.dot.yellow {
+   background-color: #f1c40f;
+}
+
+.dot.green {
+   background-color: #2ecc71;
+}
+.dot.blue {
+   background-color: #3498db; /* 파란색 */
+}
+
+.dot.purple {
+   background-color: #9b59b6; /* 보라색 */
+}
+.project-dot {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   padding: 10px;
+}
+.dot {
+   display: block;
+   width: 12px;
+   height: 12px;
+   border-radius: 50%;
+   border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dot.red {
+   background-color: #ff5f57;
+}
+
+.dot.yellow {
+   background-color: #febc2e;
+}
+
+.dot.green {
+   background-color: #28c840;
+}
+.journey-item h4 {
+   font-size: 0.9rem;
+}
+
+/* =================================================================== */
+/*  [6] Skills (#skills)                                         */
+/* =================================================================== */
+
+/* =================================================================== */
+/*  [7] Projects (#projects)                                         */
 /* =================================================================== */
 #projects {
    max-width: 1660px;
@@ -185,9 +477,10 @@ section {
 }
 
 .create-btn {
-   text-align: center;
+   display: flex;
+   justify-content: space-between;
    margin-bottom: 2rem;
-   min-height: 40px;
+   /* border: 1px solid red; */
 }
 
 #admin-controls {
@@ -208,6 +501,7 @@ section {
    transition: background-color 0.2s;
 }
 #create-project-btn {
+   display: flex;
    background-color: #2ecc71;
 }
 #create-project-btn:hover {
@@ -283,7 +577,7 @@ section {
 
 .admin-actions {
    position: absolute;
-   top: 10px;
+   top: 2px;
    right: 10px;
    display: flex;
    gap: 0.5rem;
@@ -341,7 +635,7 @@ section {
 }
 
 /* =================================================================== */
-/*  [6] Footer & Modal                                               */
+/*  [8] Footer & Modal                                               */
 /* =================================================================== */
 #footer {
    padding: 2rem 1rem;
@@ -466,38 +760,171 @@ section {
 /* =================================================================== */
 
 @media (min-width: 768px) {
-   .container,
+   /* --- [Layout & Common] --- */
    .header-inner {
+      max-width: none;
       padding: 0 2rem;
    }
+
    section {
-      padding: 6rem 2rem;
+      padding: 4rem 2rem;
    }
+
+   .section-title h2 {
+      font-size: 2.5rem;
+   }
+   .section-title p {
+      font-size: 1.1rem;
+   }
+
+   /* --- [Header] --- */
    .mobile-menu-btn {
       display: none;
    }
    .pc-nav {
       display: flex;
-      justify-content: center;
-      gap: 2rem;
-      border: 1px solid red;
+      gap: 2.5rem;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
    }
    .pc-nav a {
       font-weight: 500;
       color: #555;
+      font-size: 1rem;
    }
+
+   /* --- [Hero] --- */
+   .hero-content h1 {
+      font-size: 3.5rem;
+   }
+   .hero-content p {
+      font-size: 1.2rem;
+   }
+
+   /* --- [About] --- */
+   #about .section-title {
+      margin-bottom: 5rem;
+   }
+   .about-profile-content {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 3rem;
+      max-width: 1024px;
+      margin: 0 auto;
+   }
+   .profile-image {
+      flex: 0 0 350px;
+      width: 350px;
+   }
+   .about-profile-info {
+      flex: 1;
+      text-align: center;
+   }
+   .about-info {
+      text-align: center;
+      padding: 0;
+      margin-bottom: 2.5rem;
+      border: none;
+   }
+   .name-block h4 {
+      font-size: 2.2rem;
+   }
+   .name-block .eng-name {
+      font-size: 1rem;
+   }
+   .philosophy-block .slogan {
+      font-size: 1.3rem;
+   }
+   .philosophy-block .description {
+      font-size: 1rem;
+   }
+   .philosophy-block .slogan::before,
+   .philosophy-block .slogan::after {
+      display: none;
+   }
+   .about-links-wrapper {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 0rem 0.2rem;
+   }
+   .about-slider {
+      text-align: center;
+      padding: 2rem 0 0 0;
+      margin-top: 2.5rem;
+      height: 120px;
+   }
+   .quote-text {
+      font-size: 1.2rem;
+   }
+
+   .about-journey {
+      padding: 1rem 0;
+   }
+   .journey-item h4 {
+      font-size: 1.5rem;
+   }
+   .journey-item p {
+      font-size: 1rem;
+   }
+   .chart {
+      margin-top: 4rem; /* 태블릿에서는 상단 간격을 다시 확보 */
+      width: 100%;
+      max-width: 800px; /* 차트의 최대 너비를 설정하여 너무 커지는 것을 방지 */
+
+      /* 높이를 고정값으로 지정하여 안정적인 레이아웃 유지 */
+      height: 400px;
+
+      margin-left: auto; /* 중앙 정렬 */
+      margin-right: auto;
+   }
+   /* --- [Projects] --- */
    .project-grid {
       grid-template-columns: repeat(2, 1fr);
    }
-   .hero-content h1 {
-      font-size: 3rem;
-   }
-   .section-title h2 {
-      font-size: 2.5rem;
-   }
 }
 
+/* ---------- Desktop (1024px 이상) ---------- */
 @media (min-width: 1024px) {
+   .container,
+   .header-inner {
+      padding: 0 2rem;
+   }
+
+   section {
+      padding: 7rem 2rem;
+   }
+
+   /* --- [Hero] --- */
+   .hero-content h1 {
+      font-size: 4rem;
+   }
+
+   /* --- [About] --- */
+   .about-profile-content {
+      gap: 4rem;
+      max-width: 1100px;
+   }
+   .profile-image {
+      flex-basis: 400px;
+      width: 400px;
+   }
+   .journey-item h4 {
+      font-size: 1.6rem;
+   }
+   .journey-item p {
+      font-size: 1.05rem;
+   }
+   .chart {
+      max-width: 1200px; /* 데스크탑에서 차트 최대 너비를 조금 더 키움 */
+      height: 450px; /* 높이도 함께 키워 비율 유지 */
+   }
+   #skill-radar-chart {
+      font-size: 2rem;
+   }
+   /* --- [Projects] --- */
    .project-grid {
       grid-template-columns: repeat(3, 1fr);
    }
