@@ -292,9 +292,7 @@ function createSkillChart() {
    };
    const currentFontSize = getResponsiveFontSize();
 
-   // ✅ [수정] 기술 스택 데이터 및 대표 색상
    const skillData = {
-      // X축에 표시될 기술 이름
       labels: [
          'HTML/CSS',
          'JavaScript',
@@ -308,10 +306,8 @@ function createSkillChart() {
       datasets: [
          {
             label: '기술 숙련도',
-            // 위 labels에 순서대로 대응하는 숙련도 점수 (1~5점 척도)
-            data: [4.5, 4, 3, 3.5, 3, 4, 4.5, 2.5],
+            data: [9, 5, 3.5, 5, 7, 4, 5, 2.5],
 
-            // 각 기술의 대표 색상 (배경)
             backgroundColor: [
                'rgba(227, 76, 38, 0.6)', // HTML5 (주황)
                'rgba(247, 223, 30, 0.6)', // JavaScript (노랑)
@@ -322,7 +318,7 @@ function createSkillChart() {
                'rgba(24, 23, 23, 0.6)', // GitHub (검정)
                'rgba(248, 0, 0, 0.6)', // Oracle (빨강)
             ],
-            // 각 기술의 대표 색상 (테두리)
+
             borderColor: [
                'rgba(227, 76, 38, 1)',
                'rgba(247, 223, 30, 1)',
