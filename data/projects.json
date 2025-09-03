@@ -1,0 +1,116 @@
+[
+   {
+      "id": 1,
+      "title": "Weather Report",
+      "headline": "다중 API를 활용한 동적 날씨 정보 웹사이트",
+      "category": ["interactive-app", "responsive-web", "clone-coding"],
+      "imageSrc": "./assets/images/projects/weather-report.png",
+      "overview": "Vanilla JS와 다중 API 연동을 통해 사용자의 위치 기반 실시간 날씨 정보를 제공하는 동적 웹 애플리케이션입니다. 흩어져 있는 날씨, 대기, 생활 정보를 하나의 대시보드로 통합하고, Chart.js와 카카오맵 API를 활용하여 데이터를 직관적으로 시각화하는 데 중점을 두었습니다.",
+      "features": [
+         {
+            "name": "다중 API 비동기 처리",
+            "desc": "Promise.all을 사용하여 4개의 외부 API를 병렬로 호출하고, 모든 데이터가 도착했을 때 UI를 한 번에 렌더링하는 효율적인 비동기 로직을 구현했습니다."
+         },
+         {
+            "name": "인터랙티브 데이터 시각화",
+            "desc": "Chart.js로 시간대별 온도 그래프를, 카카오맵 API 위에 기상청 실시간 영상을 오버레이하여 시각적 탐색 기능을 구현했습니다."
+         },
+         {
+            "name": "데이터 기반 UI/UX 설계",
+            "desc": "수신된 모든 날씨 데이터를 종합하여 현재 상황에 맞는 실용적인 옷차림과 생활 팁을 동적으로 생성하여 제공합니다."
+         }
+      ],
+      "techStack": [
+         "JavaScript(ES6+)",
+         "HTML5",
+         "CSS3",
+         "Chart.js",
+         "Kakao Maps API"
+      ],
+      "links": {
+         "github": "https://github.com/jaejun0617/weather-report",
+         "site": "https://jaejun-weather.netlify.app/"
+      }
+   },
+   {
+      "id": 2,
+      "title": "E-commerce CRUD App",
+      "headline": "Vanilla JS로 구현한 상품 관리 및 장바구니 시스템",
+      "category": ["interactive-app", "responsive-web"],
+      "imageSrc": "./assets/images/projects/The-select.png",
+      "overview": "순수 JavaScript의 Class 문법과 localStorage를 활용하여 상품을 관리(CRUD)하고 장바구니 기능을 구현한 프로젝트입니다. 데이터와 UI를 분리하는 설계 패턴을 학습하고, 객체 지향 프로그래밍의 기본 원리를 실제 웹 애플리케이션에 적용하는 경험을 했습니다.",
+      "features": [
+         {
+            "name": "객체 지향 데이터 관리",
+            "desc": "ProductManager와 CartManager 클래스를 설계하여 데이터와 관련 로직을 캡슐화하고, 코드의 재사용성과 유지보수성을 높였습니다."
+         },
+         {
+            "name": "데이터 영속성 구현",
+            "desc": "localStorage를 활용하여 사용자가 추가한 상품 목록과 장바구니 내용이 페이지를 새로고침해도 유지되도록 구현했습니다."
+         },
+         {
+            "name": "동적 DOM 렌더링",
+            "desc": "데이터가 변경될 때마다 콜백 함수를 통해 UI를 다시 그리는(Re-rendering) 로직을 직접 구현하여, 현대 프레임워크의 렌더링 원리를 이해했습니다."
+         }
+      ],
+      "techStack": ["JavaScript(ES6+)", "HTML5", "CSS3", "LocalStorage API"],
+      "links": {
+         "github": "https://github.com/jaejun0617/js-crud-app",
+         "site": "https://jaejun-crud.netlify.app/"
+      }
+   },
+   {
+      "id": 3,
+      "title": "Apple Website Clone",
+      "headline": "CSS Animation과 인터랙션을 활용한 클론 코딩",
+      "category": ["clone-coding", "responsive-web"],
+      "imageSrc": "./assets/images/projects/apple.png",
+      "overview": "Apple 공식 웹사이트의 디자인과 인터랙션을 분석하고 순수 CSS와 JavaScript로 구현한 프로젝트입니다. 스크롤 위치에 따라 반응하는 다채로운 애니메이션과 디테일한 UI 요소를 통해 사용자 경험을 향상시키는 기술을 집중적으로 학습했습니다.",
+      "features": [
+         {
+            "name": "스크롤 기반 애니메이션",
+            "desc": "Intersection Observer API와 GSAP 라이브러리를 활용하여 사용자의 스크롤에 따라 요소들이 나타나거나 변형되는 동적인 인터랙션을 구현했습니다."
+         },
+         {
+            "name": "CSS 심화 스타일링",
+            "desc": "Flexbox와 Grid를 사용한 복잡한 레이아웃 설계, CSS 변수를 이용한 체계적인 테마 관리, 3D Transform을 이용한 입체적인 효과를 적용했습니다."
+         },
+         {
+            "name": "모바일 우선 반응형 웹",
+            "desc": "가장 작은 화면부터 디자인을 시작하여 미디어 쿼리를 통해 데스크탑까지 확장하는 모바일 우선(Mobile-First) 접근법으로 모든 디바이스에서 최적화된 UI를 제공합니다."
+         }
+      ],
+      "techStack": ["JavaScript(ES6+)", "HTML5", "CSS3", "GSAP"],
+      "links": {
+         "github": "https://github.com/jaejun0617/apple-clone",
+         "site": "https://jaejun-apple.netlify.app/"
+      }
+   },
+   {
+      "id": 4,
+      "title": "Interactive Landing Page",
+      "headline": "사용자 경험에 집중한 인터랙티브 랜딩 페이지",
+      "category": ["responsive-web", "interactive-app"],
+      "imageSrc": "./assets/images/projects/youtube.png",
+      "overview": "제품이나 서비스를 소개하는 단일 페이지 웹사이트입니다. 방문자의 시선을 사로잡고 스토리를 전달하기 위해 다채로운 스크롤 애니메이션과 마이크로 인터랙션을 적극적으로 활용하여 제작했습니다.",
+      "features": [
+         {
+            "name": "동적인 텍스트 애니메이션",
+            "desc": "스크롤 시 텍스트가 한 글자씩 나타나거나, 특정 단어가 강조되는 효과를 JavaScript로 구현하여 콘텐츠의 집중도를 높였습니다."
+         },
+         {
+            "name": "SVG & Lottie 애니메이션",
+            "desc": "가벼우면서도 품질이 뛰어난 SVG 아이콘과 Lottie 라이브러리를 활용하여, 페이지 곳곳에 생동감 넘치는 애니메이션을 추가했습니다."
+         },
+         {
+            "name": "사용자 입력 폼 처리",
+            "desc": "이메일 구독 폼과 같이 사용자의 입력을 받는 부분에 실시간 유효성 검사 로직을 추가하여 안정적인 사용자 경험을 제공합니다."
+         }
+      ],
+      "techStack": ["JavaScript(ES6+)", "HTML5", "CSS3", "Lottie"],
+      "links": {
+         "github": "https://github.com/jaejun0617/interactive-landing",
+         "site": "https://jaejun-landing.netlify.app/"
+      }
+   }
+]

@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ko">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>신재준 | 프론트엔드 포트폴리오</title>
+
+      <link rel="stylesheet" href="./css/style.css" />
+   </head>
+   <body>
+      <header>
+         <div class="header-inner">
+            <div class="logo">
+               <a href="#">JAEJUN</a>
+            </div>
+            <nav class="pc-nav">
+               <a href="#projects">Projects</a>
+               <a href="#about">About</a>
+               <a href="#skills">Skills</a>
+               <a href="#contact">Contact</a>
+            </nav>
+            <div class="header-utils">
+               <button id="admin-auth-btn">
+                  <span id="auth-btn-text">관리자</span>
+               </button>
+               <button class="mobile-menu-btn">
+                  <span class="line"></span>
+                  <span class="line"></span>
+                  <span class="line"></span>
+               </button>
+            </div>
+         </div>
+      </header>
+      <div class="wrapper">
+         <main>
+            <!-- [섹션 1] Hero -->
+            <section id="hero">
+               <div class="hero-content">
+                  <h1>코드로 문제를 해결하고,<br />상상을 현실로 만듭니다.</h1>
+                  <p>신입 프론트엔드 개발자 신재준의 성장 기록을 만나보세요.</p>
+               </div>
+            </section>
+
+            <!-- [섹션 2] Projects -->
+            <section id="projects">
+               <div class="section-title">
+                  <h2>PROJECTS</h2>
+                  <p>
+                     단순한 기능 구현을 넘어, '왜'를 고민하며 만든 결과물입니다.
+                  </p>
+               </div>
+
+               <div class="projects-filter">
+                  <button class="filter-btn active" data-filter="all">
+                     #All
+                  </button>
+                  <button class="filter-btn" data-filter="interactive-app">
+                     #Interactive App
+                  </button>
+                  <button class="filter-btn" data-filter="responsive-web">
+                     #Responsive Web
+                  </button>
+                  <button class="filter-btn" data-filter="clone-coding">
+                     #Clone Coding
+                  </button>
+               </div>
+               <button id="create-project-btn">프로젝트 등록</button>
+               <div class="create-btn">
+                  <!-- ✅ [추가] 로그인 시 JS로 제어할 관리자 버튼들 -->
+                  <div
+                     id="admin-controls"
+                     class="admin-only"
+                     style="display: none"
+                  >
+                     <button id="delete-all-btn" class="danger">
+                        전체 삭제
+                     </button>
+                  </div>
+               </div>
+               <div id="project-grid" class="project-grid">
+                  <!-- JS로 데이터 로딩 전, 스켈레톤 UI를 여기에 생성 -->
+                  <!-- 예시 스켈레톤 아이템 -->
+                  <div class="project-item skeleton">
+                     <div class="project-image"></div>
+                     <div class="project-info-skeleton">
+                        <div class="project-title-skeleton"></div>
+                        <div class="project-tags-skeleton"></div>
+                     </div>
+                  </div>
+                  <div class="project-item skeleton">
+                     <div class="project-image"></div>
+                     <div class="project-info-skeleton">
+                        <div class="project-title-skeleton"></div>
+                        <div class="project-tags-skeleton"></div>
+                     </div>
+                  </div>
+                  <div class="project-item skeleton">
+                     <div class="project-image"></div>
+                     <div class="project-info-skeleton">
+                        <div class="project-title-skeleton"></div>
+                        <div class="project-tags-skeleton"></div>
+                     </div>
+                  </div>
+                  <div class="project-item skeleton">
+                     <div class="project-image"></div>
+                     <div class="project-info-skeleton">
+                        <div class="project-title-skeleton"></div>
+                        <div class="project-tags-skeleton"></div>
+                     </div>
+                  </div>
+                  <div class="project-item skeleton">
+                     <div class="project-image"></div>
+                     <div class="project-info-skeleton">
+                        <div class="project-title-skeleton"></div>
+                        <div class="project-tags-skeleton"></div>
+                     </div>
+                  </div>
+                  <div class="project-item skeleton">
+                     <div class="project-image"></div>
+                     <div class="project-info-skeleton">
+                        <div class="project-title-skeleton"></div>
+                        <div class="project-tags-skeleton"></div>
+                     </div>
+                  </div>
+
+                  <!-- ... (필요한 만큼 반복) ... -->
+               </div>
+            </section>
+
+            <!-- [섹션 3] About & Skills -->
+            <section id="about">
+               <div class="section-title">
+                  <h2>ABOUT ME</h2>
+                  <p>
+                     어제보다 오늘 더 성장하는, 꾸준함을 무기로 삼는
+                     개발자입니다.
+                  </p>
+               </div>
+               <!-- 내용 채울 영역 -->
+            </section>
+
+            <!-- [섹션 4] Contact -->
+            <section id="contact">
+               <div class="section-title">
+                  <h2>CONTACT</h2>
+                  <p>
+                     함께 배우고 성장할 좋은 기회를 기다립니다. <br />언제든
+                     편하게 연락 주세요!
+                  </p>
+               </div>
+               <!-- 내용 채울 영역 -->
+            </section>
+         </main>
+
+         <footer id="footer">
+            <p>© 2025 Shin Jae Jun. All rights reserved.</p>
+         </footer>
+
+         <!-- 관리자 로그인 모달창 -->
+         <div id="admin-modal-wrapper" class="admin-login-modal">
+            <div class="admin-login-content">
+               <button id="modal-close-btn" class="modal-close-btn">
+                  &times;
+               </button>
+               <div class="admin-login-title">
+                  <h3>관리자 로그인</h3>
+               </div>
+               <form id="admin-login-form" class="admin-info">
+                  <input
+                     class="login-id"
+                     type="text"
+                     id="id"
+                     placeholder="관리자 아이디"
+                     required
+                  />
+                  <input
+                     class="login-pw"
+                     type="password"
+                     id="pw"
+                     placeholder="비밀번호"
+                     required
+                  />
+                  <div class="login-btn">
+                     <button type="submit">로그인하기</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+
+         <!-- 프로젝트 추가/수정 모달창 -->
+         <div id="project-form-modal" class="modal-wrapper">
+            <div class="modal-content">
+               <button class="modal-close-btn">&times;</button>
+               <h3 id="project-form-title">새 프로젝트 추가</h3>
+               <form id="project-form">
+                  <!-- 수정 시 사용할 숨겨진 ID 필드 -->
+                  <input type="hidden" id="project-id" />
+                  <input
+                     type="text"
+                     id="project-title"
+                     placeholder="프로젝트 제목"
+                     required
+                  />
+                  <input
+                     type="text"
+                     id="project-headline"
+                     placeholder="헤드라인 (한 줄 요약)"
+                     required
+                  />
+                  <input
+                     type="text"
+                     id="project-imageSrc"
+                     placeholder="이미지 경로 (e.g., ./assets/image.png)"
+                     required
+                  />
+                  <textarea
+                     id="project-overview"
+                     placeholder="프로젝트 상세 설명"
+                     rows="4"
+                     required
+                  ></textarea>
+                  <input
+                     type="text"
+                     id="project-techStack"
+                     placeholder="기술 스택 (쉼표로 구분, e.g., React,CSS,API)"
+                     required
+                  />
+                  <input
+                     type="text"
+                     id="project-category"
+                     placeholder="카테고리 (쉼표로 구분, e.g., interactive-app,clone-coding)"
+                     required
+                  />
+                  <input
+                     type="text"
+                     id="project-github"
+                     placeholder="GitHub 링크"
+                     required
+                  />
+                  <input
+                     type="text"
+                     id="project-site"
+                     placeholder="사이트 링크"
+                     required
+                  />
+                  <button type="submit">저장하기</button>
+               </form>
+            </div>
+         </div>
+      </div>
+      <script src="js/smooth-scrollbar.js"></script>
+      <script src="js/index.js"></script>
+   </body>
+</html>
