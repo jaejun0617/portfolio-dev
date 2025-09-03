@@ -384,7 +384,7 @@ async function initializeApp() {
 
    const progressBar = document.querySelector('.progress-bar');
    const sections = document.querySelectorAll('section');
-
+   const wavyText = document.querySelector('.wavy-text');
    const scrollbar = Scrollbar.init(document.querySelector('.wrapper'), {
       damping: 0.07,
    });
@@ -526,6 +526,19 @@ async function initializeApp() {
       });
    }
 
+   if (wavyText) {
+      const text = wavyText.textContent.trim(); // 기존 텍스트를 가져옴
+      wavyText.innerHTML = ''; // h2 내용을 비움
+
+      // 텍스트를 한 글자씩 쪼개서 span으로 감싸고 순번(--i)을 부여
+      text.split('').forEach((char, index) => {
+         const span = document.createElement('span');
+         span.textContent = char;
+         // CSS 변수 '--i'에 0부터 시작하는 순번을 할당
+         span.style.setProperty('--i', index);
+         wavyText.appendChild(span);
+      });
+   }
    updateAuthUI();
 
    // 슬라이더와 차트 초기화
