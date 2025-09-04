@@ -10,7 +10,9 @@
          type="image/png"
       />
 
-      <link rel="stylesheet" href="./css/style.css" />
+      <link rel="stylesheet" href="./css/common.css" />
+      <link rel="stylesheet" href="./css/layout.css" />
+      <link rel="stylesheet" href="./css/components.css" />
 
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
    </head>
@@ -151,7 +153,7 @@
                      <div class="journey-item">
                         <div class="journey-phase">
                            <span class="dot red"></span>
-                           Phase 1: The Spark (호기심의 시작)
+                           <p>Phase 1: The Spark (호기심의 시작)</p>
                         </div>
                         <h4>
                            아이디어를 <strong>현실로 구현하는</strong> 즐거움
@@ -169,7 +171,7 @@
                      <div class="journey-item">
                         <div class="journey-phase">
                            <span class="dot yellow"></span>
-                           Phase 2: The Bridge (사용자와의 연결)
+                           <p>Phase 2: The Bridge (사용자와의 연결)</p>
                         </div>
                         <h4>
                            기술을 넘어, <strong>사용자를 향한 다리</strong>를
@@ -188,7 +190,7 @@
                      <div class="journey-item">
                         <div class="journey-phase">
                            <span class="dot green"></span>
-                           Phase 3: The Growth (어제와 오늘의 연결)
+                           <p>Phase 3: The Growth (어제와 오늘의 연결)</p>
                         </div>
                         <h4>
                            어제의 배움을 오늘의
@@ -206,7 +208,7 @@
                      <div class="journey-item">
                         <div class="journey-phase">
                            <span class="dot blue"></span>
-                           Phase 4: The Commitment (책임감과의 연결)
+                           <p>Phase 4: The Commitment (책임감과의 연결)</p>
                         </div>
                         <h4>
                            내가 쓴 코드가 곧 나의 얼굴이라는
@@ -226,7 +228,7 @@
                      <div class="journey-item">
                         <div class="journey-phase">
                            <span class="dot purple"></span>
-                           Phase 5: The Next Chapter (동료와의 연결)
+                           <p>Phase 5: The Next Chapter (동료와의 연결)</p>
                         </div>
                         <h4>
                            <strong>함께 배우고 완성해나갈</strong> 다음 장을
@@ -340,63 +342,72 @@
                </div>
             </section>
 
-            <!-- [섹션 4] Contact -->
             <section id="contact" data-color="#2ecc71">
-               <!-- 추천 문구 대안 1 적용 -->
-               <div class="section-title" data-animation="fade-in-up">
-                  <h2 class="wavy-text">CONTACT</h2>
-                  <p>
-                     성장의 기회를 즐기는 동료를 찾으신다면, 바로 제가 그
-                     사람입니다.<br />
-                     함께 배우고, 최고의 제품을 만들어나갈 기회를 기다립니다.
-                  </p>
-               </div>
-
-               <!-- 연락처 정보 -->
-               <div
-                  class="contact-details"
-                  data-animation="fade-in-up"
-                  style="transition-delay: 0.2s"
-               >
-                  <!-- 이메일 (클릭 시 복사) -->
-                  <div
-                     class="contact-item"
-                     id="email-box"
-                     data-email="o3o_security@naver.com"
-                  >
-                     <img
-                        src="./assets/icons/color-email.png"
-                        alt="Email Icon"
-                        class="contact-icon"
-                     />
-                     <span class="contact-text">o3o_security@naver.com</span>
-                     <button class="copy-btn">Click</button>
+               <!-- Contact 섹션 전체 컨테이너 -->
+               <div class="contact-container">
+                  <!-- 텍스트 콘텐츠 영역 -->
+                  <div class="contact-intro" data-animation="fade-in-up">
+                     <h2>CONTACT</h2>
+                     <p>
+                        끊임없이 배우고 성장하며 새로운 도전을 즐기는 프론트엔드
+                        개발자 신재준입니다. <br />
+                        사용자 경험을 최우선으로 생각하며, 작은 디테일까지
+                        놓치지 않는 꼼꼼함으로 최고의 결과를 만들어내고자
+                        합니다. <br />
+                        함께 협력해 더 나은 서비스와 경험을 창출할 수 있는
+                        기회를 기다리고 있습니다. <br />
+                        언제든 편하게 연락 주시면, 제 열정과 역량으로
+                        보답하겠습니다.
+                     </p>
                   </div>
 
-                  <!-- 오픈카카오톡 (클릭 시 이동) -->
-                  <a
-                     href="#"
-                     target="_blank"
-                     class="contact-item"
-                     id="kakao-box"
+                  <!-- 연락처 정보 -->
+                  <div
+                     class="contact-details"
+                     data-animation="fade-in-up"
+                     style="transition-delay: 0.2s"
                   >
-                     <img
-                        src="./assets/icons/social/talk-e2d1c2.png"
-                        alt="KakaoTalk Icon"
-                        class="contact-icon"
-                     />
-                     <span class="contact-text"
-                        >오픈카톡으로 편하게 대화하기</span
+                     <!-- 이메일 (클릭 시 복사) -->
+                     <div
+                        class="contact-item"
+                        id="email-box"
+                        data-email="o3o_security@naver.com"
                      >
-                  </a>
+                        <img
+                           src="./assets/icons/color-email.png"
+                           alt="Email Icon"
+                           class="contact-icon"
+                        />
+                        <span class="contact-text">o3o_security@naver.com</span>
+                        <button class="copy-btn">Click</button>
+                     </div>
+
+                     <!-- 오픈카카오톡 (클릭 시 이동) -->
+                     <a
+                        href="#"
+                        target="_blank"
+                        class="contact-item"
+                        id="kakao-box"
+                     >
+                        <img
+                           src="./assets/icons/social/talk-e2d1c2.png"
+                           alt="KakaoTalk Icon"
+                           class="contact-icon"
+                        />
+                        <span class="contact-text"
+                           >오픈카톡으로 편하게 대화하기</span
+                        >
+                     </a>
+                  </div>
+
+                  <!-- 카카오맵 -->
+                  <div
+                     id="map"
+                     data-animation="zoom-in"
+                     style="transition-delay: 0.4s"
+                  ></div>
                </div>
 
-               <!-- 카카오맵 -->
-               <div
-                  id="map"
-                  data-animation="zoom-in"
-                  style="transition-delay: 0.4s"
-               ></div>
                <div id="copy-toast">✅ 이메일 주소가 복사되었습니다!</div>
             </section>
          </main>

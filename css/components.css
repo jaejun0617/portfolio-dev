@@ -1,158 +1,8 @@
 /* =================================================================== */
-/*  [1] Reset & Basic Settings                                       */
+/*  [Components] - 개별 UI 요소 (버튼, 카드, 모달 등)                  */
 /* =================================================================== */
 
-/* ----- Color Palette: Warm & Earthy ----- */
-:root {
-   --color-background: #fdfbf8;
-   --color-surface: #ffffff;
-   --color-border: #e2d1c2;
-
-   --color-text-primary: #442913;
-   --color-text-secondary: #98755b;
-
-   --color-primary: #5c3422;
-   --color-secondary: #d4bbac;
-
-   --color-success: #5a8b73;
-   --color-danger: #d9534f;
-}
-
-* {
-   margin: 0;
-   padding: 0;
-   box-sizing: border-box;
-}
-
-html {
-   scroll-behavior: smooth;
-}
-
-body {
-   font-family: 'Pretendard', sans-serif;
-   font-size: 16px;
-   color: var(--color-text-primary);
-   background-color: var(--color-background);
-   line-height: 1.6;
-   overflow-x: hidden;
-}
-
-/* ===== [수정] 모달이 열렸을 때 스크롤을 막는 스타일 추가 ===== */
-body.modal-open .scroll-content {
-   position: fixed;
-   /* 현재 스크롤 위치를 기반으로 top 설정이 필요하지만, 
-       smooth-scrollbar에서는 이 방식이 더 안정적일 수 있습니다. */
-   overflow: hidden;
-   width: 100%;
-}
-
-a {
-   text-decoration: none;
-   color: inherit;
-}
-ul,
-li {
-   list-style: none;
-}
-button {
-   cursor: pointer;
-   border: none;
-   background: none;
-   font-family: inherit;
-}
-
-.wrapper {
-   width: 100%;
-   height: 100vh;
-   overflow: hidden;
-}
-
-/* =================================================================== */
-/*  [2] Header                                                       */
-/* =================================================================== */
-header {
-   position: fixed;
-   top: 0;
-   left: 0;
-   width: 100%;
-   height: 60px;
-   z-index: 9998;
-   background: rgba(253, 251, 248, 0.8);
-   backdrop-filter: blur(10px);
-   border-bottom: 1px solid var(--color-border);
-}
-
-.header-inner {
-   width: 100%;
-   height: 100%;
-   padding: 0 1rem;
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-}
-
-.logo img {
-   width: 40px;
-   height: 40px;
-   object-fit: cover;
-   display: block;
-   border-radius: 50%;
-}
-.pc-nav {
-   display: none;
-}
-
-.header-utils {
-   display: flex;
-   align-items: center;
-   gap: 1rem;
-}
-
-#admin-auth-btn {
-   padding: 0.4rem 0.8rem;
-   background-color: var(--color-text-primary);
-   color: var(--color-surface);
-   border-radius: 5px;
-   font-size: 0.8rem;
-   font-weight: 600;
-}
-
-.mobile-menu-btn .line {
-   background-color: var(--color-text-primary);
-}
-
-/* =================================================================== */
-/*  [3] Common Section Styles                                        */
-/* =================================================================== */
-section {
-   padding: 4rem 1rem;
-   min-height: 100vh;
-   max-width: 1920px;
-   margin: 0 auto;
-   overflow-x: hidden;
-}
-
-.section-title {
-   margin-bottom: 3rem;
-   text-align: center;
-}
-.section-title h2 {
-   font-size: 24px;
-   font-weight: 700;
-   margin-bottom: 0.5rem;
-   color: var(--color-secondary);
-   text-shadow:
-      1px 1px 1px rgba(0, 0, 0, 0.05),
-      2px 2px 1px rgba(0, 0, 0, 0.05),
-      3px 3px 1px rgba(0, 0, 0, 0.05),
-      4px 4px 1px rgba(0, 0, 0, 0.05);
-}
-.section-title p {
-   font-size: 12px;
-   color: var(--color-text-secondary);
-   line-height: 1.7;
-}
-
+/* ----- Progress Bar ----- */
 .progress-bar-container {
    position: fixed;
    top: 0;
@@ -170,16 +20,35 @@ section {
       background-color 0.5s ease;
 }
 
-/* =================================================================== */
-/*  [4] Hero (#hero)                                                 */
-/* =================================================================== */
-#hero {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   text-align: center;
-   background-color: #eae7e2;
+/* ----- Header Components ----- */
+.logo img {
+   width: 40px;
+   height: 40px;
+   object-fit: cover;
+   display: block;
+   border-radius: 50%;
 }
+.pc-nav {
+   display: none;
+}
+.header-utils {
+   display: flex;
+   align-items: center;
+   gap: 1rem;
+}
+#admin-auth-btn {
+   padding: 0.4rem 0.8rem;
+   background-color: var(--color-text-primary);
+   color: var(--color-surface);
+   border-radius: 5px;
+   font-size: 0.85rem; /* 수정 */
+   font-weight: 600;
+}
+.mobile-menu-btn .line {
+   background-color: var(--color-text-primary);
+}
+
+/* ----- Hero Components ----- */
 .hero-content h1 {
    font-size: 2.5rem;
    font-weight: 800;
@@ -191,18 +60,7 @@ section {
    color: var(--color-text-secondary);
 }
 
-/* =================================================================== */
-/*  [5] About (#about)                                         */
-/* =================================================================== */
-#about {
-   background-color: var(--color-surface);
-}
-.about-profile-content {
-   width: 100%;
-   height: 100%;
-   display: flex;
-   flex-direction: column;
-}
+/* ----- About Components ----- */
 .profile-image {
    max-width: 500px;
    height: auto;
@@ -234,14 +92,14 @@ section {
    margin-bottom: 0.1rem;
 }
 .name-block .eng-name {
-   font-size: 0.9rem;
+   font-size: 0.95rem;
    font-weight: 400;
    color: var(--color-text-secondary);
    text-transform: uppercase;
    letter-spacing: 1.5px;
 }
 .philosophy-block .slogan {
-   font-size: 1.2rem;
+   font-size: 1rem;
    font-weight: 600;
    color: var(--color-text-primary);
    margin-bottom: 0.5rem;
@@ -257,12 +115,11 @@ section {
    margin: 0 10px;
 }
 .philosophy-block .description {
-   font-size: 0.9rem;
+   font-size: 1rem; /* 수정 */
    font-style: italic;
    color: var(--color-text-secondary);
    line-height: 1.7;
 }
-
 .about-links-wrapper {
    margin-top: 2rem;
    padding-top: 1.5rem;
@@ -291,7 +148,6 @@ section {
    width: 250px;
    display: block;
 }
-
 .about-social {
    display: flex;
    gap: 1.5rem;
@@ -309,7 +165,6 @@ section {
    object-fit: cover;
    border-radius: 50%;
 }
-
 .about-slider {
    text-align: center;
    padding: 1.5rem 1rem;
@@ -344,30 +199,19 @@ section {
 .quote-source {
    margin-left: 0.5rem;
 }
-
-.about-journey {
-   display: flex;
-   flex-direction: column;
-   gap: 2rem;
-   padding: 2rem 1rem;
-}
-
 .about-journey .journey-item {
-   padding-bottom: 1.5rem;
    border-bottom: 1px solid var(--color-border);
 }
-
 .about-journey .journey-item:last-child {
    border-bottom: none;
 }
-
 .journey-phase {
    display: flex;
    align-items: center;
    padding: 0.2rem 0;
    min-height: 30px;
    gap: 0.5rem;
-   font-size: 14px;
+   font-size: 0.95rem; /* 수정 */
 }
 .journey-item strong {
    font-weight: inherit;
@@ -381,15 +225,14 @@ section {
    background-position: 0 0;
    transition: background-position 0.3s ease-in-out;
 }
-
 .chart {
    margin-top: 3rem;
    width: 100%;
    height: calc(100vw / 1.5);
    min-height: 280px;
    max-height: 400px;
+   margin: 0 auto;
 }
-
 .dot {
    display: block;
    width: 18px;
@@ -400,33 +243,27 @@ section {
 .dot.red {
    background-color: var(--color-danger);
 }
-
 .dot.yellow {
    background-color: var(--color-secondary);
 }
-
 .dot.green {
    background-color: var(--color-success);
 }
-
 .dot.blue {
    background-color: var(--color-primary);
 }
-
 .dot.purple {
    background-color: var(--color-text-primary);
 }
 
 .journey-item h4 {
-   font-size: 0.9rem;
+   font-size: 1rem; /* 수정 */
+}
+.journey-item p {
+   font-size: 0.825rem; /* 수정 */
 }
 
-/* =================================================================== */
-/*  [6] Projects (#projects)                                         */
-/* =================================================================== */
-#projects {
-   background-color: var(--color-background);
-}
+/* ----- Projects Components ----- */
 .projects-filter {
    display: flex;
    justify-content: center;
@@ -442,6 +279,7 @@ section {
    color: var(--color-text-primary);
    font-weight: 500;
    transition: all 0.2s ease;
+   font-size: 0.95rem; /* 수정 */
 }
 .filter-btn:hover {
    background-color: var(--color-border);
@@ -451,7 +289,6 @@ section {
    color: var(--color-surface);
    border-color: var(--color-primary);
 }
-
 .create-btn {
    display: flex;
    justify-content: flex-end;
@@ -470,20 +307,15 @@ section {
 #delete-all-btn {
    padding: 0.6rem 1.2rem;
    border-radius: 5px;
-   font-weight: 500;
+   font-weight: 600; /* 수정 */
    color: var(--color-surface);
+   font-size: 0.9rem; /* 수정 */
 }
 #create-project-btn {
    background-color: var(--color-success);
 }
 #delete-all-btn {
    background-color: var(--color-danger);
-}
-
-.project-grid {
-   display: grid;
-   grid-template-columns: 1fr;
-   gap: 1.5rem;
 }
 .project-item {
    background-color: var(--color-surface);
@@ -506,16 +338,15 @@ section {
 .project-item:hover .project-image img {
    transform: scale(1.05);
 }
-
 .project-info {
    padding: 1.2rem;
 }
 .project-info h3 {
-   font-size: 1.2rem;
+   font-size: 1.25rem; /* 수정 */
    margin-bottom: 0.5rem;
 }
 .project-info .headline {
-   font-size: 0.9rem;
+   font-size: 0.95rem; /* 수정 */
    color: var(--color-text-secondary);
    margin-bottom: 1rem;
    overflow: hidden;
@@ -536,7 +367,6 @@ section {
    border-radius: 4px;
    font-size: 0.8rem;
 }
-
 .admin-actions {
    position: absolute;
    top: 10px;
@@ -563,7 +393,6 @@ section {
 .delete-btn {
    background-color: var(--color-danger);
 }
-
 .project-item.skeleton {
    animation: pulse 1.5s ease-in-out infinite;
 }
@@ -584,40 +413,8 @@ section {
    height: 16px;
    width: 50%;
 }
-@keyframes pulse {
-   0% {
-      opacity: 1;
-   }
-   50% {
-      opacity: 0.7;
-   }
-   100% {
-      opacity: 1;
-   }
-}
 
-/* =================================================================== */
-/*  [7] Contact                                                      */
-/* =================================================================== */
-#contact {
-   padding: 0;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   width: 100%;
-   height: auto;
-}
-
-.contact-container {
-   width: 100%;
-   padding: 3rem 1rem;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content: center;
-   gap: 2.5rem;
-}
-
+/* ----- Contact Components ----- */
 .contact-intro {
    background-color: rgba(253, 251, 248, 0.85);
    backdrop-filter: blur(8px);
@@ -632,23 +429,19 @@ section {
    background-position: center right;
    background-repeat: no-repeat;
 }
-
 .contact-intro h2 {
    font-size: 2.5rem;
    color: var(--color-primary);
    margin-bottom: 1rem;
    text-shadow: none;
 }
-
 .contact-intro p {
-   font-size: 1rem;
+   font-size: 0.8rem; /* 수정 */
    color: #ffffff;
    font-weight: 500;
    line-height: 1.8;
-
    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.75);
 }
-
 .contact-details {
    display: flex;
    flex-direction: column;
@@ -657,7 +450,6 @@ section {
    width: 100%;
    max-width: 500px;
 }
-
 .contact-item {
    background-color: var(--color-surface);
    border: 1px solid var(--color-border);
@@ -671,38 +463,33 @@ section {
    cursor: pointer;
    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
-
 .contact-item:hover {
    transform: translateY(-5px);
    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
-
 .contact-icon {
    width: 28px;
    height: 28px;
 }
-
 .contact-text {
    color: var(--color-text-primary);
    font-weight: 500;
+   font-size: 1rem; /* 수정 */
 }
-
 #email-box .copy-btn {
    margin-left: auto;
    background-color: var(--color-secondary);
    color: var(--color-primary);
    padding: 0.4rem 0.8rem;
    border-radius: 5px;
-   font-size: 0.8rem;
+   font-size: 0.85rem; /* 수정 */
    font-weight: 600;
    transition: background-color 0.2s;
 }
-
 #email-box .copy-btn:hover {
    background-color: var(--color-primary);
    color: var(--color-surface);
 }
-
 #map {
    width: 100%;
    max-width: 800px;
@@ -711,7 +498,6 @@ section {
    border: 1px solid var(--color-border);
    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
-
 #copy-toast {
    position: absolute;
    bottom: 50%;
@@ -727,23 +513,30 @@ section {
    opacity: 0;
    transition: all 0.5s cubic-bezier(0.17, 0.84, 0.44, 1);
 }
-
 #copy-toast.show {
    bottom: 30px;
    opacity: 1;
 }
-
-/* =================================================================== */
-/*  [8] Footer & Modal                                               */
-/* =================================================================== */
-#footer {
-   height: 5vh;
-   padding: 1rem 0rem;
-   text-align: center;
-   font-size: 0.8rem;
-   color: var(--color-border);
-   background-color: var(--color-text-primary);
+.wavy-text {
+   position: relative;
+   display: flex;
+   justify-content: center;
 }
+.wavy-text span {
+   position: relative;
+   display: inline-block;
+   letter-spacing: 5px;
+   animation: wavy 1.8s ease-in-out infinite;
+   animation-delay: calc(0.1s * var(--i));
+}
+
+/* ----- Footer Components ----- */
+#footer {
+   font-size: 0.9rem; /* 수정 */
+   color: var(--color-border);
+}
+
+/* ----- Modal Components ----- */
 .admin-login-modal,
 .modal-wrapper {
    position: fixed;
@@ -845,17 +638,23 @@ section {
    background-color: var(--color-success);
 }
 
+#footer p {
+   font-size: 0.8rem;
+}
 /* =================================================================== */
-/*  [9] 반응형 (Mobile, Tablet & Desktop)                            */
+/*  [Components] - 반응형 폰트 사이즈                                   */
 /* =================================================================== */
 
 /* ----- Mobile ( ~ 767px) ----- */
 @media (max-width: 767px) {
-   section {
-      padding: 3.5rem 1rem;
+   .section-title h2 {
+      font-size: 1.8rem;
+   }
+   .section-title p {
+      font-size: 0.95rem;
    }
    .hero-content h1 {
-      font-size: 2.1rem;
+      font-size: 2.2rem;
    }
    .hero-content p {
       font-size: 1rem;
@@ -864,35 +663,18 @@ section {
       font-size: 1.8rem;
    }
    .philosophy-block .slogan {
-      font-size: 1rem;
+      font-size: 1.1rem;
       word-break: keep-all;
    }
-   /* ===== [수정] profile-image 가운데 정렬 ===== */
-   .profile-image {
-      margin: 0 auto;
-   }
    .philosophy-block .description {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
    }
    .philosophy-block .slogan::before,
    .philosophy-block .slogan::after {
       display: none;
    }
-   .journey-item h4 {
-      font-size: 1.1rem;
-   }
-   .journey-item p {
-      font-size: 0.95rem;
-   }
-   /* ===== [수정] 모바일에서 journey-item 하단 여백 추가 ===== */
-   .about-journey .journey-item {
-      padding-bottom: 2rem;
-   }
    .quote-text {
       font-size: 1rem;
-   }
-   .projects-filter {
-      gap: 0.5rem 2%;
    }
    .filter-btn {
       width: 48%;
@@ -904,32 +686,15 @@ section {
       padding: 1.5rem;
    }
    .contact-intro h2 {
-      font-size: 2rem;
+      font-size: 2.1rem;
    }
    .contact-intro p {
-      font-size: 0.9rem;
+      font-size: 0.725rem;
    }
 }
 
 /* ----- Tablet (768px ~) ----- */
 @media (min-width: 768px) {
-   .header-inner {
-      width: 100%;
-      padding: 0 2rem;
-   }
-   section {
-      padding: 6rem 2rem;
-   }
-   .section-title h2 {
-      font-size: 2.5rem;
-   }
-   .section-title p {
-      font-size: 1.1rem;
-   }
-
-   .mobile-menu-btn {
-      display: none;
-   }
    .pc-nav {
       display: flex;
       gap: 2.5rem;
@@ -946,44 +711,27 @@ section {
    .pc-nav a:hover {
       color: var(--color-text-primary);
    }
+   .mobile-menu-btn {
+      display: none;
+   }
 
+   .section-title h2 {
+      font-size: 2.5rem;
+   }
+   .section-title p {
+      font-size: 1.1rem;
+   }
    .hero-content h1 {
       font-size: 3.5rem;
    }
    .hero-content p {
       font-size: 1.2rem;
    }
-
-   #about .section-title {
-      margin-bottom: 4rem;
-   }
-   .about-profile-content {
-      flex-direction: row;
-      align-items: flex-start;
-      gap: 3rem;
-      max-width: 1024px;
-      margin: 0 auto;
-   }
-   .profile-image {
-      flex: 0 0 350px;
-      width: 350px;
-      margin: 0; /* ===== [수정] 태블릿부터는 margin 초기화 ===== */
-   }
-   .about-profile-info {
-      flex: 1;
-      text-align: center;
-   }
-   .about-info {
-      text-align: center;
-      padding: 0;
-      margin-bottom: 2.5rem;
-      border: none;
-   }
    .name-block h4 {
       font-size: 2.2rem;
    }
    .philosophy-block .slogan {
-      font-size: 1.2rem;
+      font-size: 1rem;
    }
    .philosophy-block .description {
       font-size: 0.9rem;
@@ -992,73 +740,29 @@ section {
    .philosophy-block .slogan::after {
       display: inline-block;
    }
-   .about-links-wrapper {
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-   }
-   .about-resume {
-      width: 250px;
-      display: block;
-   }
-   .resume-btn {
-      width: 100%;
-   }
-
    .about-slider {
-      text-align: center;
-      padding: 2rem 0 0 0;
-      margin-top: 2.5rem;
-      height: auto;
       height: 120px;
    }
    .quote-text {
       font-size: 1.2rem;
    }
-
    .journey-item h4 {
       font-size: 1.5rem;
    }
    .journey-item p {
       font-size: 1rem;
    }
-   .about-journey {
-      padding: 0rem 1rem;
-   }
-
-   /* ===== [수정] 태블릿에서 journey-item 하단 여백 설정 ===== */
-   .about-journey .journey-item {
-      padding-bottom: 1.5rem;
-   }
    .chart {
       margin-top: 4rem;
-      width: 100%;
       max-width: 800px;
       height: 400px;
-      margin-left: auto;
-      margin-right: auto;
-   }
-
-   .project-grid {
-      grid-template-columns: repeat(2, 1fr);
    }
 }
 
 /* ----- Desktop (1024px ~) ----- */
 @media (min-width: 1024px) {
-   section {
-      padding: 7rem 2rem;
-   }
    .hero-content h1 {
       font-size: 4rem;
-   }
-   .about-profile-content {
-      gap: 4rem;
-      max-width: 1200px;
-   }
-   .profile-image {
-      flex-basis: 400px;
-      width: 400px;
    }
    .journey-item h4 {
       font-size: 1.6rem;
@@ -1066,81 +770,8 @@ section {
    .journey-item p {
       font-size: 1.05rem;
    }
-   .about-journey {
-      padding: 0rem 1rem;
-   }
-
-   /* ===== [수정] 데스크탑에서 journey-item 하단 여백 설정 ===== */
-   .about-journey .journey-item {
-      padding-bottom: 2rem;
-   }
-
    .chart {
       max-width: 1200px;
       height: 450px;
-   }
-   .project-grid {
-      grid-template-columns: repeat(3, 1fr);
-   }
-}
-
-/* =================================================================== */
-/*  [10] Scroll Animations                                           */
-/* =================================================================== */
-
-[data-animation] {
-   opacity: 0;
-   transition:
-      opacity 1.2s cubic-bezier(0.5, 0, 0, 1),
-      transform 1.2s cubic-bezier(0.5, 0, 0, 1);
-}
-
-[data-animation='fade-in-up'] {
-   transform: translateY(50px);
-}
-
-[data-animation='fade-in-left'] {
-   transform: translateX(-50px);
-}
-
-[data-animation='fade-in-right'] {
-   transform: translateX(50px);
-}
-
-[data-animation='zoom-in'] {
-   transform: scale(0.9);
-}
-
-[data-animation].is-visible {
-   opacity: 1;
-   transform: none;
-}
-
-.about-journey.is-visible .journey-item {
-   opacity: 0;
-   transform: translateX(30px);
-   animation: journey-item-fade-in 0.8s forwards cubic-bezier(0.5, 0, 0, 1);
-}
-
-.about-journey.is-visible .journey-item:nth-child(1) {
-   animation-delay: 0.2s;
-}
-.about-journey.is-visible .journey-item:nth-child(2) {
-   animation-delay: 0.4s;
-}
-.about-journey.is-visible .journey-item:nth-child(3) {
-   animation-delay: 0.6s;
-}
-.about-journey.is-visible .journey-item:nth-child(4) {
-   animation-delay: 0.8s;
-}
-.about-journey.is-visible .journey-item:nth-child(5) {
-   animation-delay: 1s;
-}
-
-@keyframes journey-item-fade-in {
-   to {
-      opacity: 1;
-      transform: translateX(0);
    }
 }

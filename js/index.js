@@ -303,7 +303,9 @@ function createSkillChart() {
       const screenWidth = window.innerWidth;
       if (screenWidth >= 1024) return 14;
       if (screenWidth >= 768) return 12;
-      return 10;
+      if (screenWidth >= 500) return 8;
+      if (screenWidth >= 480) return 5;
+      return 5;
    };
    const currentFontSize = getResponsiveFontSize();
 

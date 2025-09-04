@@ -1,0 +1,184 @@
+/* =================================================================== */
+/*  [Layout] - 전체 페이지 구조, 섹션, 푸터 등                         */
+/* =================================================================== */
+
+.wrapper {
+   width: 100%;
+   height: 100vh;
+   overflow: hidden;
+}
+
+body.modal-open .scroll-content {
+   position: fixed;
+   overflow: hidden;
+   width: 100%;
+}
+
+/* ----- Header Layout ----- */
+header {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 60px;
+   z-index: 9998;
+   background: rgba(253, 251, 248, 0.8);
+   backdrop-filter: blur(10px);
+   border-bottom: 1px solid var(--color-border);
+}
+
+.header-inner {
+   width: 100%;
+   height: 100%;
+   padding: 0 1rem;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+/* ----- Section Layout ----- */
+section {
+   padding: 4rem 1rem;
+   min-height: 100vh;
+   max-width: 1920px;
+   margin: 0 auto;
+   overflow-x: hidden;
+}
+
+#hero {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   text-align: center;
+   background-color: #eae7e2;
+}
+
+#about {
+   background-color: var(--color-surface);
+}
+
+.about-profile-content {
+   width: 100%;
+   height: 100%;
+   display: flex;
+   flex-direction: column;
+}
+
+.about-journey {
+   display: flex;
+   flex-direction: column;
+   gap: 2rem;
+   padding: 2rem 1rem;
+}
+
+#projects {
+   background-color: var(--color-background);
+}
+
+.project-grid {
+   display: grid;
+   grid-template-columns: 1fr;
+   gap: 1.5rem;
+}
+
+#contact {
+   padding: 0;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 100%;
+   height: auto;
+}
+
+.contact-container {
+   width: 100%;
+   padding: 3rem 1rem;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   gap: 2.5rem;
+}
+
+/* ----- Footer Layout ----- */
+#footer {
+   height: 4vh;
+   padding: 1rem 0rem;
+
+   background-color: var(--color-text-primary);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+/* =================================================================== */
+/*  [Layout] - 반응형 레이아웃                                         */
+/* =================================================================== */
+
+/* ----- Mobile ( ~ 767px) ----- */
+@media (max-width: 767px) {
+   section {
+      padding: 3.5rem 1rem;
+   }
+   .profile-image {
+      margin: 0 auto;
+   }
+   .about-journey .journey-item {
+      padding-bottom: 2rem;
+   }
+}
+
+/* ----- Tablet (768px ~) ----- */
+@media (min-width: 768px) {
+   .header-inner {
+      padding: 0 2rem;
+   }
+   section {
+      padding: 6rem 2rem;
+   }
+   .about-profile-content {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 3rem;
+      max-width: 1024px;
+      margin: 0 auto;
+   }
+   .profile-image {
+      flex: 0 0 350px;
+      width: 350px;
+      margin: 0;
+   }
+   .about-journey {
+      padding: 0rem 1rem;
+   }
+   .about-journey .journey-item {
+      padding-bottom: 1.5rem;
+   }
+   .project-grid {
+      grid-template-columns: repeat(2, 1fr);
+   }
+}
+
+/* ----- Desktop (1024px ~) ----- */
+@media (min-width: 1024px) {
+   section {
+      padding: 7rem 2rem;
+   }
+   .about-profile-content {
+      gap: 4rem;
+      max-width: 1200px;
+   }
+   .profile-image {
+      flex-basis: 400px;
+      width: 400px;
+   }
+   .about-journey {
+      padding: 0rem 1rem;
+   }
+   .about-journey .journey-item {
+      padding-bottom: 2rem;
+   }
+   .project-grid {
+      grid-template-columns: repeat(3, 1fr);
+   }
+}
