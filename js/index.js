@@ -211,6 +211,10 @@ function filterAndRenderProjects() {
 /**
  * @description About 섹션의 인용구 슬라이더를 업데이트.
  */
+// ===== [수정] 슬라이더 관련 변수를 함수 외부에서도 접근 가능하도록 전역 스코프에 선언 =====
+let quoteTextEl, quoteAuthorEl, quoteSourceEl;
+let currentQuoteIndex = 0;
+
 function showNextQuote() {
    if (!quoteTextEl) return;
    quoteTextEl.classList.add('fading-out');
@@ -325,9 +329,6 @@ function createSkillChart() {
 // [3. 이벤트 핸들러 및 유틸리티 (Event Handlers & Utilities)]
 // =============================================================================
 
-/**
- * @description 로그인 성공 시 호출.
- */
 function handleLogin() {
    AppState.isLoggedIn = true;
    localStorage.setItem('isLoggedIn', 'true');
@@ -336,9 +337,6 @@ function handleLogin() {
    closeAdminModal();
 }
 
-/**
- * @description 로그아웃 시 호출.
- */
 function handleLogout() {
    AppState.isLoggedIn = false;
    localStorage.removeItem('isLoggedIn');
@@ -346,10 +344,6 @@ function handleLogout() {
    alert('로그아웃 되었습니다.');
 }
 
-/**
- * @description 모달 열기 유틸리티 함수. 스크롤 방지 로직 포함.
- * @param {HTMLElement} modalElement - 열고자 하는 모달 요소.
- */
 function openModal(modalElement) {
    if (!modalElement) return;
    document.body.classList.add('modal-open');
@@ -358,10 +352,6 @@ function openModal(modalElement) {
    modalElement.classList.add('visible');
 }
 
-/**
- * @description 모달 닫기 유틸리티 함수. 스크롤 방지 해제 로직 포함.
- * @param {HTMLElement} modalElement - 닫고자 하는 모달 요소.
- */
 function closeModal(modalElement) {
    if (!modalElement) return;
    document.body.classList.remove('modal-open');
@@ -415,9 +405,6 @@ function closeProjectFormModal() {
    modal.querySelector('#project-form')?.reset();
 }
 
-/**
- * @description Intersection Observer를 사용하여 스크롤 애니메이션을 설정.
- */
 function setupScrollAnimations() {
    const scrollElements = document.querySelectorAll('[data-animation]');
 
@@ -443,9 +430,6 @@ function setupScrollAnimations() {
    });
 }
 
-/**
- * @description Contact 섹션의 기능(이메일 복사)을 초기화.
- */
 function initializeContactSection() {
    const emailBox = document.getElementById('email-box');
    const copyToast = document.getElementById('copy-toast');
@@ -470,9 +454,6 @@ function initializeContactSection() {
    }
 }
 
-/**
- * @description 카카오맵 API를 사용하여 지도를 초기화.
- */
 function initializeMap() {
    const mapContainer = document.getElementById('map');
    if (!mapContainer || !window.kakao) return;
@@ -535,6 +516,10 @@ async function initializeApp() {
    const progressBar = document.querySelector('.progress-bar');
    const sections = document.querySelectorAll('section');
    const wavyText = document.querySelector('.wavy-text');
+
+   quoteTextEl = document.querySelector('.quote-text');
+   quoteAuthorEl = document.querySelector('.quote-author');
+   quoteSourceEl = document.querySelector('.quote-source');
 
    // --- 2. Smooth Scrollbar 초기화 ---
    const scrollbar = Scrollbar.init(document.querySelector('.wrapper'), {
@@ -702,6 +687,7 @@ async function initializeApp() {
    updateAuthUI();
    setInterval(showNextQuote, 5000);
    createSkillChart();
+   let resizeTimer;
    window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
@@ -709,7 +695,6 @@ async function initializeApp() {
       }, 150);
    });
 
-   // 프로젝트 초기 데이터 로딩 (스켈레톤 UI 표시 후)
    const projectGridInitialHTML =
       document.getElementById('project-grid').innerHTML;
    document.getElementById('project-grid').innerHTML = projectGridInitialHTML;
@@ -717,11 +702,9 @@ async function initializeApp() {
    await projectManager.fetchInitialProjects();
    filterAndRenderProjects();
 
-   // 스크롤 및 Contact 섹션 기능 초기화
    setupScrollAnimations();
    initializeContactSection();
 
-   // 카카오맵 SDK 로드가 완료된 후 지도 초기화
    kakao.maps.load(function () {
       initializeMap();
    });
