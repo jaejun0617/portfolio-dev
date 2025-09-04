@@ -217,9 +217,13 @@ function renderProjects(projectsToRender) {
          '<p class="empty-message">표시할 프로젝트가 없습니다.</p>';
       return;
    }
-   projectsToRender.forEach((p) => {
+   projectsToRender.forEach((p, index) => {
       const itemEl = document.createElement('div');
       itemEl.className = 'project-item';
+      // 애니메이션 속성 및 딜레이 추가 (딜레이 간격 0.15s로 증가)
+      itemEl.setAttribute('data-animation', 'fade-in-up');
+      itemEl.style.transitionDelay = `${index * 0.15}s`;
+
       const adminButtonsHTML = AppState.isLoggedIn
          ? `
            <div class="admin-actions">
@@ -241,6 +245,9 @@ function renderProjects(projectsToRender) {
        `;
       projectGrid.appendChild(itemEl);
    });
+
+   // 렌더링된 새 요소들에 대해 애니메이션 설정 다시 적용
+   setupScrollAnimations();
 }
 
 function filterAndRenderProjects() {
@@ -288,7 +295,9 @@ function createSkillChart() {
       const screenWidth = window.innerWidth;
       if (screenWidth >= 1024) return 14;
       if (screenWidth >= 768) return 12;
-      return 8;
+      if (screenWidth >= 500) return 8;
+      if (screenWidth >= 480) return 7;
+      if (screenWidth >= 350) return 5;
    };
    const currentFontSize = getResponsiveFontSize();
 
@@ -367,6 +376,36 @@ function createSkillChart() {
       options: chartOptions,
    });
 }
+
+// ===== [함수] 스크롤 애니메이션 설정 (반복 실행 로직으로 수정) =====
+function setupScrollAnimations() {
+   const scrollElements = document.querySelectorAll('[data-animation]');
+
+   if (!scrollElements.length) return;
+
+   const observer = new IntersectionObserver(
+      (entries) => {
+         entries.forEach((entry) => {
+            // 요소가 화면에 나타나면 is-visible 클래스 추가
+            if (entry.isIntersecting) {
+               entry.target.classList.add('is-visible');
+            }
+            // 요소가 화면에서 사라지면 is-visible 클래스 제거 (애니메이션 리셋)
+            else {
+               entry.target.classList.remove('is-visible');
+            }
+         });
+      },
+      {
+         threshold: 0.1, // 요소가 10% 보였을 때 애니메이션 실행
+      },
+   );
+
+   scrollElements.forEach((el) => {
+      observer.observe(el);
+   });
+}
+
 // ===== [함수] 앱 전체를 시작하는 초기화 함수 =====
 async function initializeApp() {
    projectManagerInstance = new ProjectManager();
@@ -559,6 +598,9 @@ async function initializeApp() {
 
    await projectManager.fetchInitialProjects();
    filterAndRenderProjects();
+
+   // 스크롤 애니메이션 초기화
+   setupScrollAnimations();
 }
 
 document.addEventListener('DOMContentLoaded', initializeApp);

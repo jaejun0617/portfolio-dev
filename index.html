@@ -54,19 +54,21 @@
 
             <!-- [섹션 2] About & Skills -->
             <section id="about" data-color="#3498db">
-               <div class="section-title">
+               <div class="section-title" data-animation="fade-in-up">
                   <h2>CONNECTING THE DOTS</h2>
                   <p>
-                     저는 흩어져 있는 점(Dots)들을 연결하여 <br />
-                     의미 있는 선과 면을 만드는 개발자입니다. 아이디어를 현실로,
-                     <br />
-                     사용자와 기술을, 그리고 어제의 배움을 오늘의 성장으로
-                     연결합니다.
+                     흩어진 점들을 연결하여 가치를 만듭니다.<br />
+                     아이디어를 현실로, 기술을 경험으로, <br />
+                     어제의 배움을 오늘의 성장으로 잇습니다.
                   </p>
                </div>
 
                <div class="about-profile-content">
-                  <div class="profile-image">
+                  <div
+                     class="profile-image"
+                     data-animation="fade-in-left"
+                     style="transition-delay: 0.2s"
+                  >
                      <div class="about-profile">
                         <img
                            src="./assets/images/main/about/profile.jpeg"
@@ -141,7 +143,11 @@
                      </div>
                   </div>
 
-                  <div class="about-journey">
+                  <div
+                     class="about-journey"
+                     data-animation="fade-in-right"
+                     style="transition-delay: 0.3s"
+                  >
                      <div class="journey-item">
                         <div class="journey-phase">
                            <span class="dot red"></span>
@@ -238,7 +244,11 @@
                      </div>
                   </div>
                </div>
-               <div class="chart">
+               <div
+                  class="chart"
+                  data-animation="zoom-in"
+                  style="transition-delay: 0.2s"
+               >
                   <!-- 여기에 skills 을 그래프로 나타낼거임 -->
                   <canvas id="skill-radar-chart"></canvas>
                </div>
@@ -246,14 +256,18 @@
 
             <!-- [섹션 3] Projects -->
             <section id="projects" data-color="#f1c40f">
-               <div class="section-title">
+               <div class="section-title" data-animation="fade-in-up">
                   <h2>PROJECTS</h2>
                   <p>
                      단순한 기능 구현을 넘어, '왜'를 고민하며 만든 결과물입니다.
                   </p>
                </div>
 
-               <div class="projects-filter">
+               <div
+                  class="projects-filter"
+                  data-animation="fade-in-up"
+                  style="transition-delay: 0.2s"
+               >
                   <button class="filter-btn active" data-filter="all">
                      #All
                   </button>
@@ -328,7 +342,7 @@
 
             <!-- [섹션 4] Contact -->
             <section id="contact" data-color="#2ecc71">
-               <div class="section-title">
+               <div class="section-title" data-animation="fade-in-up">
                   <h2 class="wavy-text">CONTACT</h2>
                   <p>
                      코드로 문제를 해결하고, 함께 성장할 기회를 기다립니다.<br />

@@ -235,12 +235,6 @@ section {
    color: var(--color-text-primary);
    margin-bottom: 0.5rem;
 }
-.philosophy-block .description {
-   font-size: 0.9rem;
-   font-style: italic;
-   color: var(--color-text-secondary);
-   line-height: 1.7;
-}
 .philosophy-block .slogan::before,
 .philosophy-block .slogan::after {
    content: '';
@@ -250,6 +244,12 @@ section {
    background-color: var(--color-border);
    vertical-align: middle;
    margin: 0 10px;
+}
+.philosophy-block .description {
+   font-size: 0.9rem;
+   font-style: italic;
+   color: var(--color-text-secondary);
+   line-height: 1.7;
 }
 
 .about-links-wrapper {
@@ -304,7 +304,7 @@ section {
    padding: 1.5rem 1rem;
    margin-top: 2rem;
    border-top: 1px solid var(--color-border);
-   min-height: 150px;
+   height: 150px;
    display: flex;
    flex-direction: column;
    justify-content: center;
@@ -340,12 +340,23 @@ section {
    gap: 2rem;
    padding: 2rem 1rem;
 }
+
+.about-journey .journey-item {
+   padding-bottom: 1.5rem;
+   border-bottom: 1px solid var(--color-border);
+}
+
+.about-journey .journey-item:last-child {
+   border-bottom: none;
+}
+
 .journey-phase {
    display: flex;
    align-items: center;
    padding: 0.2rem 0;
    min-height: 30px;
    gap: 0.5rem;
+   font-size: 14px;
 }
 .journey-item strong {
    font-weight: inherit;
@@ -413,7 +424,7 @@ section {
    margin-bottom: 2rem;
 }
 .filter-btn {
-   padding: 0.5rem 1rem;
+   padding: 0.5rem 0.5rem;
    border-radius: 20px;
    background-color: var(--color-surface);
    border: 1px solid var(--color-border);
@@ -609,9 +620,9 @@ section {
 /*  [8] Footer & Modal                                               */
 /* =================================================================== */
 #footer {
-   padding: 2rem 1rem;
+   padding: 0.8rem 1rem;
    text-align: center;
-   font-size: 0.9rem;
+   font-size: 12px;
    color: var(--color-border);
    background-color: var(--color-text-primary);
 }
@@ -717,8 +728,83 @@ section {
 }
 
 /* =================================================================== */
-/*  [9] 반응형 (Tablet & Desktop)                                    */
+/*  [9] 반응형 (Mobile, Tablet & Desktop)                            */
 /* =================================================================== */
+
+/* ----- Mobile (350px ~) ----- */
+@media (max-width: 480px) {
+   section {
+      padding: 3.5rem 1rem; /* 상하 여백 축소 */
+   }
+   .hero-content h1 {
+      font-size: 2.1rem; /* 폰트 크기 축소 */
+   }
+   .hero-content p {
+      font-size: 1rem;
+   }
+   .name-block h4 {
+      font-size: 1.8rem;
+   }
+   .philosophy-block .slogan {
+      font-size: 14px;
+   }
+   .philosophy-block .slogan::before,
+   .philosophy-block .slogan::after {
+      display: none;
+   }
+   .philosophy-block .description {
+      font-size: 12px;
+   }
+   .journey-item h4 {
+      font-size: 1rem;
+   }
+   .journey-item p {
+      font-size: 0.95rem;
+   }
+   .quote-text {
+      font-size: 1rem;
+   }
+   .filter-btn {
+      width: 48%;
+   }
+}
+/* ----- Mobile (350px ~) ----- */
+@media (max-width: 767px) {
+   section {
+      padding: 3.5rem 1rem;
+   }
+   .hero-content h1 {
+      font-size: 2.1rem;
+   }
+   .hero-content p {
+      font-size: 1rem;
+   }
+   .name-block h4 {
+      font-size: 1.8rem;
+   }
+   .philosophy-block .slogan {
+      font-size: 1rem;
+   }
+   .profile-image {
+      margin: 0 auto;
+   }
+   .philosophy-block .description {
+      font-size: 1rem;
+   }
+   .journey-item h4 {
+      font-size: 1rem;
+   }
+   .journey-item p {
+      font-size: 0.95rem;
+   }
+   .quote-text {
+      font-size: 1rem;
+   }
+   .filter-btn {
+      width: 48%;
+   }
+}
+/* ----- Tablet (768px ~) ----- */
 @media (min-width: 768px) {
    .header-inner {
       width: 100%;
@@ -788,9 +874,15 @@ section {
    .name-block h4 {
       font-size: 2.2rem;
    }
+   .philosophy-block .slogan {
+      font-size: 1.2rem;
+   }
+   .philosophy-block .description {
+      font-size: 0.9rem;
+   }
    .philosophy-block .slogan::before,
    .philosophy-block .slogan::after {
-      display: none;
+      display: inline-block;
    }
    .about-links-wrapper {
       flex-direction: column;
@@ -815,14 +907,19 @@ section {
    .quote-text {
       font-size: 1.2rem;
    }
-   .about-journey {
-      padding: 1rem 0;
-   }
+
    .journey-item h4 {
       font-size: 1.5rem;
    }
    .journey-item p {
       font-size: 1rem;
+   }
+   .about-journey {
+      padding: 0rem 1rem;
+   }
+
+   .about-journey .journey-item {
+      padding-bottom: 0rem;
    }
    .chart {
       margin-top: 4rem;
@@ -836,8 +933,12 @@ section {
    .project-grid {
       grid-template-columns: repeat(2, 1fr);
    }
+   #footer {
+      font-size: 2rem;
+   }
 }
 
+/* ----- Desktop (1024px ~) ----- */
 @media (min-width: 1024px) {
    section {
       padding: 7rem 2rem;
@@ -847,7 +948,7 @@ section {
    }
    .about-profile-content {
       gap: 4rem;
-      max-width: 1100px;
+      max-width: 1200px;
    }
    .profile-image {
       flex-basis: 400px;
@@ -859,11 +960,82 @@ section {
    .journey-item p {
       font-size: 1.05rem;
    }
+   .about-journey {
+      padding: 0rem 1rem;
+   }
+
+   .about-journey .journey-item {
+      padding-bottom: 0rem;
+   }
+
    .chart {
       max-width: 1200px;
       height: 450px;
    }
    .project-grid {
       grid-template-columns: repeat(3, 1fr);
+   }
+}
+
+/* =================================================================== */
+/*  [10] Scroll Animations                                           */
+/* =================================================================== */
+
+/* 애니메이션 기본 상태 (시작 전) */
+[data-animation] {
+   opacity: 0;
+   /* 부드러운 전환 효과를 위한 설정 (지속시간 1.2초로 증가) */
+   transition:
+      opacity 1.2s cubic-bezier(0.5, 0, 0, 1),
+      transform 1.2s cubic-bezier(0.5, 0, 0, 1);
+}
+
+[data-animation='fade-in-up'] {
+   transform: translateY(50px);
+}
+
+[data-animation='fade-in-left'] {
+   transform: translateX(-50px);
+}
+
+[data-animation='fade-in-right'] {
+   transform: translateX(50px);
+}
+
+[data-animation='zoom-in'] {
+   transform: scale(0.9);
+}
+
+[data-animation].is-visible {
+   opacity: 1;
+   transform: none;
+}
+
+.about-journey.is-visible .journey-item {
+   opacity: 0;
+   transform: translateX(30px);
+   animation: journey-item-fade-in 0.8s forwards cubic-bezier(0.5, 0, 0, 1);
+}
+
+.about-journey.is-visible .journey-item:nth-child(1) {
+   animation-delay: 0.2s;
+}
+.about-journey.is-visible .journey-item:nth-child(2) {
+   animation-delay: 0.4s;
+}
+.about-journey.is-visible .journey-item:nth-child(3) {
+   animation-delay: 0.6s;
+}
+.about-journey.is-visible .journey-item:nth-child(4) {
+   animation-delay: 0.8s;
+}
+.about-journey.is-visible .journey-item:nth-child(5) {
+   animation-delay: 1s;
+}
+
+@keyframes journey-item-fade-in {
+   to {
+      opacity: 1;
+      transform: translateX(0);
    }
 }
