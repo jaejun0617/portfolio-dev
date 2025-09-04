@@ -34,6 +34,16 @@ body {
    color: var(--color-text-primary);
    background-color: var(--color-background);
    line-height: 1.6;
+   overflow-x: hidden;
+}
+
+/* ===== [수정] 모달이 열렸을 때 스크롤을 막는 스타일 추가 ===== */
+body.modal-open .scroll-content {
+   position: fixed;
+   /* 현재 스크롤 위치를 기반으로 top 설정이 필요하지만, 
+       smooth-scrollbar에서는 이 방식이 더 안정적일 수 있습니다. */
+   overflow: hidden;
+   width: 100%;
 }
 
 a {
@@ -119,6 +129,7 @@ section {
    min-height: 100vh;
    max-width: 1920px;
    margin: 0 auto;
+   overflow-x: hidden;
 }
 
 .section-title {
@@ -411,7 +422,7 @@ section {
 }
 
 /* =================================================================== */
-/*  [7] Projects (#projects)                                         */
+/*  [6] Projects (#projects)                                         */
 /* =================================================================== */
 #projects {
    background-color: var(--color-background);
@@ -424,7 +435,7 @@ section {
    margin-bottom: 2rem;
 }
 .filter-btn {
-   padding: 0.5rem 0.5rem;
+   padding: 0.5rem 1rem;
    border-radius: 20px;
    background-color: var(--color-surface);
    border: 1px solid var(--color-border);
@@ -584,51 +595,150 @@ section {
       opacity: 1;
    }
 }
+
 /* =================================================================== */
-/*  [7] Contact                                          */
+/*  [7] Contact                                                      */
 /* =================================================================== */
 #contact {
-   border: 1px solid red;
-}
-
-.wavy-text {
-   position: relative;
+   background-color: var(--color-background);
    display: flex;
+   flex-direction: column;
+   align-items: center;
    justify-content: center;
+   gap: 2rem;
+   position: relative;
 }
 
-.wavy-text span {
+#contact::before {
+   content: '';
+   position: absolute;
+   top: 28%;
+   left: 50%;
+   width: 100vw;
+   height: 1px;
+   background-color: var(--color-border);
+   transform: translateX(-50%) rotate(-2deg);
+   z-index: 1;
+}
+
+#contact .section-title {
+   position: relative;
+   z-index: 2;
+}
+
+.contact-title {
    position: relative;
    display: inline-block;
-   letter-spacing: 5px;
-   animation: wavy 1.8s ease-in-out infinite;
-
-   animation-delay: calc(0.1s * var(--i));
+   background-color: var(--color-background);
+   padding: 0 20px;
+   margin-bottom: 1rem;
 }
 
-@keyframes wavy {
-   0%,
-   40%,
-   100% {
-      transform: translateY(0);
-   }
-   20% {
-      transform: translateY(-20px);
+.contact-details {
+   display: flex;
+   flex-direction: column;
+   gap: 1.5rem;
+   align-items: center;
+   width: 100%;
+   max-width: 500px;
+   z-index: 2;
+}
+
+.contact-item {
+   background-color: var(--color-surface);
+   border: 1px solid var(--color-border);
+   border-radius: 8px;
+   padding: 1rem 1.5rem;
+   display: flex;
+   align-items: center;
+   gap: 1rem;
+   width: 100%;
+   transition: all 0.3s ease;
+   cursor: pointer;
+}
+
+.contact-item:hover {
+   transform: translateY(-5px);
+   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.contact-icon {
+   width: 28px;
+   height: 28px;
+}
+
+.contact-text {
+   color: var(--color-text-primary);
+   font-weight: 500;
+}
+
+#email-box .copy-btn {
+   margin-left: auto;
+   background-color: var(--color-secondary);
+   color: var(--color-primary);
+   padding: 0.4rem 0.8rem;
+   border-radius: 5px;
+   font-size: 0.8rem;
+   font-weight: 600;
+   transition: background-color 0.2s;
+   flex-direction: row;
+}
+
+#email-box .copy-btn:hover {
+   background-color: var(--color-primary);
+   color: var(--color-surface);
+}
+
+#map {
+   width: 90%;
+   max-width: 800px;
+   height: 350px;
+   border-radius: 10px;
+   border: 1px solid var(--color-border);
+   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+   z-index: 2;
+}
+
+#copy-toast {
+   position: absolute;
+   bottom: -50%;
+   left: 50%;
+   transform: translateX(-50%);
+   background-color: rgba(0, 0, 0, 0.75);
+   color: white;
+   padding: 1rem 1.5rem;
+   border-radius: 8px;
+   z-index: 9999;
+   font-size: 0.9rem;
+   font-weight: 500;
+   opacity: 0;
+   transition: all 0.5s cubic-bezier(0.17, 0.84, 0.44, 1);
+}
+
+#copy-toast.show {
+   bottom: 30px;
+   opacity: 1;
+}
+
+@media (max-width: 768px) {
+   #contact::before {
+      top: 25%;
    }
 }
+
 /* =================================================================== */
 /*  [8] Footer & Modal                                               */
 /* =================================================================== */
 #footer {
-   padding: 0.8rem 1rem;
+   padding: 1rem 0rem;
    text-align: center;
-   font-size: 12px;
+   font-size: 0.8rem;
    color: var(--color-border);
    background-color: var(--color-text-primary);
 }
 .admin-login-modal,
 .modal-wrapper {
-   position: absolute;
+   position: fixed;
    top: 0;
    left: 0;
    width: 100%;
@@ -731,44 +841,7 @@ section {
 /*  [9] 반응형 (Mobile, Tablet & Desktop)                            */
 /* =================================================================== */
 
-/* ----- Mobile (350px ~) ----- */
-@media (max-width: 480px) {
-   section {
-      padding: 3.5rem 1rem; /* 상하 여백 축소 */
-   }
-   .hero-content h1 {
-      font-size: 2.1rem; /* 폰트 크기 축소 */
-   }
-   .hero-content p {
-      font-size: 1rem;
-   }
-   .name-block h4 {
-      font-size: 1.8rem;
-   }
-   .philosophy-block .slogan {
-      font-size: 14px;
-   }
-   .philosophy-block .slogan::before,
-   .philosophy-block .slogan::after {
-      display: none;
-   }
-   .philosophy-block .description {
-      font-size: 12px;
-   }
-   .journey-item h4 {
-      font-size: 1rem;
-   }
-   .journey-item p {
-      font-size: 0.95rem;
-   }
-   .quote-text {
-      font-size: 1rem;
-   }
-   .filter-btn {
-      width: 48%;
-   }
-}
-/* ----- Mobile (350px ~) ----- */
+/* ----- Mobile ( ~ 767px) ----- */
 @media (max-width: 767px) {
    section {
       padding: 3.5rem 1rem;
@@ -784,26 +857,43 @@ section {
    }
    .philosophy-block .slogan {
       font-size: 1rem;
+      word-break: keep-all;
    }
+   /* ===== [수정] profile-image 가운데 정렬 ===== */
    .profile-image {
       margin: 0 auto;
    }
    .philosophy-block .description {
-      font-size: 1rem;
+      font-size: 0.9rem;
+   }
+   .philosophy-block .slogan::before,
+   .philosophy-block .slogan::after {
+      display: none;
    }
    .journey-item h4 {
-      font-size: 1rem;
+      font-size: 1.1rem;
    }
    .journey-item p {
       font-size: 0.95rem;
    }
+   /* ===== [수정] 모바일에서 journey-item 하단 여백 추가 ===== */
+   .about-journey .journey-item {
+      padding-bottom: 2rem;
+   }
    .quote-text {
       font-size: 1rem;
    }
+   .projects-filter {
+      gap: 0.5rem 2%;
+   }
    .filter-btn {
       width: 48%;
+      padding: 0.5rem;
+      text-align: center;
+      font-size: 0.9rem;
    }
 }
+
 /* ----- Tablet (768px ~) ----- */
 @media (min-width: 768px) {
    .header-inner {
@@ -860,6 +950,7 @@ section {
    .profile-image {
       flex: 0 0 350px;
       width: 350px;
+      margin: 0; /* ===== [수정] 태블릿부터는 margin 초기화 ===== */
    }
    .about-profile-info {
       flex: 1;
@@ -918,8 +1009,9 @@ section {
       padding: 0rem 1rem;
    }
 
+   /* ===== [수정] 태블릿에서 journey-item 하단 여백 설정 ===== */
    .about-journey .journey-item {
-      padding-bottom: 0rem;
+      padding-bottom: 1.5rem;
    }
    .chart {
       margin-top: 4rem;
@@ -932,9 +1024,6 @@ section {
 
    .project-grid {
       grid-template-columns: repeat(2, 1fr);
-   }
-   #footer {
-      font-size: 2rem;
    }
 }
 
@@ -964,8 +1053,9 @@ section {
       padding: 0rem 1rem;
    }
 
+   /* ===== [수정] 데스크탑에서 journey-item 하단 여백 설정 ===== */
    .about-journey .journey-item {
-      padding-bottom: 0rem;
+      padding-bottom: 2rem;
    }
 
    .chart {
@@ -981,10 +1071,8 @@ section {
 /*  [10] Scroll Animations                                           */
 /* =================================================================== */
 
-/* 애니메이션 기본 상태 (시작 전) */
 [data-animation] {
    opacity: 0;
-   /* 부드러운 전환 효과를 위한 설정 (지속시간 1.2초로 증가) */
    transition:
       opacity 1.2s cubic-bezier(0.5, 0, 0, 1),
       transform 1.2s cubic-bezier(0.5, 0, 0, 1);

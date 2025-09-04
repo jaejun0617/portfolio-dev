@@ -147,15 +147,25 @@ function handleLogout() {
    alert('로그아웃 되었습니다.');
 }
 
+// ===== [수정] 모달 열기 함수에 스크롤 방지 로직 추가 =====
 function openModal(modalElement) {
    if (!modalElement) return;
+
+   // 스크롤 방지 클래스 추가
+   document.body.classList.add('modal-open');
+
    const currentScrollY = AppState.scrollbar.offset.y;
    modalElement.style.top = `${currentScrollY}px`;
    modalElement.classList.add('visible');
 }
 
+// ===== [수정] 모달 닫기 함수에 스크롤 방지 해제 로직 추가 =====
 function closeModal(modalElement) {
    if (!modalElement) return;
+
+   // 스크롤 방지 클래스 제거
+   document.body.classList.remove('modal-open');
+
    modalElement.classList.remove('visible');
 }
 
@@ -220,7 +230,6 @@ function renderProjects(projectsToRender) {
    projectsToRender.forEach((p, index) => {
       const itemEl = document.createElement('div');
       itemEl.className = 'project-item';
-      // 애니메이션 속성 및 딜레이 추가 (딜레이 간격 0.15s로 증가)
       itemEl.setAttribute('data-animation', 'fade-in-up');
       itemEl.style.transitionDelay = `${index * 0.15}s`;
 
@@ -246,7 +255,6 @@ function renderProjects(projectsToRender) {
       projectGrid.appendChild(itemEl);
    });
 
-   // 렌더링된 새 요소들에 대해 애니메이션 설정 다시 적용
    setupScrollAnimations();
 }
 
@@ -295,9 +303,7 @@ function createSkillChart() {
       const screenWidth = window.innerWidth;
       if (screenWidth >= 1024) return 14;
       if (screenWidth >= 768) return 12;
-      if (screenWidth >= 500) return 8;
-      if (screenWidth >= 480) return 7;
-      if (screenWidth >= 350) return 5;
+      return 10;
    };
    const currentFontSize = getResponsiveFontSize();
 
@@ -318,14 +324,14 @@ function createSkillChart() {
             data: [9, 5, 3.5, 5, 7, 4, 5, 2.5],
 
             backgroundColor: [
-               'rgba(227, 76, 38, 0.6)', // HTML5 (주황)
-               'rgba(247, 223, 30, 0.6)', // JavaScript (노랑)
-               'rgba(97, 218, 251, 0.6)', // React (하늘)
-               'rgba(17, 105, 175, 0.6)', // jQuery (진한 파랑)
-               'rgba(56, 189, 248, 0.6)', // Tailwind CSS (하늘색 계열)
-               'rgba(242, 78, 34, 0.6)', // Figma (주황/빨강)
-               'rgba(24, 23, 23, 0.6)', // GitHub (검정)
-               'rgba(248, 0, 0, 0.6)', // Oracle (빨강)
+               'rgba(227, 76, 38, 0.6)',
+               'rgba(247, 223, 30, 0.6)',
+               'rgba(97, 218, 251, 0.6)',
+               'rgba(17, 105, 175, 0.6)',
+               'rgba(56, 189, 248, 0.6)',
+               'rgba(242, 78, 34, 0.6)',
+               'rgba(24, 23, 23, 0.6)',
+               'rgba(248, 0, 0, 0.6)',
             ],
 
             borderColor: [
@@ -377,7 +383,7 @@ function createSkillChart() {
    });
 }
 
-// ===== [함수] 스크롤 애니메이션 설정 (반복 실행 로직으로 수정) =====
+// ===== [함수] 스크롤 애니메이션 설정 =====
 function setupScrollAnimations() {
    const scrollElements = document.querySelectorAll('[data-animation]');
 
@@ -386,24 +392,88 @@ function setupScrollAnimations() {
    const observer = new IntersectionObserver(
       (entries) => {
          entries.forEach((entry) => {
-            // 요소가 화면에 나타나면 is-visible 클래스 추가
             if (entry.isIntersecting) {
                entry.target.classList.add('is-visible');
-            }
-            // 요소가 화면에서 사라지면 is-visible 클래스 제거 (애니메이션 리셋)
-            else {
+            } else {
                entry.target.classList.remove('is-visible');
             }
          });
       },
       {
-         threshold: 0.1, // 요소가 10% 보였을 때 애니메이션 실행
+         threshold: 0.1,
       },
    );
 
    scrollElements.forEach((el) => {
       observer.observe(el);
    });
+}
+
+// ===== [함수] Contact 섹션 기능 초기화 =====
+function initializeContactSection() {
+   const emailBox = document.getElementById('email-box');
+   const copyToast = document.getElementById('copy-toast');
+
+   if (emailBox) {
+      emailBox.addEventListener('click', () => {
+         const email = emailBox.dataset.email;
+
+         navigator.clipboard
+            .writeText(email)
+            .then(() => {
+               copyToast.classList.add('show');
+               setTimeout(() => {
+                  copyToast.classList.remove('show');
+               }, 2000);
+            })
+            .catch((err) => {
+               console.error('이메일 복사 실패:', err);
+               alert('이메일 복사에 실패했습니다.');
+            });
+      });
+   }
+}
+
+// ===== [수정] 카카오맵 초기화 함수 (서울+일산 버전) =====
+function initializeMap() {
+   const mapContainer = document.getElementById('map');
+   if (!mapContainer || !window.kakao) return;
+
+   const ilsanPosition = new kakao.maps.LatLng(37.663, 126.766); // 일산 호수공원 근처
+   const seoulPosition = new kakao.maps.LatLng(37.5665, 126.978); // 서울 시청
+
+   // 서울과 일산의 중간 지점을 계산
+   const centerLat = (ilsanPosition.getLat() + seoulPosition.getLat()) / 2;
+   const centerLng = (ilsanPosition.getLng() + seoulPosition.getLng()) / 2;
+
+   const mapOption = {
+      center: new kakao.maps.LatLng(centerLat, centerLng),
+      level: 10, // 서울과 일산이 모두 보이도록 줌 레벨 조정 (숫자가 클수록 멀리 봄)
+   };
+
+   const map = new kakao.maps.Map(mapContainer, mapOption);
+
+   // 마커와 인포윈도우를 생성하는 함수
+   const createMarkerAndInfoWindow = (position, message) => {
+      const marker = new kakao.maps.Marker({ position });
+      marker.setMap(map);
+
+      const infowindow = new kakao.maps.InfoWindow({
+         content: `<div style="padding:5px; font-size:14px; text-align:center;">${message}</div>`,
+         removable: true,
+      });
+
+      kakao.maps.event.addListener(marker, 'click', function () {
+         infowindow.open(map, marker);
+      });
+   };
+
+   // 서울과 일산 마커 생성
+   createMarkerAndInfoWindow(
+      seoulPosition,
+      '수도권 어디든<br>성장할 준비가 되어있습니다!',
+   );
+   createMarkerAndInfoWindow(ilsanPosition, '유연한 근무가<br>가능합니다!');
 }
 
 // ===== [함수] 앱 전체를 시작하는 초기화 함수 =====
@@ -466,7 +536,7 @@ async function initializeApp() {
          if (confirm('모든 프로젝트를 정말 삭제하시겠습니까?')) {
             projectManager.clearAllProjects();
             filterAndRenderProjects();
-            alert('모든 프로젝트가 삭제되었습니다.');
+            alert('모den 프로젝트가 삭제되었습니다.');
          }
       });
    }
@@ -566,21 +636,17 @@ async function initializeApp() {
    }
 
    if (wavyText) {
-      const text = wavyText.textContent.trim(); // 기존 텍스트를 가져옴
-      wavyText.innerHTML = ''; // h2 내용을 비움
-
-      // 텍스트를 한 글자씩 쪼개서 span으로 감싸고 순번(--i)을 부여
+      const text = wavyText.textContent.trim();
+      wavyText.innerHTML = '';
       text.split('').forEach((char, index) => {
          const span = document.createElement('span');
          span.textContent = char;
-         // CSS 변수 '--i'에 0부터 시작하는 순번을 할당
          span.style.setProperty('--i', index);
          wavyText.appendChild(span);
       });
    }
    updateAuthUI();
 
-   // 슬라이더와 차트 초기화
    setInterval(showNextQuote, 5000);
    createSkillChart();
    let resizeTimer;
@@ -599,8 +665,13 @@ async function initializeApp() {
    await projectManager.fetchInitialProjects();
    filterAndRenderProjects();
 
-   // 스크롤 애니메이션 초기화
    setupScrollAnimations();
+   initializeContactSection();
+
+   // 카카오맵 SDK 로드가 완료된 후 지도 초기화
+   kakao.maps.load(function () {
+      initializeMap();
+   });
 }
 
 document.addEventListener('DOMContentLoaded', initializeApp);

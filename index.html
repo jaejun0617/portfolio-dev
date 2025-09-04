@@ -14,7 +14,7 @@
 
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
    </head>
-   <body>
+   <body style="overflow-x: hidden">
       <div class="progress-bar-container">
          <div class="progress-bar"></div>
       </div>
@@ -342,13 +342,62 @@
 
             <!-- [섹션 4] Contact -->
             <section id="contact" data-color="#2ecc71">
+               <!-- 추천 문구 대안 1 적용 -->
                <div class="section-title" data-animation="fade-in-up">
                   <h2 class="wavy-text">CONTACT</h2>
                   <p>
-                     코드로 문제를 해결하고, 함께 성장할 기회를 기다립니다.<br />
-                     궁금한 점이나 협업 제안이 있다면 언제든 편하게 연락 주세요.
+                     성장의 기회를 즐기는 동료를 찾으신다면, 바로 제가 그
+                     사람입니다.<br />
+                     함께 배우고, 최고의 제품을 만들어나갈 기회를 기다립니다.
                   </p>
                </div>
+
+               <!-- 연락처 정보 -->
+               <div
+                  class="contact-details"
+                  data-animation="fade-in-up"
+                  style="transition-delay: 0.2s"
+               >
+                  <!-- 이메일 (클릭 시 복사) -->
+                  <div
+                     class="contact-item"
+                     id="email-box"
+                     data-email="o3o_security@naver.com"
+                  >
+                     <img
+                        src="./assets/icons/color-email.png"
+                        alt="Email Icon"
+                        class="contact-icon"
+                     />
+                     <span class="contact-text">o3o_security@naver.com</span>
+                     <button class="copy-btn">Click</button>
+                  </div>
+
+                  <!-- 오픈카카오톡 (클릭 시 이동) -->
+                  <a
+                     href="#"
+                     target="_blank"
+                     class="contact-item"
+                     id="kakao-box"
+                  >
+                     <img
+                        src="./assets/icons/social/talk-e2d1c2.png"
+                        alt="KakaoTalk Icon"
+                        class="contact-icon"
+                     />
+                     <span class="contact-text"
+                        >오픈카톡으로 편하게 대화하기</span
+                     >
+                  </a>
+               </div>
+
+               <!-- 카카오맵 -->
+               <div
+                  id="map"
+                  data-animation="zoom-in"
+                  style="transition-delay: 0.4s"
+               ></div>
+               <div id="copy-toast">✅ 이메일 주소가 복사되었습니다!</div>
             </section>
          </main>
 
@@ -452,6 +501,10 @@
       </div>
 
       <script src="js/smooth-scrollbar.js"></script>
+      <script
+         type="text/javascript"
+         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c35ed488f2437bca20dc2a9f02e5a396"
+      ></script>
       <script src="js/index.js"></script>
    </body>
 </html>
