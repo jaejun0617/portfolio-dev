@@ -2,14 +2,21 @@
 ================================================================================
   [ 앱 아키텍처 (Class + 함수형 혼합) ]
 
-  - ProjectManager (Class): `fetch`로 프로젝트 데이터를 비동기 로딩하고, CRUD 로직을 담당.
-  - AppState (객체): 앱의 전역 상태(로그인, 필터)를 관리.
-  - UI Functions (함수): 상태(State)에 따라 DOM을 렌더링.
-  - initializeApp (함수): 앱의 모든 기능을 조립하고 실행.
+  - AppState (객체): 앱의 전역 상태(로그인 여부, 현재 필터 등)를 관리하는 단일 소스.
+  - ProjectManager (Class): 프로젝트 데이터의 CRUD(생성, 읽기, 수정, 삭제) 로직을 캡슐화.
+  - UI Functions (함수 그룹): 상태(State)에 따라 DOM을 렌더링하고 UI를 업데이트.
+  - Event Handlers (함수 그룹): 사용자의 상호작용(클릭, 제출 등)을 처리.
+  - Initialization (초기화 함수): 앱이 시작될 때 모든 기능을 조립하고 실행.
 ================================================================================
 */
 
-// ===== 개발 철학 슬라이더 데이터 및 로직 =====
+// =============================================================================
+// [1. 데이터 및 상태 관리 (Data & State Management)]
+// =============================================================================
+
+/**
+ * @description 개발 철학 인용구 데이터. About 섹션의 슬라이더에 사용됩니다.
+ */
 const quotes = [
    {
       text: '말은 쉽지, 코드를 보여줘. \n (Talk is cheap. Show me the code.)',
@@ -53,7 +60,10 @@ const quotes = [
    },
 ];
 
-// ===== [클래스] 프로젝트 데이터 관리자 =====
+/**
+ * @class ProjectManager
+ * @description 프로젝트 데이터 관리 클래스. 로컬 스토리지와 상호작용하며 데이터 CRUD를 담당.
+ */
 class ProjectManager {
    constructor() {
       this.projects = JSON.parse(localStorage.getItem('projects')) || [];
@@ -109,14 +119,23 @@ class ProjectManager {
    }
 }
 
-// ===== [객체] 앱의 전역 상태 관리 =====
+/**
+ * @const AppState
+ * @description 애플리케이션의 전역 상태를 관리하는 객체.
+ */
 const AppState = {
    isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
    currentFilter: 'all',
    scrollbar: null,
 };
 
-// ===== [함수] UI 업데이트 로직 =====
+// =============================================================================
+// [2. UI 렌더링 및 업데이트 (UI Rendering & Updates)]
+// =============================================================================
+
+/**
+ * @description 로그인 상태(AppState.isLoggedIn)에 따라 UI를 업데이트하는 함수.
+ */
 function updateAuthUI() {
    const authBtnText = document.getElementById('auth-btn-text');
    const adminControls = document.getElementById('admin-controls');
@@ -131,94 +150,10 @@ function updateAuthUI() {
    filterAndRenderProjects();
 }
 
-// ===== [함수] 이벤트 핸들러 및 기타 로직 =====
-function handleLogin() {
-   AppState.isLoggedIn = true;
-   localStorage.setItem('isLoggedIn', 'true');
-   updateAuthUI();
-   alert('로그인 성공!');
-   closeAdminModal();
-}
-
-function handleLogout() {
-   AppState.isLoggedIn = false;
-   localStorage.removeItem('isLoggedIn');
-   updateAuthUI();
-   alert('로그아웃 되었습니다.');
-}
-
-// ===== [수정] 모달 열기 함수에 스크롤 방지 로직 추가 =====
-function openModal(modalElement) {
-   if (!modalElement) return;
-
-   // 스크롤 방지 클래스 추가
-   document.body.classList.add('modal-open');
-
-   const currentScrollY = AppState.scrollbar.offset.y;
-   modalElement.style.top = `${currentScrollY}px`;
-   modalElement.classList.add('visible');
-}
-
-// ===== [수정] 모달 닫기 함수에 스크롤 방지 해제 로직 추가 =====
-function closeModal(modalElement) {
-   if (!modalElement) return;
-
-   // 스크롤 방지 클래스 제거
-   document.body.classList.remove('modal-open');
-
-   modalElement.classList.remove('visible');
-}
-
-function openAdminModal() {
-   openModal(document.getElementById('admin-modal-wrapper'));
-}
-function closeAdminModal() {
-   const modal = document.getElementById('admin-modal-wrapper');
-   closeModal(modal);
-   modal.querySelector('#admin-login-form')?.reset();
-}
-
-function openProjectFormModalForCreate() {
-   if (!AppState.isLoggedIn) {
-      alert('관리자 로그인이 필요한 기능입니다.');
-      return;
-   }
-   const modal = document.getElementById('project-form-modal');
-   modal.querySelector('#project-form-title').textContent = '새 프로젝트 추가';
-   modal.querySelector('#project-form').reset();
-   modal.querySelector('#project-id').value = '';
-   openModal(modal);
-}
-
-function openProjectFormModalForEdit(project) {
-   if (!AppState.isLoggedIn) {
-      alert('관리자 로그인이 필요한 기능입니다.');
-      return;
-   }
-   const modal = document.getElementById('project-form-modal');
-   modal.querySelector('#project-form-title').textContent = '프로젝트 수정';
-   modal.querySelector('#project-id').value = project.id;
-   modal.querySelector('#project-title').value = project.title;
-   modal.querySelector('#project-headline').value = project.headline;
-   modal.querySelector('#project-imageSrc').value = project.imageSrc;
-   modal.querySelector('#project-overview').value = project.overview;
-   modal.querySelector('#project-techStack').value =
-      project.techStack.join(', ');
-   modal.querySelector('#project-category').value = project.category.join(', ');
-   modal.querySelector('#project-github').value = project.links.github;
-   modal.querySelector('#project-site').value = project.links.site;
-   openModal(modal);
-}
-
-function closeProjectFormModal() {
-   const modal = document.getElementById('project-form-modal');
-   closeModal(modal);
-   modal.querySelector('#project-form')?.reset();
-}
-
-// ===== [함수] UI 렌더링 및 필터링 =====
-let projectManagerInstance;
-
+/**
+ * @description 주어진 프로젝트 데이터 배열을 기반으로 프로젝트 그리드를 렌더링.
+ * @param {Array} projectsToRender - 화면에 표시할 프로젝트 객체 배열.
+ */
 function renderProjects(projectsToRender) {
    const projectGrid = document.getElementById('project-grid');
    projectGrid.innerHTML = '';
@@ -233,14 +168,13 @@ function renderProjects(projectsToRender) {
       itemEl.setAttribute('data-animation', 'fade-in-up');
       itemEl.style.transitionDelay = `${index * 0.15}s`;
 
-      const adminButtonsHTML = AppState.isLoggedIn
-         ? `
+      const adminButtonsHTML = `
            <div class="admin-actions">
                <button class="edit-btn" data-id="${p.id}">수정</button>
                <button class="delete-btn" data-id="${p.id}">삭제</button>
            </div>
-       `
-         : '';
+       `;
+
       itemEl.innerHTML = `
            <a href="${p.links.site}" target="_blank" class="project-link">
                <div class="project-image"><img src="${p.imageSrc}" alt="${p.title}" loading="lazy"></div>
@@ -258,6 +192,9 @@ function renderProjects(projectsToRender) {
    setupScrollAnimations();
 }
 
+/**
+ * @description 현재 필터(AppState.currentFilter)에 맞게 프로젝트를 필터링하고 렌더링.
+ */
 function filterAndRenderProjects() {
    if (!projectManagerInstance) return;
    const allProjects = projectManagerInstance.getProjects();
@@ -271,11 +208,9 @@ function filterAndRenderProjects() {
    }
 }
 
-const quoteTextEl = document.querySelector('.quote-text');
-const quoteAuthorEl = document.querySelector('.quote-author');
-const quoteSourceEl = document.querySelector('.quote-source');
-let currentQuoteIndex = 0;
-
+/**
+ * @description About 섹션의 인용구 슬라이더를 업데이트.
+ */
 function showNextQuote() {
    if (!quoteTextEl) return;
    quoteTextEl.classList.add('fading-out');
@@ -289,8 +224,9 @@ function showNextQuote() {
    }, 500);
 }
 
-// ===== [함수] 스킬 차트 생성  =====
-
+/**
+ * @description Chart.js를 사용하여 스킬 차트를 생성 및 업데이트.
+ */
 function createSkillChart() {
    const ctx = document.getElementById('skill-radar-chart');
    if (!ctx) return;
@@ -385,7 +321,103 @@ function createSkillChart() {
    });
 }
 
-// ===== [함수] 스크롤 애니메이션 설정 =====
+// =============================================================================
+// [3. 이벤트 핸들러 및 유틸리티 (Event Handlers & Utilities)]
+// =============================================================================
+
+/**
+ * @description 로그인 성공 시 호출.
+ */
+function handleLogin() {
+   AppState.isLoggedIn = true;
+   localStorage.setItem('isLoggedIn', 'true');
+   updateAuthUI();
+   alert('로그인 성공!');
+   closeAdminModal();
+}
+
+/**
+ * @description 로그아웃 시 호출.
+ */
+function handleLogout() {
+   AppState.isLoggedIn = false;
+   localStorage.removeItem('isLoggedIn');
+   updateAuthUI();
+   alert('로그아웃 되었습니다.');
+}
+
+/**
+ * @description 모달 열기 유틸리티 함수. 스크롤 방지 로직 포함.
+ * @param {HTMLElement} modalElement - 열고자 하는 모달 요소.
+ */
+function openModal(modalElement) {
+   if (!modalElement) return;
+   document.body.classList.add('modal-open');
+   const currentScrollY = AppState.scrollbar.offset.y;
+   modalElement.style.top = `${currentScrollY}px`;
+   modalElement.classList.add('visible');
+}
+
+/**
+ * @description 모달 닫기 유틸리티 함수. 스크롤 방지 해제 로직 포함.
+ * @param {HTMLElement} modalElement - 닫고자 하는 모달 요소.
+ */
+function closeModal(modalElement) {
+   if (!modalElement) return;
+   document.body.classList.remove('modal-open');
+   modalElement.classList.remove('visible');
+}
+
+function openAdminModal() {
+   openModal(document.getElementById('admin-modal-wrapper'));
+}
+function closeAdminModal() {
+   const modal = document.getElementById('admin-modal-wrapper');
+   closeModal(modal);
+   modal.querySelector('#admin-login-form')?.reset();
+}
+
+function openProjectFormModalForCreate() {
+   if (!AppState.isLoggedIn) {
+      alert('관리자 로그인이 필요한 기능입니다.');
+      return;
+   }
+   const modal = document.getElementById('project-form-modal');
+   modal.querySelector('#project-form-title').textContent = '새 프로젝트 추가';
+   modal.querySelector('#project-form').reset();
+   modal.querySelector('#project-id').value = '';
+   openModal(modal);
+}
+
+function openProjectFormModalForEdit(project) {
+   if (!AppState.isLoggedIn) {
+      alert('관리자 로그인이 필요한 기능입니다.');
+      return;
+   }
+   const modal = document.getElementById('project-form-modal');
+   modal.querySelector('#project-form-title').textContent = '프로젝트 수정';
+   modal.querySelector('#project-id').value = project.id;
+   modal.querySelector('#project-title').value = project.title;
+   modal.querySelector('#project-headline').value = project.headline;
+   modal.querySelector('#project-imageSrc').value = project.imageSrc;
+   modal.querySelector('#project-overview').value = project.overview;
+   modal.querySelector('#project-techStack').value =
+      project.techStack.join(', ');
+   modal.querySelector('#project-category').value = project.category.join(', ');
+   modal.querySelector('#project-github').value = project.links.github;
+   modal.querySelector('#project-site').value = project.links.site;
+   openModal(modal);
+}
+
+function closeProjectFormModal() {
+   const modal = document.getElementById('project-form-modal');
+   closeModal(modal);
+   modal.querySelector('#project-form')?.reset();
+}
+
+/**
+ * @description Intersection Observer를 사용하여 스크롤 애니메이션을 설정.
+ */
 function setupScrollAnimations() {
    const scrollElements = document.querySelectorAll('[data-animation]');
 
@@ -411,7 +443,9 @@ function setupScrollAnimations() {
    });
 }
 
-// ===== [함수] Contact 섹션 기능 초기화 =====
+/**
+ * @description Contact 섹션의 기능(이메일 복사)을 초기화.
+ */
 function initializeContactSection() {
    const emailBox = document.getElementById('email-box');
    const copyToast = document.getElementById('copy-toast');
@@ -436,26 +470,26 @@ function initializeContactSection() {
    }
 }
 
-// ===== [수정] 카카오맵 초기화 함수 (서울+일산 버전) =====
+/**
+ * @description 카카오맵 API를 사용하여 지도를 초기화.
+ */
 function initializeMap() {
    const mapContainer = document.getElementById('map');
    if (!mapContainer || !window.kakao) return;
 
-   const ilsanPosition = new kakao.maps.LatLng(37.663, 126.766); // 일산 호수공원 근처
-   const seoulPosition = new kakao.maps.LatLng(37.5665, 126.978); // 서울 시청
+   const ilsanPosition = new kakao.maps.LatLng(37.663, 126.766);
+   const seoulPosition = new kakao.maps.LatLng(37.5665, 126.978);
 
-   // 서울과 일산의 중간 지점을 계산
    const centerLat = (ilsanPosition.getLat() + seoulPosition.getLat()) / 2;
    const centerLng = (ilsanPosition.getLng() + seoulPosition.getLng()) / 2;
 
    const mapOption = {
       center: new kakao.maps.LatLng(centerLat, centerLng),
-      level: 10, // 서울과 일산이 모두 보이도록 줌 레벨 조정 (숫자가 클수록 멀리 봄)
+      level: 10,
    };
 
    const map = new kakao.maps.Map(mapContainer, mapOption);
 
-   // 마커와 인포윈도우를 생성하는 함수
    const createMarkerAndInfoWindow = (position, message) => {
       const marker = new kakao.maps.Marker({ position });
       marker.setMap(map);
@@ -470,7 +504,6 @@ function initializeMap() {
       });
    };
 
-   // 서울과 일산 마커 생성
    createMarkerAndInfoWindow(
       seoulPosition,
       '수도권 어디든<br>성장할 준비가 되어있습니다!',
@@ -478,8 +511,15 @@ function initializeMap() {
    createMarkerAndInfoWindow(ilsanPosition, '유연한 근무가<br>가능합니다!');
 }
 
-// ===== [함수] 앱 전체를 시작하는 초기화 함수 =====
+// =============================================================================
+// [4. 애플리케이션 초기화 (Application Initialization)]
+// =============================================================================
+
+/**
+ * @description 애플리케이션의 모든 기능을 시작하는 메인 함수.
+ */
 async function initializeApp() {
+   // --- 1. 인스턴스 및 DOM 요소 캐싱 ---
    projectManagerInstance = new ProjectManager();
    const projectManager = projectManagerInstance;
 
@@ -492,10 +532,11 @@ async function initializeApp() {
    const filterButtons = document.querySelectorAll('.filter-btn');
    const projectFormModal = document.getElementById('project-form-modal');
    const projectForm = document.getElementById('project-form');
-
    const progressBar = document.querySelector('.progress-bar');
    const sections = document.querySelectorAll('section');
    const wavyText = document.querySelector('.wavy-text');
+
+   // --- 2. Smooth Scrollbar 초기화 ---
    const scrollbar = Scrollbar.init(document.querySelector('.wrapper'), {
       damping: 0.07,
    });
@@ -503,6 +544,7 @@ async function initializeApp() {
    const scrollPos = localStorage.getItem('scrollPos');
    if (scrollPos) scrollbar.setPosition(0, parseInt(scrollPos));
 
+   // --- 3. 이벤트 리스너 바인딩 ---
    scrollbar.addListener((status) => {
       localStorage.setItem('scrollPos', status.offset.y);
       const scrollPercentage = (status.offset.y / status.limit.y) * 100;
@@ -538,21 +580,29 @@ async function initializeApp() {
          if (confirm('모든 프로젝트를 정말 삭제하시겠습니까?')) {
             projectManager.clearAllProjects();
             filterAndRenderProjects();
-            alert('모den 프로젝트가 삭제되었습니다.');
+            alert('모든 프로젝트가 삭제되었습니다.');
          }
       });
    }
    if (projectGrid) {
       projectGrid.addEventListener('click', (e) => {
-         if (!AppState.isLoggedIn) return;
          if (e.target.classList.contains('delete-btn')) {
+            if (!AppState.isLoggedIn) {
+               alert('관리자 로그인이 필요한 기능입니다.');
+               return;
+            }
             const projectId = Number(e.target.dataset.id);
             if (confirm(`프로젝트를 정말 삭제하시겠습니까?`)) {
                projectManager.deleteProject(projectId);
                filterAndRenderProjects();
             }
          }
+
          if (e.target.classList.contains('edit-btn')) {
+            if (!AppState.isLoggedIn) {
+               alert('관리자 로그인이 필요한 기능입니다.');
+               return;
+            }
             const projectId = Number(e.target.dataset.id);
             const projectToEdit = projectManager.getProjectById(projectId);
             if (projectToEdit) {
@@ -637,6 +687,7 @@ async function initializeApp() {
       });
    }
 
+   // --- 4. UI 및 기능 초기 실행 ---
    if (wavyText) {
       const text = wavyText.textContent.trim();
       wavyText.innerHTML = '';
@@ -647,11 +698,10 @@ async function initializeApp() {
          wavyText.appendChild(span);
       });
    }
-   updateAuthUI();
 
+   updateAuthUI();
    setInterval(showNextQuote, 5000);
    createSkillChart();
-   let resizeTimer;
    window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
@@ -659,14 +709,15 @@ async function initializeApp() {
       }, 150);
    });
 
+   // 프로젝트 초기 데이터 로딩 (스켈레톤 UI 표시 후)
    const projectGridInitialHTML =
       document.getElementById('project-grid').innerHTML;
    document.getElementById('project-grid').innerHTML = projectGridInitialHTML;
    await new Promise((resolve) => setTimeout(resolve, 500));
-
    await projectManager.fetchInitialProjects();
    filterAndRenderProjects();
 
+   // 스크롤 및 Contact 섹션 기능 초기화
    setupScrollAnimations();
    initializeContactSection();
 
@@ -676,4 +727,5 @@ async function initializeApp() {
    });
 }
 
+// ===== [5. 앱 실행] =====
 document.addEventListener('DOMContentLoaded', initializeApp);

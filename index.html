@@ -17,9 +17,11 @@
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
    </head>
    <body style="overflow-x: hidden">
+      <!-- 상단 진행률 바 -->
       <div class="progress-bar-container">
          <div class="progress-bar"></div>
       </div>
+      <!-- [헤더] -->
       <header>
          <div class="header-inner">
             <div class="logo">
@@ -44,6 +46,7 @@
             </div>
          </div>
       </header>
+      <!-- 메인 콘텐츠 -->
       <div class="wrapper">
          <main>
             <!-- [섹션 1] Hero -->
@@ -105,14 +108,12 @@
                            </div>
                         </div>
                         <div class="about-links-wrapper">
-                           <!-- 이력서 버튼 (강조) -->
                            <div class="about-resume">
                               <a href="#" class="resume-btn" target="_blank">
                                  RESUME
                               </a>
                            </div>
 
-                           <!-- 소셜 링크 -->
                            <div class="about-social">
                               <a
                                  href="https://github.com/jaejun0617"
@@ -294,8 +295,6 @@
                   ></div>
                </div>
                <div id="project-grid" class="project-grid">
-                  <!-- JS로 데이터 로딩 전, 스켈레톤 UI를 여기에 생성 -->
-                  <!-- 예시 스켈레톤 아이템 -->
                   <div class="project-item skeleton">
                      <div class="project-image"></div>
                      <div class="project-info-skeleton">
@@ -341,10 +340,9 @@
                </div>
             </section>
 
+            <!-- [섹션 4] Contact-->
             <section id="contact" data-color="#2ecc71">
-               <!-- Contact 섹션 전체 컨테이너 -->
                <div class="contact-container">
-                  <!-- 텍스트 콘텐츠 영역 -->
                   <div class="contact-intro" data-animation="fade-in-up">
                      <h2>CONTACT</h2>
                      <p>
@@ -360,13 +358,11 @@
                      </p>
                   </div>
 
-                  <!-- 연락처 정보 -->
                   <div
                      class="contact-details"
                      data-animation="fade-in-up"
                      style="transition-delay: 0.2s"
                   >
-                     <!-- 이메일 (클릭 시 복사) -->
                      <div
                         class="contact-item"
                         id="email-box"
@@ -381,7 +377,6 @@
                         <button class="copy-btn">✅</button>
                      </div>
 
-                     <!-- 오픈카카오톡 (클릭 시 이동) -->
                      <a
                         href="#"
                         target="_blank"
@@ -394,12 +389,10 @@
                            class="contact-icon"
                         />
                         <span class="contact-text"
-                           >카카오톡으로 편하게 대화해요 😊</span
+                           >카카오톡으로 편하게 대화해요</span
                         >
                      </a>
                   </div>
-
-                  <!-- 카카오맵 -->
                   <div
                      id="map"
                      data-animation="zoom-in"
@@ -411,6 +404,7 @@
             </section>
          </main>
 
+         <!-- 푸터 -->
          <footer id="footer">
             <p>
                © 2025 Shin Jae Jun. Interactive Portfolio. All Rights Reserved.
@@ -454,7 +448,6 @@
                <button class="modal-close-btn">&times;</button>
                <h3 id="project-form-title">새 프로젝트 추가</h3>
                <form id="project-form">
-                  <!-- 수정 시 사용할 숨겨진 ID 필드 -->
                   <input type="hidden" id="project-id" />
                   <input
                      type="text"
