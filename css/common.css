@@ -31,7 +31,7 @@ html {
 
 body {
    font-family: 'Pretendard', sans-serif;
-   font-size: 16px; /* 기본 폰트 크기 */
+   font-size: 16px;
    color: var(--color-text-primary);
    background-color: var(--color-background);
    line-height: 1.6;
@@ -59,9 +59,9 @@ button {
    text-align: center;
 }
 .section-title h2 {
-   font-size: 2rem; /* 수정 */
-   font-weight: 800; /* 수정 */
-   margin-bottom: 1rem; /* 수정 */
+   font-size: 2rem;
+   font-weight: 800;
+   margin-bottom: 1rem;
    color: var(--color-secondary);
    text-shadow:
       1px 1px 1px rgba(0, 0, 0, 0.05),
@@ -70,7 +70,7 @@ button {
       4px 4px 1px rgba(0, 0, 0, 0.05);
 }
 .section-title p {
-   font-size: 1rem; /* 수정 */
+   font-size: 1rem;
    color: var(--color-text-secondary);
    line-height: 1.7;
 }
