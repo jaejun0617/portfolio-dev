@@ -106,7 +106,14 @@ const AppState = {
 
 function updateAuthUI() {
    const authBtnText = document.getElementById('auth-btn-text');
+   const adminControls = document.querySelector('.admin-controls');
+
    authBtnText.textContent = AppState.isLoggedIn ? '로그아웃' : '관리자';
+
+   if (adminControls) {
+      adminControls.style.display = AppState.isLoggedIn ? 'flex' : 'none';
+   }
+   filterAndRenderProjects();
 }
 
 function renderProjects(projectsToRender) {
@@ -122,11 +129,15 @@ function renderProjects(projectsToRender) {
       itemEl.className = 'project-item';
       itemEl.setAttribute('data-animation', 'fade-in-up');
       itemEl.style.transitionDelay = `${index * 0.15}s`;
-      const adminButtonsHTML = `
+
+      const adminButtonsHTML = AppState.isLoggedIn
+         ? `
            <div class="admin-actions">
                <button class="edit-btn" data-id="${p.id}">수정</button>
                <button class="delete-btn" data-id="${p.id}">삭제</button>
-           </div>`;
+           </div>`
+         : '';
+
       itemEl.innerHTML = `
            <a href="${p.links.site}" target="_blank" class="project-link">
                <div class="project-image"><img src="${p.imageSrc}" alt="${p.title}" loading="lazy"></div>
@@ -180,7 +191,9 @@ function createSkillChart() {
       const screenWidth = window.innerWidth;
       if (screenWidth >= 1024) return 14;
       if (screenWidth >= 768) return 12;
-      return 10;
+      if (screenWidth >= 767) return 10;
+      if (screenWidth >= 480) return 8;
+      return 6;
    };
    const skillData = {
       labels: [
@@ -275,6 +288,8 @@ async function handleLogout() {
 function openModal(modalElement) {
    if (!modalElement) return;
    document.body.classList.add('modal-open');
+   const currentScrollY = AppState.scrollbar.offset.y;
+   modalElement.style.top = `${currentScrollY}px`;
    modalElement.classList.add('visible');
 }
 
@@ -340,8 +355,6 @@ function setupScrollAnimations() {
          entries.forEach((entry) => {
             if (entry.isIntersecting) {
                entry.target.classList.add('is-visible');
-            } else {
-               entry.target.classList.remove('is-visible');
             }
          });
       },
@@ -370,8 +383,12 @@ function initializeContactSection() {
 }
 
 function initializeMap() {
+   if (typeof kakao === 'undefined' || !kakao.maps) {
+      console.error('Kakao Maps SDK가 로드되지 않았습니다.');
+      return;
+   }
    const mapContainer = document.getElementById('map');
-   if (!mapContainer || !window.kakao) return;
+   if (!mapContainer) return;
    const ilsanPosition = new kakao.maps.LatLng(37.663, 126.766);
    const seoulPosition = new kakao.maps.LatLng(37.5665, 126.978);
    const centerLat = (ilsanPosition.getLat() + seoulPosition.getLat()) / 2;
@@ -421,10 +438,30 @@ function initializeApp() {
    quoteSourceEl = document.querySelector('.quote-source');
 
    // --- 2. 핵심 리스너 및 기능 초기화 ---
-   const scrollbar = Scrollbar.init(document.querySelector('.wrapper'), {
-      damping: 0.07,
-   });
-   AppState.scrollbar = scrollbar;
+   try {
+      const scrollbar = Scrollbar.init(document.querySelector('.wrapper'), {
+         damping: 0.07,
+      });
+      AppState.scrollbar = scrollbar;
+
+      scrollbar.addListener((status) => {
+         if (status.limit.y > 0) {
+            const scrollPercentage = (status.offset.y / status.limit.y) * 100;
+            progressBar.style.width = `${scrollPercentage}%`;
+
+            let currentSection = sections[0];
+            sections.forEach((section) => {
+               if (section.offsetTop <= status.offset.y + 100) {
+                  currentSection = section;
+               }
+            });
+            progressBar.style.backgroundColor =
+               currentSection.dataset.color || '#3498db';
+         }
+      });
+   } catch (error) {
+      console.error('SmoothScrollbar 초기화에 실패했습니다:', error);
+   }
 
    onAuthStateChanged(auth, (user) => {
       AppState.isLoggedIn = !!user;
@@ -442,23 +479,14 @@ function initializeApp() {
       },
       (error) => {
          console.error('Firestore 데이터 수신 실패:', error);
-         projectGrid.innerHTML =
-            '<p class="empty-message">프로젝트를 불러오는 데 실패했습니다.</p>';
+         if (projectGrid) {
+            projectGrid.innerHTML =
+               '<p class="empty-message">프로젝트를 불러오는 데 실패했습니다.</p>';
+         }
       },
    );
 
    // --- 3. 이벤트 리스너 바인딩 ---
-   scrollbar.addListener((status) => {
-      const scrollPercentage = (status.offset.y / status.limit.y) * 100;
-      progressBar.style.width = `${scrollPercentage}%`;
-      let currentSection = sections[0];
-      sections.forEach((section) => {
-         if (section.offsetTop <= status.offset.y + 100)
-            currentSection = section;
-      });
-      progressBar.style.backgroundColor =
-         currentSection.dataset.color || '#3498db';
-   });
 
    if (authBtn) {
       authBtn.addEventListener('click', () => {
@@ -476,17 +504,15 @@ function initializeApp() {
 
    if (deleteAllBtn) {
       deleteAllBtn.addEventListener('click', () => {
-         if (!AppState.isLoggedIn) {
-            alert('관리자 로그인이 필요한 기능입니다.');
-            return;
-         }
          if (
             confirm(
                '모든 프로젝트를 정말 삭제하시겠습니까? 되돌릴 수 없습니다!',
             )
          ) {
             AppState.projects.forEach((project) => {
-               deleteDoc(doc(db, 'projects', project.id));
+               deleteDoc(doc(db, 'projects', project.id)).catch((error) =>
+                  console.error(`${project.id} 삭제 실패:`, error),
+               );
             });
          }
       });
@@ -506,29 +532,24 @@ function initializeApp() {
 
    if (projectGrid) {
       projectGrid.addEventListener('click', async (e) => {
-         const target = e.target;
+         const target = e.target.closest('button');
+         if (!target) return;
+
+         const projectId = target.dataset.id;
+         if (!projectId) return;
+
          if (target.classList.contains('edit-btn')) {
-            if (!AppState.isLoggedIn) {
-               alert('관리자 로그인이 필요한 기능입니다.');
-               return;
-            }
-            const projectId = target.dataset.id;
             const projectToEdit = AppState.projects.find(
                (p) => p.id === projectId,
             );
             if (projectToEdit) openProjectFormModalForEdit(projectToEdit);
-         }
-         if (target.classList.contains('delete-btn')) {
-            if (!AppState.isLoggedIn) {
-               alert('관리자 로그인이 필요한 기능입니다.');
-               return;
-            }
-            const projectId = target.dataset.id;
+         } else if (target.classList.contains('delete-btn')) {
             if (confirm('프로젝트를 정말 삭제하시겠습니까?')) {
                try {
                   await deleteDoc(doc(db, 'projects', projectId));
                } catch (error) {
                   console.error('삭제 실패:', error);
+                  alert('프로젝트 삭제에 실패했습니다.');
                }
             }
          }
@@ -538,10 +559,13 @@ function initializeApp() {
    if (filterButtons) {
       filterButtons.forEach((button) => {
          button.addEventListener('click', (e) => {
-            AppState.currentFilter = e.target.dataset.filter;
-            filterButtons.forEach((btn) => btn.classList.remove('active'));
-            e.target.classList.add('active');
-            filterAndRenderProjects();
+            const newFilter = e.target.dataset.filter;
+            if (AppState.currentFilter !== newFilter) {
+               AppState.currentFilter = newFilter;
+               filterButtons.forEach((btn) => btn.classList.remove('active'));
+               e.target.classList.add('active');
+               filterAndRenderProjects();
+            }
          });
       });
    }
@@ -562,11 +586,13 @@ function initializeApp() {
             techStack: document
                .getElementById('project-techStack')
                .value.split(',')
-               .map((s) => s.trim()),
+               .map((s) => s.trim())
+               .filter(Boolean),
             category: document
                .getElementById('project-category')
                .value.split(',')
-               .map((s) => s.trim()),
+               .map((s) => s.trim())
+               .filter(Boolean),
             links: {
                github: document.getElementById('project-github').value,
                site: document.getElementById('project-site').value,
@@ -588,23 +614,20 @@ function initializeApp() {
       });
    }
 
-   if (adminModal) {
-      adminModal
-         .querySelector('.modal-close-btn')
-         .addEventListener('click', closeAdminModal);
-      adminModal.addEventListener('click', (e) => {
-         if (e.target === adminModal) closeAdminModal();
-      });
-   }
-
-   if (projectFormModal) {
-      projectFormModal
-         .querySelector('.modal-close-btn')
-         .addEventListener('click', closeProjectFormModal);
-      projectFormModal.addEventListener('click', (e) => {
-         if (e.target === projectFormModal) closeProjectFormModal();
-      });
-   }
+   [adminModal, projectFormModal].forEach((modal) => {
+      if (modal) {
+         const closeFn =
+            modal.id === 'admin-modal-wrapper'
+               ? closeAdminModal
+               : closeProjectFormModal;
+         modal
+            .querySelector('.modal-close-btn')
+            ?.addEventListener('click', closeFn);
+         modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeFn();
+         });
+      }
+   });
 
    // --- 4. 초기 UI/기능 실행 ---
    if (wavyText) {
@@ -625,13 +648,15 @@ function initializeApp() {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
          createSkillChart();
-      }, 150);
+      }, 250);
    });
 
    setupScrollAnimations();
    initializeContactSection();
 
-   kakao.maps.load(() => initializeMap());
+   if (typeof kakao !== 'undefined' && kakao.maps) {
+      kakao.maps.load(() => initializeMap());
+   }
 }
 
 // [6. 앱 실행]
