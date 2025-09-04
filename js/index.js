@@ -41,10 +41,12 @@ const firebaseConfig = {
 };
 
 // Firebase 앱 초기화
+console.log('[Firebase] 앱 초기화 시작...');
 const app = initializeFirebaseApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const projectsCollection = collection(db, 'projects'); // 'projects' 컬렉션에 대한 참조
+console.log('[Firebase] 앱 초기화 완료.');
 
 // =============================================================================
 // [2. 데이터 및 상태 관리 (Data & State Management)]
@@ -105,6 +107,7 @@ const AppState = {
 // =============================================================================
 
 function updateAuthUI() {
+   console.log('[UI] 인증 상태 UI 업데이트. 로그인 상태:', AppState.isLoggedIn);
    const authBtnText = document.getElementById('auth-btn-text');
    const adminControls = document.querySelector('.admin-controls');
 
@@ -117,6 +120,7 @@ function updateAuthUI() {
 }
 
 function renderProjects(projectsToRender) {
+   console.log(`[UI] 프로젝트 렌더링. ${projectsToRender.length}개 항목.`);
    const projectGrid = document.getElementById('project-grid');
    projectGrid.innerHTML = '';
    if (!projectsToRender || projectsToRender.length === 0) {
@@ -154,6 +158,9 @@ function renderProjects(projectsToRender) {
 }
 
 function filterAndRenderProjects() {
+   console.log(
+      `[UI] 프로젝트 필터링 및 렌더링. 현재 필터: ${AppState.currentFilter}`,
+   );
    const allProjects = AppState.projects;
    if (AppState.currentFilter === 'all') {
       renderProjects(allProjects);
@@ -167,6 +174,14 @@ function filterAndRenderProjects() {
 
 let quoteTextEl, quoteAuthorEl, quoteSourceEl;
 let currentQuoteIndex = 0;
+
+function initializeQuote() {
+   if (!quoteTextEl) return;
+   const firstQuote = quotes[0];
+   quoteTextEl.textContent = `"${firstQuote.text}"`;
+   quoteAuthorEl.textContent = `- ${firstQuote.author}`;
+   quoteSourceEl.textContent = firstQuote.source;
+}
 
 function showNextQuote() {
    if (!quoteTextEl) return;
@@ -182,6 +197,7 @@ function showNextQuote() {
 }
 
 function createSkillChart() {
+   console.log('[UI] 기술 차트 생성.');
    const ctx = document.getElementById('skill-radar-chart');
    if (!ctx) return;
    if (ctx.chart) {
@@ -193,7 +209,7 @@ function createSkillChart() {
       if (screenWidth >= 768) return 12;
       if (screenWidth >= 767) return 10;
       if (screenWidth >= 480) return 8;
-      return 6;
+      return 0;
    };
    const skillData = {
       labels: [
@@ -204,21 +220,23 @@ function createSkillChart() {
          'Tailwind CSS',
          'Figma',
          'GitHub',
+         'Firebase',
          'Oracle',
       ],
       datasets: [
          {
             label: '기술 숙련도',
-            data: [9, 5, 3.5, 5, 7, 4, 5, 2.5],
+            data: [9, 5, 3.5, 5, 7, 4, 5, 4, 2.5],
             backgroundColor: [
-               'rgba(227, 76, 38, 0.6)',
-               'rgba(247, 223, 30, 0.6)',
-               'rgba(97, 218, 251, 0.6)',
-               'rgba(17, 105, 175, 0.6)',
-               'rgba(56, 189, 248, 0.6)',
-               'rgba(242, 78, 34, 0.6)',
-               'rgba(24, 23, 23, 0.6)',
-               'rgba(248, 0, 0, 0.6)',
+               'rgba(227, 76, 38, 0.6)', // HTML/CSS
+               'rgba(247, 223, 30, 0.6)', // JavaScript
+               'rgba(97, 218, 251, 0.6)', // React
+               'rgba(17, 105, 175, 0.6)', // jQuery
+               'rgba(56, 189, 248, 0.6)', // Tailwind CSS
+               'rgba(242, 78, 34, 0.6)', // Figma
+               'rgba(24, 23, 23, 0.6)', // GitHub
+               'rgba(255, 202, 40, 0.6)', // Firebase
+               'rgba(52, 90, 138, 0.6)', // Oracle
             ],
             borderColor: [
                'rgba(227, 76, 38, 1)',
@@ -228,13 +246,15 @@ function createSkillChart() {
                'rgba(56, 189, 248, 1)',
                'rgba(242, 78, 34, 1)',
                'rgba(24, 23, 23, 1)',
-               'rgba(248, 0, 0, 1)',
+               'rgba(255, 202, 40, 1)', // Firebase
+               'rgba(52, 90, 138, 1)', // Oracle
             ],
             borderWidth: 1,
             borderRadius: 5,
          },
       ],
    };
+
    const chartOptions = {
       responsive: true,
       maintainAspectRatio: false,
@@ -266,27 +286,32 @@ function createSkillChart() {
 // =============================================================================
 
 async function handleLogin(email, password) {
+   console.log('[Auth] 로그인 시도:', email);
    try {
       await signInWithEmailAndPassword(auth, email, password);
+      console.log('[Auth] 로그인 성공.');
       alert('로그인 성공!');
       closeAdminModal();
    } catch (error) {
-      console.error('로그인 실패:', error);
+      console.error('[Auth] 로그인 실패:', error);
       alert('아이디 또는 비밀번호가 일치하지 않습니다.');
    }
 }
 
 async function handleLogout() {
+   console.log('[Auth] 로그아웃 시도.');
    try {
       await signOut(auth);
+      console.log('[Auth] 로그아웃 성공.');
       alert('로그아웃 되었습니다.');
    } catch (error) {
-      console.error('로그아웃 실패:', error);
+      console.error('[Auth] 로그아웃 실패:', error);
    }
 }
 
 function openModal(modalElement) {
    if (!modalElement) return;
+   console.log(`[UI] 모달 열기: #${modalElement.id}`);
    document.body.classList.add('modal-open');
    const currentScrollY = AppState.scrollbar.offset.y;
    modalElement.style.top = `${currentScrollY}px`;
@@ -295,11 +320,13 @@ function openModal(modalElement) {
 
 function closeModal(modalElement) {
    if (!modalElement) return;
+   console.log(`[UI] 모달 닫기: #${modalElement.id}`);
    document.body.classList.remove('modal-open');
    modalElement.classList.remove('visible');
 }
 
 function openAdminModal() {
+   console.log('[Event] 관리자 모달 열기 버튼 클릭.');
    openModal(document.getElementById('admin-modal-wrapper'));
 }
 
@@ -310,6 +337,7 @@ function closeAdminModal() {
 }
 
 function openProjectFormModalForCreate() {
+   console.log('[Event] 새 프로젝트 추가 모달 열기 버튼 클릭.');
    if (!AppState.isLoggedIn) {
       alert('관리자 로그인이 필요한 기능입니다.');
       return;
@@ -322,6 +350,7 @@ function openProjectFormModalForCreate() {
 }
 
 function openProjectFormModalForEdit(project) {
+   console.log(`[Event] 프로젝트 수정 모달 열기. 프로젝트 ID: ${project.id}`);
    if (!AppState.isLoggedIn) {
       alert('관리자 로그인이 필요한 기능입니다.');
       return;
@@ -348,6 +377,7 @@ function closeProjectFormModal() {
 }
 
 function setupScrollAnimations() {
+   console.log('[Init] 스크롤 애니메이션 설정.');
    const scrollElements = document.querySelectorAll('[data-animation]');
    if (!scrollElements.length) return;
    const observer = new IntersectionObserver(
@@ -364,10 +394,12 @@ function setupScrollAnimations() {
 }
 
 function initializeContactSection() {
+   console.log('[Init] Contact 섹션 초기화.');
    const emailBox = document.getElementById('email-box');
    const copyToast = document.getElementById('copy-toast');
    if (emailBox) {
       emailBox.addEventListener('click', () => {
+         console.log('[Event] 이메일 주소 복사 클릭.');
          const email = emailBox.dataset.email;
          navigator.clipboard
             .writeText(email)
@@ -377,14 +409,15 @@ function initializeContactSection() {
                   copyToast.classList.remove('show');
                }, 2000);
             })
-            .catch((err) => console.error('이메일 복사 실패:', err));
+            .catch((err) => console.error('[Error] 이메일 복사 실패:', err));
       });
    }
 }
 
 function initializeMap() {
+   console.log('[Init] 지도 초기화.');
    if (typeof kakao === 'undefined' || !kakao.maps) {
-      console.error('Kakao Maps SDK가 로드되지 않았습니다.');
+      console.error('[Error] Kakao Maps SDK가 로드되지 않았습니다.');
       return;
    }
    const mapContainer = document.getElementById('map');
@@ -420,7 +453,10 @@ function initializeMap() {
 // =============================================================================
 
 function initializeApp() {
+   console.log('[App] 애플리케이션 초기화 시작.');
+
    // --- 1. DOM 요소 캐싱 ---
+   console.log('[Init] DOM 요소 캐싱...');
    const authBtn = document.getElementById('admin-auth-btn');
    const createProjectBtn = document.getElementById('create-project-btn');
    const deleteAllBtn = document.getElementById('delete-all-btn');
@@ -436,13 +472,16 @@ function initializeApp() {
    quoteTextEl = document.querySelector('.quote-text');
    quoteAuthorEl = document.querySelector('.quote-author');
    quoteSourceEl = document.querySelector('.quote-source');
+   const topBtn = document.getElementById('top-btn');
 
    // --- 2. 핵심 리스너 및 기능 초기화 ---
+   console.log('[Init] 핵심 리스너 및 기능 초기화...');
    try {
       const scrollbar = Scrollbar.init(document.querySelector('.wrapper'), {
          damping: 0.07,
       });
       AppState.scrollbar = scrollbar;
+      console.log('[Init] SmoothScrollbar 초기화 성공.');
 
       scrollbar.addListener((status) => {
          if (status.limit.y > 0) {
@@ -458,12 +497,25 @@ function initializeApp() {
             progressBar.style.backgroundColor =
                currentSection.dataset.color || '#3498db';
          }
+         // Top 버튼 표시/숨김 로직
+         if (status.offset.y > 200) {
+            // 200px 이상 스크롤되면
+            topBtn.classList.add('visible');
+         } else {
+            topBtn.classList.remove('visible');
+         }
+      });
+
+      // Top 버튼 클릭 이벤트
+      topBtn.addEventListener('click', () => {
+         scrollbar.scrollTo(0, 0, 600);
       });
    } catch (error) {
-      console.error('SmoothScrollbar 초기화에 실패했습니다:', error);
+      console.error('[Error] SmoothScrollbar 초기화 실패:', error);
    }
 
    onAuthStateChanged(auth, (user) => {
+      console.log('[Firebase] 인증 상태 변경 감지.');
       AppState.isLoggedIn = !!user;
       updateAuthUI();
    });
@@ -471,6 +523,7 @@ function initializeApp() {
    onSnapshot(
       projectsCollection,
       (snapshot) => {
+         console.log('[Firebase] Firestore 데이터 변경 감지 (onSnapshot).');
          AppState.projects = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
@@ -478,7 +531,7 @@ function initializeApp() {
          filterAndRenderProjects();
       },
       (error) => {
-         console.error('Firestore 데이터 수신 실패:', error);
+         console.error('[Error] Firestore 데이터 수신 실패:', error);
          if (projectGrid) {
             projectGrid.innerHTML =
                '<p class="empty-message">프로젝트를 불러오는 데 실패했습니다.</p>';
@@ -487,6 +540,7 @@ function initializeApp() {
    );
 
    // --- 3. 이벤트 리스너 바인딩 ---
+   console.log('[Init] 이벤트 리스너 바인딩...');
 
    if (authBtn) {
       authBtn.addEventListener('click', () => {
@@ -504,14 +558,16 @@ function initializeApp() {
 
    if (deleteAllBtn) {
       deleteAllBtn.addEventListener('click', () => {
+         console.log('[Event] 전체 삭제 버튼 클릭.');
          if (
             confirm(
                '모든 프로젝트를 정말 삭제하시겠습니까? 되돌릴 수 없습니다!',
             )
          ) {
+            console.log('[DB] 모든 프로젝트 삭제 실행.');
             AppState.projects.forEach((project) => {
                deleteDoc(doc(db, 'projects', project.id)).catch((error) =>
-                  console.error(`${project.id} 삭제 실패:`, error),
+                  console.error(`[Error] ${project.id} 삭제 실패:`, error),
                );
             });
          }
@@ -544,11 +600,14 @@ function initializeApp() {
             );
             if (projectToEdit) openProjectFormModalForEdit(projectToEdit);
          } else if (target.classList.contains('delete-btn')) {
+            console.log(`[Event] 삭제 버튼 클릭. 프로젝트 ID: ${projectId}`);
             if (confirm('프로젝트를 정말 삭제하시겠습니까?')) {
                try {
+                  console.log(`[DB] 프로젝트 삭제 실행: ${projectId}`);
                   await deleteDoc(doc(db, 'projects', projectId));
+                  console.log(`[DB] 프로젝트 삭제 성공: ${projectId}`);
                } catch (error) {
-                  console.error('삭제 실패:', error);
+                  console.error('[Error] 삭제 실패:', error);
                   alert('프로젝트 삭제에 실패했습니다.');
                }
             }
@@ -560,6 +619,7 @@ function initializeApp() {
       filterButtons.forEach((button) => {
          button.addEventListener('click', (e) => {
             const newFilter = e.target.dataset.filter;
+            console.log(`[Event] 필터 버튼 클릭: ${newFilter}`);
             if (AppState.currentFilter !== newFilter) {
                AppState.currentFilter = newFilter;
                filterButtons.forEach((btn) => btn.classList.remove('active'));
@@ -573,6 +633,7 @@ function initializeApp() {
    if (projectFormEl) {
       projectFormEl.addEventListener('submit', async (e) => {
          e.preventDefault();
+         console.log('[Event] 프로젝트 폼 제출.');
          if (!AppState.isLoggedIn) {
             alert('권한이 없습니다.');
             return;
@@ -600,15 +661,19 @@ function initializeApp() {
          };
          try {
             if (projectId) {
+               console.log(`[DB] 프로젝트 업데이트 실행: ${projectId}`);
                await updateDoc(doc(db, 'projects', projectId), projectData);
+               console.log(`[DB] 프로젝트 업데이트 성공.`);
                alert('프로젝트가 성공적으로 수정되었습니다.');
             } else {
+               console.log(`[DB] 새 프로젝트 추가 실행.`);
                await addDoc(collection(db, 'projects'), projectData);
+               console.log(`[DB] 새 프로젝트 추가 성공.`);
                alert('프로젝트가 성공적으로 추가되었습니다.');
             }
             closeProjectFormModal();
          } catch (error) {
-            console.error('데이터 저장 실패:', error);
+            console.error('[Error] 데이터 저장 실패:', error);
             alert('데이터 저장에 실패했습니다.');
          }
       });
@@ -630,6 +695,7 @@ function initializeApp() {
    });
 
    // --- 4. 초기 UI/기능 실행 ---
+   console.log('[Init] 초기 UI/기능 실행...');
    if (wavyText) {
       const text = wavyText.textContent.trim();
       wavyText.innerHTML = '';
@@ -647,17 +713,24 @@ function initializeApp() {
    window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
+         console.log('[Event] 윈도우 리사이즈 완료, 차트 다시 그리기.');
          createSkillChart();
       }, 250);
    });
-
+   initializeQuote();
    setupScrollAnimations();
    initializeContactSection();
 
    if (typeof kakao !== 'undefined' && kakao.maps) {
+      console.log('[Init] Kakao Maps SDK 로드 대기...');
       kakao.maps.load(() => initializeMap());
    }
+
+   console.log('[App] 애플리케이션 초기화 완료.');
 }
 
 // [6. 앱 실행]
-document.addEventListener('DOMContentLoaded', initializeApp);
+document.addEventListener('DOMContentLoaded', () => {
+   console.log('[Event] DOMContentLoaded: 문서 로딩 완료.');
+   initializeApp();
+});

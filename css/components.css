@@ -673,6 +673,27 @@
 #footer p {
    font-size: 0.8rem;
 }
+#top-btn {
+   position: fixed;
+   bottom: 20px;
+   right: 20px;
+   opacity: 0;
+   visibility: hidden;
+   transition:
+      opacity 0.3s,
+      visibility 0.3s;
+   padding: 0.5rem;
+}
+#top-btn img {
+   width: 30px;
+   height: 30px;
+   object-fit: cover;
+   display: block;
+}
+#top-btn.visible {
+   opacity: 1;
+   visibility: visible;
+}
 /* =================================================================== */
 /*  [Components] - 반응형 폰트 사이즈                                   */
 /* =================================================================== */
