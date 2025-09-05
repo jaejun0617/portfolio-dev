@@ -414,6 +414,55 @@ function initializeContactSection() {
    }
 }
 
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+   console.log('[Init] Contact Form 이벤트 리스너 설정.');
+   contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      console.log('[Event] Contact Form 제출 이벤트 발생.');
+
+      const submitBtn = contactForm.querySelector('button[type="submit"]');
+      submitBtn.disabled = true; // 중복 제출 방지
+      submitBtn.textContent = '전송 중...';
+
+      const nameInput = document.getElementById('contact-name');
+      const emailInput = document.getElementById('contact-email');
+      const messageInput = document.getElementById('contact-message');
+
+      const messageData = {
+         name: nameInput.value,
+         email: emailInput.value,
+         message: messageInput.value,
+         createdAt: new Date(), // 서버 타임스탬프로 변경하면 더 좋음
+         read: false, // 관리자가 읽었는지 여부
+      };
+
+      console.log('[DB] Firestore에 저장할 메시지 데이터:', messageData);
+
+      try {
+         console.log("[DB] 'messages' 컬렉션에 데이터 추가 시도...");
+         const messagesCollection = collection(db, 'messages');
+         const docRef = await addDoc(messagesCollection, messageData);
+
+         console.log(`[DB] 메시지 저장 성공! 문서 ID: ${docRef.id}`);
+         alert(
+            '메시지가 성공적으로 전송되었습니다. 빠른 시일 내에 회신 드리겠습니다.',
+         );
+         contactForm.reset();
+         console.log('[UI] 폼 초기화 완료.');
+      } catch (error) {
+         console.error('[Error] 메시지 저장 실패:', error);
+         alert('메시지 전송에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      } finally {
+         submitBtn.disabled = false;
+         submitBtn.textContent = '메시지 전송';
+         console.log('[UI] 제출 버튼 상태 복원.');
+      }
+   });
+} else {
+   console.warn('[Init] Contact Form (id="contact-form")을 찾을 수 없습니다.');
+}
+
 function initializeMap() {
    console.log('[Init] 지도 초기화.');
    if (typeof kakao === 'undefined' || !kakao.maps) {
