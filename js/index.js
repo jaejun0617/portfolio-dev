@@ -206,10 +206,10 @@ function createSkillChart() {
    const getResponsiveFontSize = () => {
       const screenWidth = window.innerWidth;
       if (screenWidth >= 1024) return 14;
-      if (screenWidth >= 768) return 12;
+      if (screenWidth >= 768) return 10;
       if (screenWidth >= 767) return 10;
       if (screenWidth >= 480) return 8;
-      return 0;
+      return 4;
    };
    const skillData = {
       labels: [
@@ -521,7 +521,10 @@ function initializeApp() {
    quoteTextEl = document.querySelector('.quote-text');
    quoteAuthorEl = document.querySelector('.quote-author');
    quoteSourceEl = document.querySelector('.quote-source');
-   const topBtn = document.getElementById('top-btn');
+
+   const fabEmailBtn = document.getElementById('fab-email');
+   const fabTopBtn = document.getElementById('fab-top');
+   const fabCopyToast = document.getElementById('fab-copy-toast');
 
    // --- 2. 핵심 리스너 및 기능 초기화 ---
    console.log('[Init] 핵심 리스너 및 기능 초기화...');
@@ -546,18 +549,6 @@ function initializeApp() {
             progressBar.style.backgroundColor =
                currentSection.dataset.color || '#3498db';
          }
-         // Top 버튼 표시/숨김 로직
-         if (status.offset.y > 200) {
-            // 200px 이상 스크롤되면
-            topBtn.classList.add('visible');
-         } else {
-            topBtn.classList.remove('visible');
-         }
-      });
-
-      // Top 버튼 클릭 이벤트
-      topBtn.addEventListener('click', () => {
-         scrollbar.scrollTo(0, 0, 600);
       });
    } catch (error) {
       console.error('[Error] SmoothScrollbar 초기화 실패:', error);
@@ -755,7 +746,45 @@ function initializeApp() {
          wavyText.appendChild(span);
       });
    }
+   // --- 5. 플로팅 액션 버튼(FAB) 초기화 ---
+   console.log('[Init] 플로팅 액션 버튼 초기화...');
 
+   // FAB 이메일 복사 버튼 이벤트
+   if (fabEmailBtn) {
+      fabEmailBtn.addEventListener('click', () => {
+         const email = fabEmailBtn.dataset.email;
+         navigator.clipboard
+            .writeText(email)
+            .then(() => {
+               console.log('[Event] FAB 이메일 복사 성공.');
+               fabCopyToast.classList.add('show');
+               setTimeout(() => {
+                  fabCopyToast.classList.remove('show');
+               }, 2000);
+            })
+            .catch((err) =>
+               console.error('[Error] FAB 이메일 복사 실패:', err),
+            );
+      });
+   }
+
+   // FAB 맨 위로 가기 버튼 이벤트
+   if (fabTopBtn && AppState.scrollbar) {
+      fabTopBtn.addEventListener('click', () => {
+         console.log('[Event] FAB 맨 위로 가기 버튼 클릭.');
+         AppState.scrollbar.scrollTo(0, 0, 1000);
+      });
+
+      // 스크롤에 따른 맨 위로 가기 버튼 표시/숨김
+      AppState.scrollbar.addListener((status) => {
+         if (status.offset.y > 1200) {
+            // 300px 이상 스크롤되면
+            fabTopBtn.classList.add('visible');
+         } else {
+            fabTopBtn.classList.remove('visible');
+         }
+      });
+   }
    setInterval(showNextQuote, 5000);
    createSkillChart();
    let resizeTimer;

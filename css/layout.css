@@ -74,21 +74,14 @@ section {
    justify-content: center;
    align-items: center;
    width: 100%;
-   min-height: 70vh;
-   /* border: 1px solid red; */
+   height: auto;
+   background-color: var(--color-background);
 }
 
 .contact-container {
    width: 100%;
-   max-width: 1200px;
+   max-width: 700px;
    margin: 0 auto;
-}
-
-.contact-content {
-   display: flex;
-   flex-direction: column-reverse;
-   align-items: center;
-   gap: 2.5rem;
 }
 
 #footer {
@@ -134,10 +127,8 @@ section {
       grid-template-columns: repeat(2, 1fr);
    }
 
-   /* Contact Layout */
-   .contact-content {
-      flex-direction: row;
-      align-items: stretch;
+   #contact {
+      padding: 6rem 2rem;
    }
 }
 

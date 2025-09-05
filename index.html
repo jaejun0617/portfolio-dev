@@ -52,8 +52,8 @@
             <!-- [섹션 1] Hero -->
             <section id="hero" data-color="#e74c3c">
                <div class="hero-content">
-                  <h1>수정할거임</h1>
-                  <p>수정할거임 생각중임</p>
+                  <h1>수정...</h1>
+                  <p>수정...</p>
                </div>
             </section>
 
@@ -132,7 +132,7 @@
                                  />
                               </a>
                               <a
-                                 href="your_kakaotalk_link"
+                                 href="https://open.kakao.com/o/sC80Idtg"
                                  target="_blank"
                                  title="KakaoTalk"
                               >
@@ -344,141 +344,120 @@
             <section id="contact" data-color="#2ecc71">
                <div class="contact-container">
                   <div class="contact-intro" data-animation="fade-in-up">
-                     <div class="intro-text-box">
-                        <h2>CONTACT</h2>
-                        <p>
-                           <strong>끊임없이 배우고 성장하며</strong> 새로운
-                           도전을 즐기는 프론트엔드 개발자 신재준입니다. <br />
-                           <strong>사용자 경험을 최우선</strong>으로 생각하며,
-                           작은 디테일까지 놓치지 않는 꼼꼼함으로
-                           <strong>최고의 결과</strong>를 만들어내고자 합니다.
-                           <br />
-                           함께 협력해 <strong>더 나은 서비스와 경험</strong>을
-                           창출할 수 있는 기회를 기다리고 있습니다. <br />
-                           언제든 편하게 연락 주시면, 제
-                           <strong>열정과 역량</strong>으로 보답하겠습니다.
-                        </p>
+                     <div class="contact-intro-bg"></div>
+                     <!-- 명함 전체를 감싸는 카드 -->
+                     <div class="contact-card">
+                        <!-- 왼쪽: 자기소개 및 메시지 -->
+                        <div class="contact-card-main">
+                           <h2>Shin Jae Jun</h2>
+                           <p class="job-title">Front-End Developer</p>
+                           <p class="message">
+                              <strong>끊임없이 배우고 성장하며</strong> 새로운
+                              도전을 즐깁니다.<br />
+                              <strong>사용자 경험을 최우선</strong>으로
+                              생각하며, 작은 디테일까지 놓치지 않는 꼼꼼함으로
+                              <strong>최고의 결과</strong>를 만들어내고자
+                              합니다.<br />
+                              언제든 편하게 연락 주시면, 제
+                              <strong>열정과 역량</strong>으로 보답하겠습니다.
+                           </p>
+                        </div>
+
+                        <!-- 오른쪽: 실제 연락처 정보 -->
+                        <div class="contact-card-info">
+                           <div class="info-item">
+                              <span class="label">EMAIL</span>
+                              <span class="value">o3o_security@naver.com</span>
+                           </div>
+                           <div class="info-item">
+                              <span class="label">PHONE</span>
+                              <span class="value">+82 10-9968-1342</span>
+                           </div>
+                           <div class="info-item">
+                              <span class="label">GITHUB</span>
+                              <a
+                                 href="https://github.com/jaejun0617"
+                                 target="_blank"
+                                 class="value link"
+                                 >github.com/jaejun0617</a
+                              >
+                           </div>
+                        </div>
                      </div>
                   </div>
 
-                  <div class="contact-content">
-                     <div
-                        id="map"
-                        data-animation="zoom-in"
-                        style="transition-delay: 0.4s"
-                     ></div>
-                     <form
-                        id="contact-form"
-                        class="contact-form"
-                        data-animation="fade-in-up"
-                     >
-                        <h3 data-lang-key="contact_form_title">
-                           메시지 남기기
-                        </h3>
+                  <form
+                     id="contact-form"
+                     class="contact-form"
+                     data-animation="fade-in-up"
+                  >
+                     <h3 data-lang-key="contact_form_title">
+                        협업 제안을 기다립니다
+                     </h3>
 
-                        <div class="form-group">
-                           <input
-                              type="text"
-                              id="contact-name"
-                              name="name"
-                              required
-                              autocomplete="off"
-                           />
-                           <label
-                              for="contact-name"
-                              data-lang-key="contact_form_name"
-                              >성함 또는 회사명</label
-                           >
-                           <div class="line"></div>
-                        </div>
-
-                        <div class="form-group">
-                           <input
-                              type="email"
-                              id="contact-email"
-                              name="email"
-                              required
-                              autocomplete="off"
-                           />
-                           <label
-                              for="contact-email"
-                              data-lang-key="contact_form_email"
-                              >답변 받으실 이메일</label
-                           >
-                           <div class="line"></div>
-                        </div>
-
-                        <div class="form-group">
-                           <textarea
-                              id="contact-message"
-                              name="message"
-                              rows="5"
-                              required
-                              data-scrollbar
-                           ></textarea>
-                           <label
-                              for="contact-message"
-                              data-lang-key="contact_form_message"
-                              >메시지를 입력하세요...</label
-                           >
-                           <div class="line"></div>
-                        </div>
-
-                        <button
-                           type="submit"
-                           data-lang-key="contact_form_button"
+                     <div class="form-group">
+                        <input
+                           type="text"
+                           id="contact-name"
+                           name="name"
+                           required
+                           autocomplete="off"
+                        />
+                        <label
+                           for="contact-name"
+                           data-lang-key="contact_form_name"
+                           >성함 또는 회사명</label
                         >
-                           메시지 전송
-                        </button>
-
-                        <div class="form-divider">
-                           <hr />
-                           <span>OR</span>
-                           <hr />
-                        </div>
-
-                        <div
-                           class="contact-details"
-                           data-animation="fade-in-up"
-                           style="transition-delay: 0.2s"
+                        <div class="line"></div>
+                     </div>
+                     <div class="form-group">
+                        <input
+                           type="email"
+                           id="contact-email"
+                           name="email"
+                           required
+                           autocomplete="off"
+                        />
+                        <label
+                           for="contact-email"
+                           data-lang-key="contact_form_email"
+                           >답변 받으실 이메일</label
                         >
-                           <div
-                              class="contact-item"
-                              id="email-box"
-                              data-email="o3o_security@naver.com"
-                           >
-                              <img
-                                 src="./assets/icons/color-email.png"
-                                 alt="Email Icon"
-                                 class="contact-icon"
-                              />
-                              <span class="contact-text"
-                                 >o3o_security@naver.com</span
-                              >
-                              <button class="copy-btn">✅</button>
-                           </div>
+                        <div class="line"></div>
+                     </div>
+                     <div class="form-group">
+                        <textarea
+                           id="contact-message"
+                           name="message"
+                           rows="5"
+                           required
+                           data-scrollbar
+                        ></textarea>
+                        <label
+                           for="contact-message"
+                           data-lang-key="contact_form_message"
+                           >메시지를 입력하세요...</label
+                        >
+                        <div class="line"></div>
+                     </div>
 
-                           <a
-                              href="#"
-                              target="_blank"
-                              class="contact-item"
-                              id="kakao-box"
-                           >
-                              <img
-                                 src="./assets/icons/social/talk-e2d1c2.png"
-                                 alt="KakaoTalk Icon"
-                                 class="contact-icon"
-                              />
-                              <span class="contact-text"
-                                 >카카오톡으로 편하게 대화해요</span
-                              >
-                           </a>
-                        </div>
-                     </form>
-                  </div>
+                     <button type="submit" data-lang-key="contact_form_button">
+                        메시지 전송
+                     </button>
+
+                     <!-- ✨ [수정] 구분선 텍스트 변경 -->
+                     <div class="form-divider">
+                        <hr />
+                        <span data-lang-key="contact_form_divider"
+                           >MY WORKSPACE</span
+                        >
+                        <hr />
+                     </div>
+
+                     <!-- ✨ [이동] 지도를 폼 안으로 통합 -->
+                     <div id="map"></div>
+                  </form>
                </div>
-
-               <div id="copy-toast">✅ 이메일 주소가 복사되었습니다!</div>
             </section>
          </main>
 
@@ -580,9 +559,36 @@
             </div>
          </div>
       </div>
-      <button id="top-btn" title="맨 위로 이동">
-         <img src="./assets/icons/top.png" alt="" />
-      </button>
+      <div id="fab-copy-toast">이메일 주소가 복사되었습니다!</div>
+      <!-- 플로팅 액션 버튼 그룹 -->
+      <div class="floating-action-buttons">
+         <!-- 이메일 복사 버튼 -->
+         <button
+            class="fab-item"
+            id="fab-email"
+            data-tooltip="o3o_security@naver.com"
+            data-email="o3o_security@naver.com"
+         >
+            <img src="./assets/icons/email-442913.png" alt="Email Icon" />
+         </button>
+
+         <!-- 카카오톡 오픈채팅 버튼 -->
+         <a
+            href="https://open.kakao.com/o/sC80Idtg"
+            target="_blank"
+            class="fab-item"
+            id="fab-kakao"
+            data-tooltip="카카오톡 채팅하기"
+         >
+            <img src="./assets/icons/talk-442913.png" alt="KakaoTalk Icon" />
+         </a>
+
+         <!-- 맨 위로 가기 버튼 -->
+         <button class="fab-item" id="fab-top" data-tooltip="맨 위로 가기">
+            <img src="./assets/icons/top-442913.png" alt="Top Icon" />
+         </button>
+      </div>
+
       <script src="js/smooth-scrollbar.js"></script>
       <script
          type="text/javascript"
