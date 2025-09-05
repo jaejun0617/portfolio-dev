@@ -282,7 +282,7 @@ function createSkillChart() {
    });
 }
 function animateHeroSection() {
-   console.log('[GSAP] Hero Epic Animation 시작');
+   console.log('[GSAP] Hero "Cosmic Genesis" Animation 시작');
 
    gsap.registerPlugin(SplitText);
 
@@ -290,138 +290,111 @@ function animateHeroSection() {
    const line2 = new SplitText('.line2', { type: 'chars' });
    const line3 = new SplitText('.line3', { type: 'chars' });
    const line4 = new SplitText('.line4', { type: 'chars' });
+   const highlights = gsap.utils.toArray('.highlight');
+
+   const allChars = [
+      ...line1.chars,
+      ...line2.chars,
+      ...line3.chars,
+      ...line4.chars,
+   ];
+   const regularChars = allChars.filter(
+      (char) => !char.parentElement.classList.contains('highlight'),
+   );
 
    const tl = gsap.timeline();
    const isMobile = window.innerWidth <= 768;
 
-   // 1️⃣ line1 폭발 3D + 터지는 느낌
-   tl.from(line1.chars, {
-      duration: isMobile ? 1 : 1.4,
+   // 1️⃣ 초기 상태 설정
+   gsap.set(highlights, { color: '#000000', autoAlpha: 1 }); // 하이라이트는 검정색, 그러나 보이게
+   gsap.set(regularChars, { color: '#ffffff', autoAlpha: 1 }); // 일반 글자 흰색, 보이게
+   gsap.set('.hero-profile-image', { autoAlpha: 0 }); // 프로필은 완전히 숨김
+
+   // 2️⃣ "Cosmic Genesis" - 글자 흩어짐과 응집
+   tl.from(allChars, {
+      duration: isMobile ? 2.0 : 2.5,
+
+      // ✨ [핵심 이펙트] 3D 공간에 무작위로 흩뿌려진 상태에서 시작
+      x: () => gsap.utils.random(-300, 300, 5), // x, y, z 좌표를 정밀하게 랜덤화
+      y: () => gsap.utils.random(-400, 400, 5),
+      z: () => gsap.utils.random(-1000, 1000, 10),
+
+      // ✨ [핵심 이펙트] 회전 및 크기
+      rotationX: () => gsap.utils.random(-720, 720),
+      rotationY: () => gsap.utils.random(-720, 720),
+      scale: () => gsap.utils.random(0.1, 0.5),
+
+      // ✨ [핵심 이펙트] 시각 효과
       opacity: 0,
-      y: gsap.utils.random(-300, 300),
-      z: isMobile ? 0 : gsap.utils.random(-400, 400),
-      rotationX: isMobile ? 0 : gsap.utils.random(-90, 90),
-      rotationY: isMobile ? 0 : gsap.utils.random(-180, 180),
-      rotationZ: isMobile ? 0 : gsap.utils.random(-45, 45),
-      scale: gsap.utils.random(0.4, 0.8),
-      transformOrigin: '50% 50% -50',
-      stagger: 0.06,
-      ease: 'back.out(2)',
-   })
-      // 2️⃣ line2 폭발 + 랜덤 + scale 더 강조
-      .from(
-         line2.chars,
-         {
-            duration: isMobile ? 1 : 1.5,
-            opacity: 0,
-            x: () => gsap.utils.random(-250, 250),
-            y: () => gsap.utils.random(-250, 250),
-            rotation: () => gsap.utils.random(-360, 360),
-            scale: () => gsap.utils.random(0.2, 1),
-            ease: 'power4.out',
-            stagger: 0.03,
-         },
-         '-=0.7',
-      )
-      // 3️⃣ line3 좌측 슬라이드 + 흔들림 + bounce
-      .from(
-         line3.chars,
-         {
-            duration: isMobile ? 0.7 : 1.1,
-            x: isMobile ? -30 : -70,
-            rotation: () => gsap.utils.random(-15, 15),
-            opacity: 0,
-            ease: 'elastic.out(1,0.6)',
-            stagger: 0.03,
-         },
-         '-=0.5',
-      )
-      // 4️⃣ line4 우측 슬라이드 + bounce + rotation
-      .from(
-         line4.chars,
-         {
-            duration: isMobile ? 0.7 : 1.1,
-            x: isMobile ? 30 : 70,
-            rotation: () => gsap.utils.random(-15, 15),
-            opacity: 0,
-            ease: 'bounce.out',
-            stagger: 0.03,
-         },
-         '-=0.6',
-      )
-      // 5️⃣ 배경 확대 + rotate + 패럴랙스
-      .to(
-         '.hero-background',
-         {
-            duration: isMobile ? 2 : 3,
-            scale: 1.08,
-            rotation: isMobile ? 0 : 2,
-            filter: 'blur(0px)',
-            ease: 'power2.inOut',
-         },
-         '<',
-      )
-      // 6️⃣ 프로필 이미지 등장 + rotate + elastic + blur → 선명 + 흔들림
+      filter: 'blur(15px)', // 블러 효과로 시작
+
+      ease: 'expo.inOut', // 매우 부드럽고 극적인 움직임
+
+      // ✨ [핵심 이펙트] 정교한 순차 실행
+      stagger: {
+         each: 0.02,
+         from: 'random', // '무작위' 순서로 각 글자가 제자리를 찾아옴
+      },
+   });
+
+   // 3️⃣ 하이라이트 공개 및 효과
+   tl.to(
+      highlights,
+      {
+         color: '#5c3422',
+         textShadow:
+            '0 0 15px rgba(255,255,255,0.5), 0 0 35px rgba(92,52,34,0.9)',
+         scale: 1.15,
+         repeat: 1,
+         yoyo: true,
+         duration: 0.8,
+         ease: 'power3.inOut',
+      },
+      '-=0.8',
+   ); // 텍스트 응집이 끝나갈 무렵 시작
+
+   // 4️⃣ 배경 & 프로필 등장 (더욱 극적으로)
+   tl.to(
+      '.hero-background',
+      {
+         duration: 3.5,
+         opacity: 1,
+         scale: 1,
+         filter: 'blur(0px)',
+         ease: 'slow(0.7, 0.7, false)', // GSAP의 SlowMo Easing으로 천천히 시작하고 끝나는 효과
+      },
+      '-=1.0',
+   )
+
       .fromTo(
          '.hero-profile-image',
          {
-            opacity: 0,
-            scale: isMobile ? 0.7 : 0.5,
-            rotation: -15,
-            clipPath: 'circle(0% at 50% 50%)',
-            filter: 'blur(10px)', // 초기 blur
+            autoAlpha: 0,
+            scale: 0.2,
+            rotationY: -180, // 뒤집힌 상태에서 시작
+            filter: 'brightness(3) blur(20px)', // 밝게 빛나며 블러 처리된 상태
          },
          {
-            duration: isMobile ? 1.6 : 2,
-            opacity: 1,
+            duration: 2.5,
+            autoAlpha: 1,
             scale: 1,
-            rotation: 0,
-            clipPath: 'circle(75% at 50% 50%)',
-            filter: 'blur(0px)', // 선명
-            boxShadow: isMobile
-               ? '0 0 30px rgba(92,52,34,0.5)'
-               : '0 0 60px rgba(92,52,34,0.7)',
-            ease: 'elastic.out(1,0.5)',
-            onUpdate: function () {
-               // 약간 흔들림 + scale 변형
-               const t = Math.sin(this.progress() * Math.PI * 4) * 2;
-               gsap.set('.hero-profile-image', { rotation: t });
-            },
-            visibility: 'visible',
+            rotationY: 0,
+            filter: 'brightness(1) blur(0px)',
+            ease: 'expo.out',
          },
-         '-=1.2',
-      )
-      // 7️⃣ strong 강조 glow + pulse + rotate
-      .to(
-         '.hero-text-content strong',
-         {
-            textShadow: '0 0 25px rgba(92,52,34,0.9)',
-            scale: 1.1,
-            rotation: () => gsap.utils.random(-5, 5),
-            repeat: 2,
-            yoyo: true,
-            duration: 0.6,
-            ease: 'power1.inOut',
-         },
-         '-=1',
-      )
-      // 8️⃣ 배경 blur → 선명 + opacity
-      .fromTo(
-         '.hero-background',
-         {
-            opacity: 0,
-            filter: isMobile
-               ? 'blur(10px) scale(1.05)'
-               : 'blur(25px) scale(1.1)',
-         },
-         {
-            duration: isMobile ? 1.5 : 2.5,
-            opacity: 1,
-            filter: 'blur(0px) scale(1)',
-            ease: 'power2.inOut',
-         },
-         '<',
-      );
+         '<+=1.0',
+      ); // 배경이 나타나기 시작하고 1초 뒤에 등장
+
+   // 5️⃣ 최종 텍스트 색상 정리
+   tl.to(
+      regularChars,
+      {
+         duration: 1.5,
+         color: '#5c3422',
+         ease: 'power2.inOut',
+      },
+      '-=2.0',
+   );
 }
 
 // ... initializeApp 함수 안에서 animateHeroSection(); 호출은 그대로 유지 ...
