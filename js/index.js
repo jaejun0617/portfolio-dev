@@ -1088,70 +1088,68 @@ function initializeApp() {
       });
    }
 
-   // --- 6. 동적 툴팁 초기화 (수정된 버전) ---
+   // --- 6. 동적 툴팁 초기화 (통합 버전) ---
    console.log('[Init] 동적 툴팁 기능 초기화.');
 
-   // 툴팁을 표시할 단일 DOM 요소를 생성하여 body에 추가합니다.
+   // 툴팁을 표시할 단일 DOM 요소 생성
    const tooltipElement = document.createElement('div');
    tooltipElement.className = 'dynamic-tooltip';
    document.body.appendChild(tooltipElement);
 
-   // `data-tooltip` 속성을 가진 모든 요소를 찾습니다.
+   // `data-tooltip` 속성을 가진 모든 요소
    const tooltipTriggers = document.querySelectorAll(
       '.nav-link-item a[data-tooltip]',
    );
 
-   // 툴팁 타이머를 관리하기 위한 변수
+   // 툴팁 타이머 관리
    let tooltipTimer;
 
    /**
-    * 툴팁을 보여주는 함수
-    * @param {HTMLElement} trigger - 툴팁을 활성화시킨 요소 (<a> 태그)
+    * 툴팁 보여주기
+    * @param {HTMLElement} trigger
+    * @param {number} duration - 자동 숨김 시간(ms), 기본 1200
     */
-   function showTooltip(trigger) {
-      // 이전에 실행되던 숨김 타이머가 있다면 취소합니다.
+   function showTooltip(trigger, duration = 1200) {
       clearTimeout(tooltipTimer);
 
       const tooltipText = trigger.getAttribute('data-tooltip');
       tooltipElement.textContent = tooltipText;
 
-      const rect = trigger.getBoundingClientRect(); // 요소의 위치와 크기 정보
-
-      // 툴팁 위치 계산
-      // getBoundingClientRect()는 뷰포트 기준이므로 스크롤 위치와 무관하게 정확합니다.
-      const top = rect.bottom + 8; // 요소의 바로 아래 + 8px 간격
+      const rect = trigger.getBoundingClientRect();
+      const top = rect.bottom + 8; // 아래 + 8px
       const left = rect.left + rect.width / 2 - tooltipElement.offsetWidth / 2;
 
       tooltipElement.style.top = `${top}px`;
       tooltipElement.style.left = `${left}px`;
-
       tooltipElement.classList.add('visible');
 
       tooltipTimer = setTimeout(() => {
-         tooltipElement.classList.remove('visible');
-      }, 1200);
+         hideTooltip();
+      }, duration);
    }
 
    /**
-    * 툴팁을 즉시 숨기는 함수
+    * 툴팁 숨기기
     */
    function hideTooltip() {
       clearTimeout(tooltipTimer);
       tooltipElement.classList.remove('visible');
    }
 
+   // 이벤트 등록 (데스크톱 + 모바일)
    tooltipTriggers.forEach((trigger) => {
-      trigger.addEventListener('mouseenter', () => {
-         showTooltip(trigger);
-      });
-
-      trigger.addEventListener('mouseleave', () => {
-         hideTooltip();
-      });
-
+      // 마우스 이벤트
+      trigger.addEventListener('mouseenter', () => showTooltip(trigger));
+      trigger.addEventListener('mouseleave', () => hideTooltip());
       trigger.addEventListener('click', (e) => {
          e.preventDefault();
          showTooltip(trigger);
+      });
+
+      // 터치 이벤트 (모바일)
+      trigger.addEventListener('touchstart', (e) => {
+         e.preventDefault(); // 클릭 중복 방지
+         showTooltip(trigger, 1000); // 1초 후 자동 숨김
       });
    });
 
