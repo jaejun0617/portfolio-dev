@@ -282,7 +282,7 @@ function createSkillChart() {
    });
 }
 function animateHeroSection() {
-   console.log('[GSAP] Hero 섹션 최종 시네마틱 인트로 시작.');
+   console.log('[GSAP] Hero 섹션 모바일 퍼스트 최적화 인트로 시작');
 
    gsap.registerPlugin(SplitText);
 
@@ -293,86 +293,154 @@ function animateHeroSection() {
 
    const tl = gsap.timeline();
 
-   // Part 1: "Front-End"
+   const isMobile = window.innerWidth <= 768;
+
+   // 1️⃣ line1
    tl.from(line1.chars, {
-      duration: 0.8, // 모바일 기준: 빠르고 시원하게
+      duration: isMobile ? 0.8 : 1.2,
       opacity: 0,
-      y: 60, // 너무 높지 않게
-      ease: 'power3.out',
-      stagger: 0.05, // 글자 간격 자연스럽게
+      z: isMobile ? 0 : -500,
+      yPercent: isMobile ? 30 : 50,
+      filter: isMobile ? 'blur(5px)' : 'blur(15px)',
+      ease: 'expo.out',
+      stagger: 0.04,
    })
 
-      // Part 2: "프론트엔드 개발자..."
+      // 2️⃣ line2
       .from(
          line2.chars,
          {
-            duration: 0.8,
+            duration: isMobile ? 1 : 1.5,
             opacity: 0,
-            y: 60,
+            x: () =>
+               isMobile
+                  ? gsap.utils.random(-50, 50)
+                  : gsap.utils.random(-200, 200),
+            y: () =>
+               isMobile
+                  ? gsap.utils.random(-50, 50)
+                  : gsap.utils.random(-200, 200),
+            rotation: () => (isMobile ? 0 : gsap.utils.random(-180, 180)),
+            scale: isMobile ? 0.5 : 0.1,
+            ease: 'power4.out',
+            stagger: 0.02,
+         },
+         '-=0.6',
+      )
+
+      // 3️⃣ line3 좌측 슬라이드
+      .from(
+         line3.chars,
+         {
+            duration: isMobile ? 0.6 : 1,
+            x: isMobile ? -20 : -50,
+            opacity: 0,
             ease: 'power3.out',
             stagger: 0.03,
          },
-         '-=0.5', // line1 끝나기 전에 이어서 자연스럽게
+         '+=0.1',
       )
 
-      // Part 3: 살짝 대기 (짧게)
-      .to({}, { duration: 0.5 })
-
-      // Part 4: "사용자를 생각하는..."
-      .from(line3.chars, {
-         duration: 1,
-         opacity: 0,
-         scale: 0.9, // scale 0 → 0.9로 변경 (튀지 않게)
-         ease: 'power3.out',
-         stagger: 0.04,
-      })
-
-      // Part 5: "포기하지 않고..."
+      // 4️⃣ line4 우측 슬라이드
       .from(
          line4.chars,
          {
-            duration: 1,
+            duration: isMobile ? 0.6 : 1,
+            x: isMobile ? 20 : 50,
             opacity: 0,
-            scale: 0.9,
             ease: 'power3.out',
-            stagger: 0.04,
+            stagger: 0.03,
          },
          '-=0.5',
-      ) // line3 끝나기 전에 이어짐
+      )
 
-      // Part 6: 네 줄 전체 이동
+      // 5️⃣ 전체 이동 + strong 강조
       .to(
          ['.line1', '.line2', '.line3', '.line4'],
          {
-            duration: 1.2,
-            y: '-50%', // 모바일에서는 -60%보단 덜 올려야 안정적
-            scale: 0.95, // 너무 줄이지 말고 살짝만
+            duration: isMobile ? 0.8 : 1.2,
+            y: isMobile ? '-30%' : '-50%',
+            scale: isMobile ? 0.97 : 0.95,
             ease: 'power3.inOut',
          },
-         '+=0.3', // 짧게 텀 주고 이동
+         '+=0.3',
+      )
+      .to(
+         '.hero-text-content strong',
+         {
+            duration: 0.6,
+            color: 'var(--color-primary)',
+            fontWeight: '800',
+            textShadow: isMobile
+               ? '0px 0px 8px rgba(92,52,34,0.4)'
+               : '0px 0px 15px rgba(92,52,34,0.6)',
+            ease: 'power3.out',
+         },
+         '<',
       )
 
-      // Part 7: 배경 + 프로필 이미지
+      // 6️⃣ gradient highlight
       .to(
+         '.hero-text-content strong',
+         {
+            duration: isMobile ? 0.8 : 1.2,
+            backgroundImage:
+               'linear-gradient(to top, rgba(92,52,34,0.2) 80%, transparent 50%)',
+            backgroundSize: '100% 200%',
+            backgroundPosition: '0 100%',
+            ease: 'power2.out',
+         },
+         '<+=0.1',
+      )
+      .to(
+         '.hero-text-content strong',
+         {
+            duration: isMobile ? 0.8 : 1.2,
+            backgroundPosition: '0 0',
+            ease: 'power2.out',
+         },
+         '<+=0.15',
+      )
+
+      // 7️⃣ 배경 blur → 선명
+      .fromTo(
          '.hero-background',
          {
-            duration: 2,
+            opacity: 0,
+            filter: isMobile
+               ? 'blur(8px) scale(1.05)'
+               : 'blur(20px) scale(1.1)',
+         },
+         {
+            duration: isMobile ? 1.5 : 2.5,
             opacity: 1,
-            scale: 1,
+            filter: 'blur(0px) scale(1)',
             ease: 'power2.inOut',
          },
          '<',
       )
-      .to(
+
+      // 8️⃣ 프로필 이미지
+      .fromTo(
          '.hero-profile-image',
          {
-            duration: 1.8,
-            opacity: 1,
-            visibility: 'visible',
-            scale: 1,
-            ease: 'power3.out',
+            opacity: 0,
+            scale: isMobile ? 0.7 : 0.5,
+            clipPath: 'circle(0% at 50% 50%)',
+            boxShadow: '0 0 0px rgba(92,52,34,0.0)',
          },
-         '<+=0.4',
+         {
+            duration: isMobile ? 1.5 : 2,
+            opacity: 1,
+            scale: 1,
+            clipPath: 'circle(75% at 50% 50%)',
+            boxShadow: isMobile
+               ? '0 0 30px rgba(92,52,34,0.5)'
+               : '0 0 60px rgba(92,52,34,0.7)',
+            ease: 'elastic.out(1,0.5)',
+            visibility: 'visible',
+         },
+         '<+=0.2',
       );
 }
 

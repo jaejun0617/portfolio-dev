@@ -172,7 +172,7 @@ header {
 .hero-text-content h2,
 .hero-text-content h3,
 .hero-text-content h4 {
-   color: var(--color-text-primary);
+   color: var(--color-primary);
 }
 .hero-text-content h1 {
    font-size: 2rem;
@@ -1061,7 +1061,6 @@ header {
    }
    .hero-text-content h2 {
       font-size: 2.2rem;
-      margin-bottom: 4rem;
    }
    .hero-text-content h3 {
       font-size: 2.5rem;
@@ -1073,21 +1072,6 @@ header {
    .hero-profile-image {
       width: 250px;
       height: 250px;
-   }
-
-   /* 폰트 사이즈 조정 */
-   .hero-text-content h1 {
-      font-size: 3rem;
-   }
-   .hero-text-content h2 {
-      font-size: 2.2rem;
-   }
-   .hero-text-content h3 {
-      font-size: 2.5rem;
-      margin-top: 3rem;
-   }
-   .hero-text-content h4 {
-      font-size: 2.5rem;
    }
 
    /* Typography */
