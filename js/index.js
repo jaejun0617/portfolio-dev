@@ -282,7 +282,7 @@ function createSkillChart() {
    });
 }
 function animateHeroSection() {
-   console.log('[GSAP] Hero 섹션 모바일 퍼스트 최적화 인트로 시작');
+   console.log('[GSAP] Hero Epic Animation 시작');
 
    gsap.registerPlugin(SplitText);
 
@@ -292,124 +292,127 @@ function animateHeroSection() {
    const line4 = new SplitText('.line4', { type: 'chars' });
 
    const tl = gsap.timeline();
-
    const isMobile = window.innerWidth <= 768;
 
-   // 1️⃣ line1
+   // 1️⃣ line1 폭발 3D + 터지는 느낌
    tl.from(line1.chars, {
-      duration: isMobile ? 0.8 : 1.2,
+      duration: isMobile ? 1 : 1.4,
       opacity: 0,
-      z: isMobile ? 0 : -500,
-      yPercent: isMobile ? 30 : 50,
-      filter: isMobile ? 'blur(5px)' : 'blur(15px)',
-      ease: 'expo.out',
-      stagger: 0.04,
+      y: gsap.utils.random(-300, 300),
+      z: isMobile ? 0 : gsap.utils.random(-400, 400),
+      rotationX: isMobile ? 0 : gsap.utils.random(-90, 90),
+      rotationY: isMobile ? 0 : gsap.utils.random(-180, 180),
+      rotationZ: isMobile ? 0 : gsap.utils.random(-45, 45),
+      scale: gsap.utils.random(0.4, 0.8),
+      transformOrigin: '50% 50% -50',
+      stagger: 0.06,
+      ease: 'back.out(2)',
    })
-
-      // 2️⃣ line2
+      // 2️⃣ line2 폭발 + 랜덤 + scale 더 강조
       .from(
          line2.chars,
          {
             duration: isMobile ? 1 : 1.5,
             opacity: 0,
-            x: () =>
-               isMobile
-                  ? gsap.utils.random(-50, 50)
-                  : gsap.utils.random(-200, 200),
-            y: () =>
-               isMobile
-                  ? gsap.utils.random(-50, 50)
-                  : gsap.utils.random(-200, 200),
-            rotation: () => (isMobile ? 0 : gsap.utils.random(-180, 180)),
-            scale: isMobile ? 0.5 : 0.1,
+            x: () => gsap.utils.random(-250, 250),
+            y: () => gsap.utils.random(-250, 250),
+            rotation: () => gsap.utils.random(-360, 360),
+            scale: () => gsap.utils.random(0.2, 1),
             ease: 'power4.out',
-            stagger: 0.02,
+            stagger: 0.03,
          },
-         '-=0.6',
+         '-=0.7',
       )
-
-      // 3️⃣ line3 좌측 슬라이드
+      // 3️⃣ line3 좌측 슬라이드 + 흔들림 + bounce
       .from(
          line3.chars,
          {
-            duration: isMobile ? 0.6 : 1,
-            x: isMobile ? -20 : -50,
+            duration: isMobile ? 0.7 : 1.1,
+            x: isMobile ? -30 : -70,
+            rotation: () => gsap.utils.random(-15, 15),
             opacity: 0,
-            ease: 'power3.out',
-            stagger: 0.03,
-         },
-         '+=0.1',
-      )
-
-      // 4️⃣ line4 우측 슬라이드
-      .from(
-         line4.chars,
-         {
-            duration: isMobile ? 0.6 : 1,
-            x: isMobile ? 20 : 50,
-            opacity: 0,
-            ease: 'power3.out',
+            ease: 'elastic.out(1,0.6)',
             stagger: 0.03,
          },
          '-=0.5',
       )
-
-      // 5️⃣ 전체 이동 + strong 강조
-      .to(
-         ['.line1', '.line2', '.line3', '.line4'],
+      // 4️⃣ line4 우측 슬라이드 + bounce + rotation
+      .from(
+         line4.chars,
          {
-            duration: isMobile ? 0.8 : 1.2,
-            y: isMobile ? '-30%' : '-50%',
-            scale: isMobile ? 0.97 : 0.95,
-            ease: 'power3.inOut',
+            duration: isMobile ? 0.7 : 1.1,
+            x: isMobile ? 30 : 70,
+            rotation: () => gsap.utils.random(-15, 15),
+            opacity: 0,
+            ease: 'bounce.out',
+            stagger: 0.03,
          },
-         '+=0.3',
+         '-=0.6',
       )
+      // 5️⃣ 배경 확대 + rotate + 패럴랙스
       .to(
-         '.hero-text-content strong',
+         '.hero-background',
          {
-            duration: 0.6,
-            color: 'var(--color-primary)',
-            fontWeight: '800',
-            textShadow: isMobile
-               ? '0px 0px 8px rgba(92,52,34,0.4)'
-               : '0px 0px 15px rgba(92,52,34,0.6)',
-            ease: 'power3.out',
+            duration: isMobile ? 2 : 3,
+            scale: 1.08,
+            rotation: isMobile ? 0 : 2,
+            filter: 'blur(0px)',
+            ease: 'power2.inOut',
          },
          '<',
       )
-
-      // 6️⃣ gradient highlight
+      // 6️⃣ 프로필 이미지 등장 + rotate + elastic + blur → 선명 + 흔들림
+      .fromTo(
+         '.hero-profile-image',
+         {
+            opacity: 0,
+            scale: isMobile ? 0.7 : 0.5,
+            rotation: -15,
+            clipPath: 'circle(0% at 50% 50%)',
+            filter: 'blur(10px)', // 초기 blur
+         },
+         {
+            duration: isMobile ? 1.6 : 2,
+            opacity: 1,
+            scale: 1,
+            rotation: 0,
+            clipPath: 'circle(75% at 50% 50%)',
+            filter: 'blur(0px)', // 선명
+            boxShadow: isMobile
+               ? '0 0 30px rgba(92,52,34,0.5)'
+               : '0 0 60px rgba(92,52,34,0.7)',
+            ease: 'elastic.out(1,0.5)',
+            onUpdate: function () {
+               // 약간 흔들림 + scale 변형
+               const t = Math.sin(this.progress() * Math.PI * 4) * 2;
+               gsap.set('.hero-profile-image', { rotation: t });
+            },
+            visibility: 'visible',
+         },
+         '-=1.2',
+      )
+      // 7️⃣ strong 강조 glow + pulse + rotate
       .to(
          '.hero-text-content strong',
          {
-            duration: isMobile ? 0.8 : 1.2,
-            backgroundImage:
-               'linear-gradient(to top, rgba(92,52,34,0.2) 80%, transparent 50%)',
-            backgroundSize: '100% 200%',
-            backgroundPosition: '0 100%',
-            ease: 'power2.out',
+            textShadow: '0 0 25px rgba(92,52,34,0.9)',
+            scale: 1.1,
+            rotation: () => gsap.utils.random(-5, 5),
+            repeat: 2,
+            yoyo: true,
+            duration: 0.6,
+            ease: 'power1.inOut',
          },
-         '<+=0.1',
+         '-=1',
       )
-      .to(
-         '.hero-text-content strong',
-         {
-            duration: isMobile ? 0.8 : 1.2,
-            backgroundPosition: '0 0',
-            ease: 'power2.out',
-         },
-         '<+=0.15',
-      )
-
-      // 7️⃣ 배경 blur → 선명
+      // 8️⃣ 배경 blur → 선명 + opacity
       .fromTo(
          '.hero-background',
          {
             opacity: 0,
             filter: isMobile
-               ? 'blur(8px) scale(1.05)'
-               : 'blur(20px) scale(1.1)',
+               ? 'blur(10px) scale(1.05)'
+               : 'blur(25px) scale(1.1)',
          },
          {
             duration: isMobile ? 1.5 : 2.5,
@@ -418,29 +421,6 @@ function animateHeroSection() {
             ease: 'power2.inOut',
          },
          '<',
-      )
-
-      // 8️⃣ 프로필 이미지
-      .fromTo(
-         '.hero-profile-image',
-         {
-            opacity: 0,
-            scale: isMobile ? 0.7 : 0.5,
-            clipPath: 'circle(0% at 50% 50%)',
-            boxShadow: '0 0 0px rgba(92,52,34,0.0)',
-         },
-         {
-            duration: isMobile ? 1.5 : 2,
-            opacity: 1,
-            scale: 1,
-            clipPath: 'circle(75% at 50% 50%)',
-            boxShadow: isMobile
-               ? '0 0 30px rgba(92,52,34,0.5)'
-               : '0 0 60px rgba(92,52,34,0.7)',
-            ease: 'elastic.out(1,0.5)',
-            visibility: 'visible',
-         },
-         '<+=0.2',
       );
 }
 
