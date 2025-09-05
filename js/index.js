@@ -284,108 +284,95 @@ function createSkillChart() {
 function animateHeroSection() {
    console.log('[GSAP] Hero 섹션 최종 시네마틱 인트로 시작.');
 
-   // ✅ SplitText 플러그인 등록 (글자를 쪼개서 각각 애니메이션 가능하게 함)
    gsap.registerPlugin(SplitText);
 
-   // ✅ 텍스트 라인을 글자 단위로 분리
-   //  .line1, .line2, .line3, .line4 각각의 요소를 "chars" (글자 배열)로 나눔
    const line1 = new SplitText('.line1', { type: 'chars' });
    const line2 = new SplitText('.line2', { type: 'chars' });
    const line3 = new SplitText('.line3', { type: 'chars' });
    const line4 = new SplitText('.line4', { type: 'chars' });
 
-   // ✅ 애니메이션 타임라인 생성
-   //  여러 애니메이션을 순서대로 제어할 수 있는 "타임라인" 개념
    const tl = gsap.timeline();
 
-   // ========================================
-   // Part 1: "Front-End" 등장
-   // ========================================
+   // Part 1: "Front-End"
    tl.from(line1.chars, {
-      duration: 1, // 애니메이션 실행 시간 (초 단위)
-      opacity: 0, // 처음에 투명(0) 상태에서 시작
-      y: 80, // 아래쪽(80px) 위치에서 시작
-      ease: 'power3.out', // 자연스럽게 감속하는 느낌
-      stagger: 0.08, // 글자 하나씩 0.08초 간격으로 순차 등장
+      duration: 0.8, // 모바일 기준: 빠르고 시원하게
+      opacity: 0,
+      y: 60, // 너무 높지 않게
+      ease: 'power3.out',
+      stagger: 0.05, // 글자 간격 자연스럽게
    })
 
-      // ========================================
-      // Part 2: "프론트엔드 개발자..." 등장
-      // ========================================
+      // Part 2: "프론트엔드 개발자..."
       .from(
          line2.chars,
          {
+            duration: 0.8,
+            opacity: 0,
+            y: 60,
+            ease: 'power3.out',
+            stagger: 0.03,
+         },
+         '-=0.5', // line1 끝나기 전에 이어서 자연스럽게
+      )
+
+      // Part 3: 살짝 대기 (짧게)
+      .to({}, { duration: 0.5 })
+
+      // Part 4: "사용자를 생각하는..."
+      .from(line3.chars, {
+         duration: 1,
+         opacity: 0,
+         scale: 0.9, // scale 0 → 0.9로 변경 (튀지 않게)
+         ease: 'power3.out',
+         stagger: 0.04,
+      })
+
+      // Part 5: "포기하지 않고..."
+      .from(
+         line4.chars,
+         {
             duration: 1,
             opacity: 0,
-            y: 80,
+            scale: 0.9,
             ease: 'power3.out',
-            stagger: 0.03, // 글자 등장 간격은 좀 더 촘촘
+            stagger: 0.04,
          },
-         '-=0.8', // 앞 애니메이션 끝나기 0.8초 전에 시작 (겹치면서 실행)
-      )
+         '-=0.5',
+      ) // line3 끝나기 전에 이어짐
 
-      // ========================================
-      // Part 3: 잠시 대기 (1.5초 정지 효과)
-      // ========================================
-      .to({}, { duration: 1 }) // 빈 객체를 애니메이션해서 "딜레이용"으로 사용
-
-      // ========================================
-      // Part 4: "사용자를 생각하는..." 등장
-      // ========================================
-      .from(line3.chars, {
-         duration: 1.2,
-         opacity: 0, // 안 보이는 상태에서
-         scale: 0, // 크기를 0으로 줄인 상태에서
-         ease: 'power3.out', // 자연스럽게 확대되며 등장
-         stagger: 0.05, // 글자 하나씩 시간차로 등장
-      })
-
-      // ========================================
-      // Part 5: "포기하지 않고..." 등장
-      // ========================================
-      .from(line4.chars, {
-         duration: 1.2,
-         opacity: 0,
-         scale: 0,
-         ease: 'power3.out',
-         stagger: 0.05,
-      })
-
-      // Part 6: line1 ~ line4 최종 위치 이동
+      // Part 6: 네 줄 전체 이동
       .to(
-         ['.line1', '.line2', '.line3', '.line4'], // ✅ 네 줄 전부 선택
+         ['.line1', '.line2', '.line3', '.line4'],
          {
-            duration: 1.5,
-            y: '-60%', // 위로 이동
-            scale: 0.9, // 살짝 축소
+            duration: 1.2,
+            y: '-50%', // 모바일에서는 -60%보단 덜 올려야 안정적
+            scale: 0.95, // 너무 줄이지 말고 살짝만
             ease: 'power3.inOut',
          },
-         '+=0.5', // 이전 애니메이션 끝난 뒤 0.5초 대기
+         '+=0.3', // 짧게 텀 주고 이동
       )
 
-      // ========================================
-      // Part 7: 배경과 프로필 사진 등장
-      // ========================================
+      // Part 7: 배경 + 프로필 이미지
       .to(
-         '.hero-background', // 배경 요소
-         {
-            duration: 2.5,
-            opacity: 1, // 점점 선명해지게
-            scale: 1, // 크기를 원래대로
-            ease: 'power2.inOut', // 부드러운 확대 효과
-         },
-         '<', // 바로 직전 애니메이션과 동시에 실행
-      )
-      .to(
-         '.hero-profile-image', // 프로필 이미지 요소
+         '.hero-background',
          {
             duration: 2,
-            opacity: 1, // 점점 보이게
-            visibility: 'visible', // CSS visibility: visible 적용
-            scale: 1, // 크기를 원래대로
+            opacity: 1,
+            scale: 1,
+            ease: 'power2.inOut',
+         },
+         '<',
+      )
+      .to(
+         '.hero-profile-image',
+         {
+            duration: 1.8,
+            opacity: 1,
+            visibility: 'visible',
+            scale: 1,
             ease: 'power3.out',
          },
-         '<+=0.5', // 배경 등장 시작 후 0.5초 뒤에 실행
+         '<+=0.4',
       );
 }
 
