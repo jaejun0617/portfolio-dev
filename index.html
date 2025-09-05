@@ -13,8 +13,6 @@
       <link rel="stylesheet" href="./css/common.css" />
       <link rel="stylesheet" href="./css/layout.css" />
       <link rel="stylesheet" href="./css/components.css" />
-
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
    </head>
    <body style="overflow-x: hidden">
       <!-- 상단 진행률 바 -->
@@ -25,15 +23,28 @@
       <header>
          <div class="header-inner">
             <div class="logo">
-               <a href="index.html">
+               <a href="index.html" class="logo-img-link">
                   <img src="./assets/icons/emoji-profile.png" alt="profile" />
                </a>
+
+               <!-- 네비게이션 링크들을 감싸는 컨테이너 -->
+               <nav class="header-nav-links">
+                  <div class="nav-link-item">
+                     <a
+                        href="https://github.com/jaejun0617"
+                        target="_blank"
+                        data-tooltip="GitHub 보러가기"
+                        >GitHub</a
+                     >
+                  </div>
+                  <div class="nav-link-item">
+                     <a href="#" target="_blank" data-tooltip="Notion 보러가기"
+                        >Notion</a
+                     >
+                  </div>
+               </nav>
             </div>
-            <!-- <nav class="pc-nav">
-               <a href="#about">About</a>
-               <a href="#projects">Projects</a>
-               <a href="#contact">Contact</a>
-            </nav> -->
+
             <div class="header-utils">
                <button id="admin-auth-btn">
                   <span id="auth-btn-text">관리자</span>
@@ -50,13 +61,44 @@
       <div class="wrapper">
          <main>
             <!-- [섹션 1] Hero -->
+            <!-- ✅ [수정] Hero 섹션 내부 구조 -->
             <section id="hero" data-color="#e74c3c">
+               <!-- ✨ [추가] 배경 이미지를 위한 별도의 div 레이어 -->
+               <div class="hero-background"></div>
+
                <div class="hero-content">
-                  <h1>수정...</h1>
-                  <p>수정...</p>
+                  <!-- 텍스트 콘텐츠 -->
+                  <div class="hero-text-content">
+                     <h1 class="line1">Front-End</h1>
+                     <h2 class="line2">
+                        프론트엔드 개발자 <strong>신재준</strong>입니다
+                     </h2>
+                     <h3 class="line3">
+                        사용자를 생각하는 <strong>역지사지</strong> 마인드,
+                     </h3>
+                     <h4 class="line4">
+                        포기하지 않고 <strong>책임감</strong> 있게 일하는
+                        개발자입니다.
+                     </h4>
+                  </div>
+
+                  <!-- 프로필 이미지 -->
+                  <div class="hero-profile-image">
+                     <img
+                        src="./assets/images/main/about/profile.jpeg"
+                        alt="신재준 프로필 사진"
+                     />
+                  </div>
                </div>
             </section>
+            <!-- 프론트엔드 개발자 신재준(강조) 입니다 
+         위로 Front-End 라는 문구가 위로 올라오면서 이 두문장이 뒤로 가지면서 글씨 크기도 축소가 되고
+         그 후에 사용자를 생각하는 역지사지(강조) 마인드, 이부분이 먼저 나오고
+         그 다음 포기하지 않고 책임감(강조)있게 일하는 개발자 입니다. 라는 문구가 나온 후 
+         나의 백그라운드 이미지랑 나의 사진이 나오면걸로 구조를 짜주고 gsap을 도와줘 
 
+
+-->
             <!-- [섹션 2] About & Skills -->
             <section id="about" data-color="#3498db">
                <div class="section-title" data-animation="fade-in-up">
@@ -345,9 +387,8 @@
                <div class="contact-container">
                   <div class="contact-intro" data-animation="fade-in-up">
                      <div class="contact-intro-bg"></div>
-                     <!-- 명함 전체를 감싸는 카드 -->
+
                      <div class="contact-card">
-                        <!-- 왼쪽: 자기소개 및 메시지 -->
                         <div class="contact-card-main">
                            <h2>Shin Jae Jun</h2>
                            <p class="job-title">Front-End Developer</p>
@@ -363,7 +404,6 @@
                            </p>
                         </div>
 
-                        <!-- 오른쪽: 실제 연락처 정보 -->
                         <div class="contact-card-info">
                            <div class="info-item">
                               <span class="label">EMAIL</span>
@@ -445,7 +485,6 @@
                         메시지 전송
                      </button>
 
-                     <!-- ✨ [수정] 구분선 텍스트 변경 -->
                      <div class="form-divider">
                         <hr />
                         <span data-lang-key="contact_form_divider"
@@ -454,7 +493,6 @@
                         <hr />
                      </div>
 
-                     <!-- ✨ [이동] 지도를 폼 안으로 통합 -->
                      <div id="map"></div>
                   </form>
                </div>
@@ -562,7 +600,6 @@
       <div id="fab-copy-toast">이메일 주소가 복사되었습니다!</div>
       <!-- 플로팅 액션 버튼 그룹 -->
       <div class="floating-action-buttons">
-         <!-- 이메일 복사 버튼 -->
          <button
             class="fab-item"
             id="fab-email"
@@ -572,7 +609,6 @@
             <img src="./assets/icons/email-442913.png" alt="Email Icon" />
          </button>
 
-         <!-- 카카오톡 오픈채팅 버튼 -->
          <a
             href="https://open.kakao.com/o/sC80Idtg"
             target="_blank"
@@ -583,13 +619,14 @@
             <img src="./assets/icons/talk-442913.png" alt="KakaoTalk Icon" />
          </a>
 
-         <!-- 맨 위로 가기 버튼 -->
          <button class="fab-item" id="fab-top" data-tooltip="맨 위로 가기">
             <img src="./assets/icons/top-442913.png" alt="Top Icon" />
          </button>
       </div>
 
       <script src="js/smooth-scrollbar.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
       <script
          type="text/javascript"
          src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c35ed488f2437bca20dc2a9f02e5a396&autoload=false"

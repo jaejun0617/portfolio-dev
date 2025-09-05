@@ -28,7 +28,8 @@ import {
    updateDoc,
    deleteDoc,
 } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js';
-
+import { gsap } from 'https://cdn.skypack.dev/gsap';
+import { SplitText } from 'https://cdn.skypack.dev/gsap/SplitText';
 // [중요] 당신의 Firebase 웹 앱 구성 객체
 const firebaseConfig = {
    apiKey: 'AIzaSyCZN2y1gIer8KWmi9q-Md-LOqn71c3G4m0',
@@ -280,7 +281,115 @@ function createSkillChart() {
       options: chartOptions,
    });
 }
+function animateHeroSection() {
+   console.log('[GSAP] Hero 섹션 최종 시네마틱 인트로 시작.');
 
+   // ✅ SplitText 플러그인 등록 (글자를 쪼개서 각각 애니메이션 가능하게 함)
+   gsap.registerPlugin(SplitText);
+
+   // ✅ 텍스트 라인을 글자 단위로 분리
+   //  .line1, .line2, .line3, .line4 각각의 요소를 "chars" (글자 배열)로 나눔
+   const line1 = new SplitText('.line1', { type: 'chars' });
+   const line2 = new SplitText('.line2', { type: 'chars' });
+   const line3 = new SplitText('.line3', { type: 'chars' });
+   const line4 = new SplitText('.line4', { type: 'chars' });
+
+   // ✅ 애니메이션 타임라인 생성
+   //  여러 애니메이션을 순서대로 제어할 수 있는 "타임라인" 개념
+   const tl = gsap.timeline();
+
+   // ========================================
+   // Part 1: "Front-End" 등장
+   // ========================================
+   tl.from(line1.chars, {
+      duration: 1, // 애니메이션 실행 시간 (초 단위)
+      opacity: 0, // 처음에 투명(0) 상태에서 시작
+      y: 80, // 아래쪽(80px) 위치에서 시작
+      ease: 'power3.out', // 자연스럽게 감속하는 느낌
+      stagger: 0.08, // 글자 하나씩 0.08초 간격으로 순차 등장
+   })
+
+      // ========================================
+      // Part 2: "프론트엔드 개발자..." 등장
+      // ========================================
+      .from(
+         line2.chars,
+         {
+            duration: 1,
+            opacity: 0,
+            y: 80,
+            ease: 'power3.out',
+            stagger: 0.03, // 글자 등장 간격은 좀 더 촘촘
+         },
+         '-=0.8', // 앞 애니메이션 끝나기 0.8초 전에 시작 (겹치면서 실행)
+      )
+
+      // ========================================
+      // Part 3: 잠시 대기 (1.5초 정지 효과)
+      // ========================================
+      .to({}, { duration: 1 }) // 빈 객체를 애니메이션해서 "딜레이용"으로 사용
+
+      // ========================================
+      // Part 4: "사용자를 생각하는..." 등장
+      // ========================================
+      .from(line3.chars, {
+         duration: 1.2,
+         opacity: 0, // 안 보이는 상태에서
+         scale: 0, // 크기를 0으로 줄인 상태에서
+         ease: 'power3.out', // 자연스럽게 확대되며 등장
+         stagger: 0.05, // 글자 하나씩 시간차로 등장
+      })
+
+      // ========================================
+      // Part 5: "포기하지 않고..." 등장
+      // ========================================
+      .from(line4.chars, {
+         duration: 1.2,
+         opacity: 0,
+         scale: 0,
+         ease: 'power3.out',
+         stagger: 0.05,
+      })
+
+      // Part 6: line1 ~ line4 최종 위치 이동
+      .to(
+         ['.line1', '.line2', '.line3', '.line4'], // ✅ 네 줄 전부 선택
+         {
+            duration: 1.5,
+            y: '-60%', // 위로 이동
+            scale: 0.9, // 살짝 축소
+            ease: 'power3.inOut',
+         },
+         '+=0.5', // 이전 애니메이션 끝난 뒤 0.5초 대기
+      )
+
+      // ========================================
+      // Part 7: 배경과 프로필 사진 등장
+      // ========================================
+      .to(
+         '.hero-background', // 배경 요소
+         {
+            duration: 2.5,
+            opacity: 1, // 점점 선명해지게
+            scale: 1, // 크기를 원래대로
+            ease: 'power2.inOut', // 부드러운 확대 효과
+         },
+         '<', // 바로 직전 애니메이션과 동시에 실행
+      )
+      .to(
+         '.hero-profile-image', // 프로필 이미지 요소
+         {
+            duration: 2,
+            opacity: 1, // 점점 보이게
+            visibility: 'visible', // CSS visibility: visible 적용
+            scale: 1, // 크기를 원래대로
+            ease: 'power3.out',
+         },
+         '<+=0.5', // 배경 등장 시작 후 0.5초 뒤에 실행
+      );
+}
+
+// ... initializeApp 함수 안에서 animateHeroSection(); 호출은 그대로 유지 ...
 // =============================================================================
 // [4. 이벤트 핸들러 및 유틸리티 (Event Handlers & Utilities)]
 // =============================================================================
@@ -376,20 +485,30 @@ function closeProjectFormModal() {
    modal.querySelector('#project-form')?.reset();
 }
 
+// ✅ [수정된 함수]
 function setupScrollAnimations() {
-   console.log('[Init] 스크롤 애니메이션 설정.');
+   console.log('[Init] 스크롤 애니메이션 설정 (재실행 가능 모드).');
    const scrollElements = document.querySelectorAll('[data-animation]');
    if (!scrollElements.length) return;
+
    const observer = new IntersectionObserver(
       (entries) => {
          entries.forEach((entry) => {
+            // isIntersecting이 true이면 (화면에 보이면)
             if (entry.isIntersecting) {
                entry.target.classList.add('is-visible');
             }
+            // isIntersecting이 false이면 (화면 밖으로 나가면)
+            else {
+               entry.target.classList.remove('is-visible');
+            }
          });
       },
-      { threshold: 0.1 },
+      {
+         threshold: 0.1, // 요소가 10% 이상 보일 때 반응
+      },
    );
+
    scrollElements.forEach((el) => observer.observe(el));
 }
 
@@ -778,15 +897,49 @@ function initializeApp() {
       // 스크롤에 따른 맨 위로 가기 버튼 표시/숨김
       AppState.scrollbar.addListener((status) => {
          if (status.offset.y > 1200) {
-            // 300px 이상 스크롤되면
             fabTopBtn.classList.add('visible');
          } else {
             fabTopBtn.classList.remove('visible');
          }
       });
    }
-   setInterval(showNextQuote, 5000);
+
+   // --- 6. 동적 툴팁 초기화 ---
+   console.log('[Init] 동적 툴팁 기능 초기화.');
+
+   const tooltipElement = document.createElement('div');
+   tooltipElement.className = 'dynamic-tooltip';
+   document.body.appendChild(tooltipElement);
+
+   const tooltipTriggers = document.querySelectorAll(
+      '.nav-link-item a[data-tooltip]',
+   );
+
+   tooltipTriggers.forEach((trigger) => {
+      trigger.addEventListener('mouseenter', () => {
+         const tooltipText = trigger.getAttribute('data-tooltip');
+         tooltipElement.textContent = tooltipText;
+
+         const rect = trigger.getBoundingClientRect();
+
+         const top = rect.bottom + 8;
+         const left =
+            rect.left + rect.width / 2 - tooltipElement.offsetWidth / 2;
+
+         tooltipElement.style.top = `${top}px`;
+         tooltipElement.style.left = `${left}px`;
+
+         tooltipElement.classList.add('visible');
+      });
+
+      trigger.addEventListener('mouseleave', () => {
+         tooltipElement.classList.remove('visible');
+      });
+   });
+   initializeQuote();
+   setInterval(showNextQuote, 3000);
    createSkillChart();
+   animateHeroSection();
    let resizeTimer;
    window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
@@ -795,7 +948,7 @@ function initializeApp() {
          createSkillChart();
       }, 250);
    });
-   initializeQuote();
+
    setupScrollAnimations();
    initializeContactSection();
 
