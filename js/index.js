@@ -1088,7 +1088,7 @@ function initializeApp() {
       });
    }
 
-   // --- 6. 동적 툴팁 초기화 ---
+   // --- 6. 동적 툴팁 초기화 (수정된 버전) ---
    console.log('[Init] 동적 툴팁 기능 초기화.');
 
    // 툴팁을 표시할 단일 DOM 요소를 생성하여 body에 추가합니다.
@@ -1101,28 +1101,57 @@ function initializeApp() {
       '.nav-link-item a[data-tooltip]',
    );
 
+   // 툴팁 타이머를 관리하기 위한 변수
+   let tooltipTimer;
+
+   /**
+    * 툴팁을 보여주는 함수
+    * @param {HTMLElement} trigger - 툴팁을 활성화시킨 요소 (<a> 태그)
+    */
+   function showTooltip(trigger) {
+      // 이전에 실행되던 숨김 타이머가 있다면 취소합니다.
+      clearTimeout(tooltipTimer);
+
+      const tooltipText = trigger.getAttribute('data-tooltip');
+      tooltipElement.textContent = tooltipText;
+
+      const rect = trigger.getBoundingClientRect(); // 요소의 위치와 크기 정보
+
+      // 툴팁 위치 계산
+      // getBoundingClientRect()는 뷰포트 기준이므로 스크롤 위치와 무관하게 정확합니다.
+      const top = rect.bottom + 8; // 요소의 바로 아래 + 8px 간격
+      const left = rect.left + rect.width / 2 - tooltipElement.offsetWidth / 2;
+
+      tooltipElement.style.top = `${top}px`;
+      tooltipElement.style.left = `${left}px`;
+
+      tooltipElement.classList.add('visible');
+
+      tooltipTimer = setTimeout(() => {
+         tooltipElement.classList.remove('visible');
+      }, 1200);
+   }
+
+   /**
+    * 툴팁을 즉시 숨기는 함수
+    */
+   function hideTooltip() {
+      clearTimeout(tooltipTimer);
+      tooltipElement.classList.remove('visible');
+   }
+
    tooltipTriggers.forEach((trigger) => {
-      // 마우스가 요소 위로 올라갔을 때 툴팁을 표시합니다.
       trigger.addEventListener('mouseenter', () => {
-         const tooltipText = trigger.getAttribute('data-tooltip');
-         tooltipElement.textContent = tooltipText;
-
-         const rect = trigger.getBoundingClientRect(); // 요소의 위치와 크기 정보
-
-         // 툴팁 위치 계산
-         const top = rect.bottom + 8;
-         const left =
-            rect.left + rect.width / 2 - tooltipElement.offsetWidth / 2;
-
-         tooltipElement.style.top = `${top}px`;
-         tooltipElement.style.left = `${left}px`;
-
-         tooltipElement.classList.add('visible'); // 툴팁 표시
+         showTooltip(trigger);
       });
 
-      // 마우스가 요소에서 벗어났을 때 툴팁을 숨깁니다.
       trigger.addEventListener('mouseleave', () => {
-         tooltipElement.classList.remove('visible');
+         hideTooltip();
+      });
+
+      trigger.addEventListener('click', (e) => {
+         e.preventDefault();
+         showTooltip(trigger);
       });
    });
 
