@@ -2,8 +2,9 @@
 /*  [Components] - 개별 UI 요소 (버튼, 카드, 모달 등)                  */
 /* =================================================================== */
 
-/* ----- Progress Bar ----- */
+/* ----- Progress Bar (스크롤 진행 상태 표시 바) ----- */
 .progress-bar-container {
+   /* 프로그레스 바 컨테이너 */
    position: fixed;
    top: 0;
    left: 0;
@@ -12,6 +13,7 @@
    z-index: 9999;
 }
 .progress-bar {
+   /* 실제 채워지는 프로그레스 바 */
    width: 0%;
    height: 100%;
    background-color: var(--color-primary);
@@ -20,13 +22,15 @@
       background-color 0.5s ease;
 }
 
-/* ----- Header Components ----- */
+/* ----- Header Components (헤더 - 상단 메뉴) ----- */
 header {
+   /* 헤더 전체 */
    background: rgba(253, 251, 248, 0.8);
    backdrop-filter: blur(10px);
    border-bottom: 1px solid var(--color-border);
 }
 .logo {
+   /* 로고 영역 */
    display: flex;
    align-items: center;
    gap: 1.5rem;
@@ -35,15 +39,18 @@ header {
    display: block;
 }
 .header-nav-links {
+   /* 네비게이션 링크 목록 */
    display: flex;
    gap: 1.5rem;
 }
 
 .nav-link-item {
+   /* 개별 네비게이션 링크 아이템 */
    position: relative;
    padding: 0.5rem 0rem;
 }
 .nav-link-item a {
+   /* 네비게이션 링크 텍스트 */
    position: relative;
    z-index: 2;
    font-size: 1rem;
@@ -52,10 +59,10 @@ header {
    text-decoration: none;
    transition: color 0.3s ease 0.1s;
    padding: 0.5rem 0.6rem;
-   /* border: 1px solid red; */
 }
 
 .nav-link-item::after {
+   /* 네비게이션 링크 호버 효과용 가상 요소 */
    content: '';
    position: absolute;
    bottom: 0;
@@ -74,6 +81,7 @@ header {
 }
 
 .dynamic-tooltip {
+   /* 동적 툴팁 (마우스 오버 시 설명) */
    position: fixed;
    background-color: var(--color-text-primary);
    color: var(--color-surface);
@@ -100,6 +108,7 @@ header {
    transform: translateY(0);
 }
 .logo img {
+   /* 로고 이미지 */
    width: 40px;
    height: 40px;
    object-fit: cover;
@@ -108,11 +117,13 @@ header {
 }
 
 .header-utils {
+   /* 헤더 우측 유틸리티 영역 (관리자 버튼 등) */
    display: flex;
    align-items: center;
    gap: 1rem;
 }
 #admin-auth-btn {
+   /* 관리자 로그인/로그아웃 버튼 */
    padding: 0.4rem 0.8rem;
    background-color: var(--color-text-primary);
    color: var(--color-surface);
@@ -124,23 +135,26 @@ header {
    background-color: var(--color-text-primary);
 }
 
-/* ----- General Typography ----- */
+/* ----- General Typography (공통 타이포그래피) ----- */
 .section-title h2 {
+   /* 각 섹션의 메인 제목 */
    font-size: 1.8rem;
 }
 .section-title p {
+   /* 각 섹션의 서브 제목 */
    font-size: 0.825rem;
 }
 
-/* ----- Hero Components ----- */
+/* ----- Hero Components (Hero - 메인) ----- */
 #hero {
-   /* background-color: var(--color-background); */
+   /* Hero 섹션 전체 */
    background-color: #000;
    overflow: hidden;
    position: relative;
 }
 
 .hero-background {
+   /* Hero 섹션 배경 이미지 */
    position: absolute;
    top: 0;
    left: 0;
@@ -154,6 +168,7 @@ header {
 }
 
 .hero-content {
+   /* Hero 섹션 콘텐츠 전체 컨테이너 */
    position: relative;
    width: 100%;
    max-width: 1200px;
@@ -166,6 +181,7 @@ header {
 }
 
 .hero-text-content {
+   /* Hero 섹션 텍스트 콘텐츠 */
    transform-style: preserve-3d;
 }
 
@@ -173,7 +189,7 @@ header {
 .hero-text-content h2,
 .hero-text-content h3,
 .hero-text-content h4 {
-   color: var(--color-primary);
+   color: #000000;
 }
 .hero-text-content h1 {
    font-size: 2.5rem;
@@ -194,7 +210,7 @@ header {
 }
 .hero-text-content strong {
    font-weight: 800;
-   color: var(--color-primary);
+   color: #000000;
 }
 
 .hero-text-content .char {
@@ -202,6 +218,7 @@ header {
 }
 
 .hero-profile-image {
+   /* Hero 섹션 프로필 이미지 */
    width: 180px;
    height: 180px;
    border-radius: 50%;
@@ -220,11 +237,13 @@ header {
    object-fit: cover;
 }
 
-/* ----- About Components ----- */
+/* ----- About Components (About - 소개) ----- */
 #about {
+   /* About 섹션 전체 */
    background-color: var(--color-surface);
 }
 .profile-image {
+   /* 소개 섹션 프로필 이미지 */
    max-width: 500px;
    height: auto;
    border: 3px solid var(--color-surface);
@@ -239,6 +258,7 @@ header {
    border-radius: calc(1.5rem - 3px);
 }
 .about-info {
+   /* 이름, 슬로건 등 정보 블록 */
    width: 100%;
    text-align: center;
    padding: 1.5rem 1rem;
@@ -246,6 +266,7 @@ header {
    margin-bottom: 2rem;
 }
 .name-block {
+   /* 이름 표시 블록 */
    margin-bottom: 1.5rem;
 }
 .name-block h4 {
@@ -262,6 +283,7 @@ header {
    letter-spacing: 1.5px;
 }
 .philosophy-block .slogan {
+   /* 철학/슬로건 텍스트 */
    font-size: 1rem;
    font-weight: 600;
    color: var(--color-text-primary);
@@ -279,6 +301,7 @@ header {
    line-height: 1.7;
 }
 .about-links-wrapper {
+   /* 이력서, 소셜 링크 래퍼 */
    margin-top: 2rem;
    padding-top: 1.5rem;
    border-top: 1px solid var(--color-border);
@@ -288,6 +311,7 @@ header {
    gap: 1.5rem;
 }
 .resume-btn {
+   /* 이력서 다운로드 버튼 */
    display: inline-block;
    padding: 0.8rem 2rem;
    background-color: var(--color-text-primary);
@@ -307,6 +331,7 @@ header {
    display: block;
 }
 .about-social {
+   /* 소셜 미디어 링크 목록 */
    display: flex;
    gap: 1.5rem;
 }
@@ -324,6 +349,7 @@ header {
    border-radius: 50%;
 }
 .about-slider {
+   /* 명언이 표시되는 슬라이더 영역 */
    text-align: center;
    padding: 1.5rem 1rem;
    margin-top: 2rem;
@@ -334,6 +360,7 @@ header {
    justify-content: center;
 }
 .quote-text {
+   /* 명언 텍스트 */
    font-size: 0.825rem;
    font-style: italic;
    font-weight: 500;
@@ -348,6 +375,7 @@ header {
    opacity: 0;
 }
 .quote-author-info {
+   /* 명언 출처 정보 */
    font-size: 0.865rem;
    color: var(--color-text-secondary);
 }
@@ -358,6 +386,7 @@ header {
    margin-left: 0.5rem;
 }
 .about-journey .journey-item {
+   /* 성장 과정(Journey) 아이템 */
    border-bottom: 1px solid var(--color-border);
    padding-bottom: 2rem;
 }
@@ -373,6 +402,7 @@ header {
    font-size: 0.95rem;
 }
 .journey-item strong {
+   /* Journey 텍스트 하이라이트 */
    font-weight: inherit;
    color: var(--color-primary);
    background-image: linear-gradient(
@@ -385,6 +415,7 @@ header {
    transition: background-position 0.3s ease-in-out;
 }
 .chart {
+   /* 기술 스택 차트 영역 */
    margin-top: 3rem;
    width: 100%;
    height: calc(100vw / 1.5);
@@ -393,6 +424,7 @@ header {
    margin: 0 auto;
 }
 .dot {
+   /* Journey 섹션의 색상 점 */
    display: block;
    width: 18px;
    height: 18px;
@@ -421,11 +453,13 @@ header {
    font-size: 0.825rem;
 }
 
-/* ----- Projects Components ----- */
+/* ----- Projects Components (Projects - 프로젝트) ----- */
 #projects {
+   /* Projects 섹션 전체 */
    background-color: var(--color-background);
 }
 .projects-filter {
+   /* 프로젝트 필터 버튼 그룹 */
    display: flex;
    justify-content: center;
    flex-wrap: wrap;
@@ -433,6 +467,7 @@ header {
    margin-bottom: 2rem;
 }
 .filter-btn {
+   /* 개별 필터 버튼 */
    width: 48%;
    padding: 0.5rem;
    text-align: center;
@@ -448,6 +483,7 @@ header {
    background-color: var(--color-border);
 }
 .filter-btn.active {
+   /* 활성화된 필터 버튼 */
    background-color: var(--color-primary);
    color: var(--color-surface);
    border-color: var(--color-primary);
@@ -459,6 +495,7 @@ header {
    gap: 1rem;
 }
 #admin-controls {
+   /* 관리자용 컨트롤 버튼 (프로젝트 추가/삭제) */
    gap: 1rem;
    justify-content: center;
 }
@@ -467,6 +504,7 @@ header {
 }
 #create-project-btn,
 #delete-all-btn {
+   /* 프로젝트 추가/전체삭제 버튼 */
    padding: 0.6rem 1.2rem;
    border-radius: 5px;
    font-weight: 600;
@@ -481,6 +519,7 @@ header {
 }
 
 .project-item {
+   /* 개별 프로젝트 카드 */
    background-color: var(--color-surface);
    border-radius: 12px;
    overflow: hidden;
@@ -496,6 +535,7 @@ header {
       0 8px 10px rgba(0, 0, 0, 0.08);
 }
 .project-image {
+   /* 프로젝트 카드 이미지 영역 */
    width: 100%;
    height: 220px;
    background-color: var(--color-border);
@@ -511,6 +551,7 @@ header {
    transform: scale(1.1) rotate(1deg);
 }
 .project-info {
+   /* 프로젝트 카드 정보 영역 */
    padding: 1.5rem;
 }
 .project-info h3 {
@@ -534,11 +575,13 @@ header {
    min-height: 2.8em;
 }
 .tags {
+   /* 프로젝트 태그 목록 */
    display: flex;
    flex-wrap: wrap;
    gap: 0.5rem;
 }
 .tag {
+   /* 개별 태그 */
    background-color: var(--color-background);
    color: var(--color-text-secondary);
    padding: 0.4rem 0.8rem;
@@ -552,6 +595,7 @@ header {
    color: var(--color-primary);
 }
 .admin-actions {
+   /* 프로젝트 카드 내 수정/삭제 버튼 */
    position: absolute;
    top: 10px;
    right: 10px;
@@ -578,6 +622,7 @@ header {
    background-color: var(--color-danger);
 }
 .project-item.skeleton {
+   /* 데이터 로딩 중 스켈레톤 UI */
    animation: pulse 1.5s ease-in-out infinite;
 }
 .project-item.skeleton .project-info-skeleton {
@@ -598,7 +643,7 @@ header {
    width: 50%;
 }
 
-/* ----- Contact Components ----- */
+/* ----- Contact Components (Contact - 연락) ----- */
 
 .contact-intro {
    width: 100%;
@@ -611,6 +656,7 @@ header {
 }
 
 .contact-card {
+   /* 연락 정보 카드 */
    width: 100%;
    max-width: 800px;
    background-color: var(--color-surface);
@@ -623,6 +669,7 @@ header {
 }
 
 .contact-card-main {
+   /* 연락 카드 메인 콘텐츠 */
    padding: 2rem;
    border-bottom: 1px solid var(--color-border);
 }
@@ -660,6 +707,7 @@ header {
 }
 
 .contact-card-info {
+   /* 연락 카드 상세 정보 (이메일 등) */
    padding: 2rem;
    display: flex;
    flex-direction: column;
@@ -699,6 +747,7 @@ header {
 }
 
 .contact-form {
+   /* 문의하기 폼 */
    flex: 1;
    width: 90%;
    min-width: 300px;
@@ -720,6 +769,7 @@ header {
    margin-bottom: 1rem;
 }
 .form-group {
+   /* 폼 입력 필드 그룹 (라벨 + 인풋) */
    position: relative;
 }
 .form-group input,
@@ -739,6 +789,7 @@ header {
    min-height: 100px;
 }
 .form-group label {
+   /* 입력 필드 위로 올라가는 라벨 */
    position: absolute;
    top: 10px;
    left: 0;
@@ -756,6 +807,7 @@ header {
    color: var(--color-primary);
 }
 .form-group .line {
+   /* 입력 필드 포커스 시 나타나는 라인 */
    position: absolute;
    bottom: 0;
    left: 0;
@@ -771,6 +823,7 @@ header {
    transform: scaleX(1);
 }
 .contact-form button[type='submit'] {
+   /* 폼 전송 버튼 */
    padding: 0.9rem 1.5rem;
    border: none;
    border-radius: 8px;
@@ -797,8 +850,8 @@ header {
    transform: none;
    box-shadow: none;
 }
-/* Form Divider */
 .form-divider {
+   /* 폼 섹션 구분선 */
    display: flex;
    align-items: center;
    gap: 1rem;
@@ -819,8 +872,8 @@ header {
    letter-spacing: 1px;
 }
 
-/* Map inside Form */
 #map {
+   /* 카카오 지도 영역 */
    width: 100%;
    height: 250px;
    border-radius: 8px;
@@ -828,6 +881,7 @@ header {
    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 .wavy-text {
+   /* 물결 애니메이션 텍스트 */
    position: relative;
    display: flex;
    justify-content: center;
@@ -840,16 +894,18 @@ header {
    animation-delay: calc(0.1s * var(--i));
 }
 
-/* ----- Footer & Top Button ----- */
+/* ----- Footer & Top Button (푸터 및 최상단 이동 버튼) ----- */
 #footer {
+   /* 푸터 영역 */
    background-color: var(--color-text-primary);
    font-size: 0.8rem;
    color: var(--color-border);
 }
 
-/* ----- Modal Components ----- */
+/* ----- Modal Components (모달 창) ----- */
 .admin-login-modal,
 .modal-wrapper {
+   /* 모달 창 배경 및 래퍼 */
    position: fixed;
    top: 0;
    left: 0;
@@ -870,6 +926,7 @@ header {
 }
 .admin-login-content,
 .modal-content {
+   /* 모달 창 콘텐츠 영역 */
    background-color: var(--color-surface);
    padding: 2.5rem;
    border-radius: 10px;
@@ -892,6 +949,7 @@ header {
    max-width: 600px;
 }
 .modal-close-btn {
+   /* 모달 닫기 버튼 */
    position: absolute;
    top: 10px;
    right: 15px;
@@ -906,6 +964,7 @@ header {
 }
 .admin-info,
 #project-form {
+   /* 프로젝트 추가/수정 폼 */
    display: flex;
    flex-direction: column;
    gap: 1rem;
@@ -943,6 +1002,7 @@ header {
    margin-top: 1rem;
 }
 .login-btn button {
+   /* 로그인 버튼 */
    background-color: var(--color-primary);
 }
 #project-form button {
@@ -951,6 +1011,7 @@ header {
 
 /* 액션 버튼 그룹 */
 .floating-action-buttons {
+   /* 플로팅 액션 버튼 (우측 하단 고정) */
    position: fixed;
    bottom: 30px;
    right: 30px;
@@ -961,6 +1022,7 @@ header {
 }
 
 .fab-item {
+   /* 개별 플로팅 액션 버튼 */
    width: 40px;
    height: 40px;
    border-radius: 50%;
@@ -1016,6 +1078,7 @@ header {
 }
 
 #fab-top {
+   /* 최상단으로 이동 버튼 */
    opacity: 0;
    visibility: hidden;
    transform: translateY(20px);
@@ -1029,6 +1092,7 @@ header {
 }
 
 #fab-copy-toast {
+   /* 이메일 복사 완료 토스트 메시지 */
    position: fixed;
    bottom: -100px;
    left: 50%;
