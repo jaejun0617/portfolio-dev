@@ -306,34 +306,29 @@ function animateHeroSection() {
    const isMobile = window.innerWidth <= 768;
 
    // 1️⃣ 초기 상태 설정
-   gsap.set(highlights, { color: '#000000', autoAlpha: 1 }); // 하이라이트는 검정색, 그러나 보이게
-   gsap.set(regularChars, { color: '#ffffff', autoAlpha: 1 }); // 일반 글자 흰색, 보이게
-   gsap.set('.hero-profile-image', { autoAlpha: 0 }); // 프로필은 완전히 숨김
+   gsap.set(highlights, { color: '#000000', autoAlpha: 1 });
+   gsap.set(regularChars, { color: '#ffffff', autoAlpha: 1 });
+   gsap.set('.hero-profile-image', { autoAlpha: 0 });
 
-   // 2️⃣ "Cosmic Genesis" - 글자 흩어짐과 응집
    tl.from(allChars, {
       duration: isMobile ? 2.0 : 2.5,
 
-      // ✨ [핵심 이펙트] 3D 공간에 무작위로 흩뿌려진 상태에서 시작
-      x: () => gsap.utils.random(-300, 300, 5), // x, y, z 좌표를 정밀하게 랜덤화
+      x: () => gsap.utils.random(-300, 300, 5),
       y: () => gsap.utils.random(-400, 400, 5),
       z: () => gsap.utils.random(-1000, 1000, 10),
 
-      // ✨ [핵심 이펙트] 회전 및 크기
       rotationX: () => gsap.utils.random(-720, 720),
       rotationY: () => gsap.utils.random(-720, 720),
       scale: () => gsap.utils.random(0.1, 0.5),
 
-      // ✨ [핵심 이펙트] 시각 효과
       opacity: 0,
-      filter: 'blur(15px)', // 블러 효과로 시작
+      filter: 'blur(15px)',
 
-      ease: 'expo.inOut', // 매우 부드럽고 극적인 움직임
+      ease: 'expo.inOut',
 
-      // ✨ [핵심 이펙트] 정교한 순차 실행
       stagger: {
          each: 0.02,
-         from: 'random', // '무작위' 순서로 각 글자가 제자리를 찾아옴
+         from: 'random',
       },
    });
 
@@ -341,7 +336,7 @@ function animateHeroSection() {
    tl.to(
       highlights,
       {
-         color: '#5c3422',
+         color: '#000000',
          textShadow:
             '0 0 15px rgba(255,255,255,0.5), 0 0 35px rgba(92,52,34,0.9)',
          scale: 1.15,
@@ -349,11 +344,27 @@ function animateHeroSection() {
          yoyo: true,
          duration: 0.8,
          ease: 'power3.inOut',
+         onStart: () => {
+            highlights.forEach((el) => {
+               el.style.backgroundImage =
+                  'linear-gradient(to top, rgba(92, 52, 34, 0.1) 80%, transparent 50%)';
+               el.style.webkitBackgroundClip = 'text';
+               el.style.webkitTextFillColor = 'transparent';
+            });
+         },
+         onComplete: () => {
+            // 애니메이션 끝나면 필요 시 제거
+            highlights.forEach((el) => {
+               el.style.backgroundImage = '';
+               el.style.webkitBackgroundClip = '';
+               el.style.webkitTextFillColor = '#5c3422';
+            });
+         },
       },
       '-=0.8',
-   ); // 텍스트 응집이 끝나갈 무렵 시작
+   );
 
-   // 4️⃣ 배경 & 프로필 등장 (더욱 극적으로)
+   // 4️⃣ 배경 & 프로필 등장
    tl.to(
       '.hero-background',
       {
@@ -361,7 +372,7 @@ function animateHeroSection() {
          opacity: 1,
          scale: 1,
          filter: 'blur(0px)',
-         ease: 'slow(0.7, 0.7, false)', // GSAP의 SlowMo Easing으로 천천히 시작하고 끝나는 효과
+         ease: 'slow(0.7, 0.7, false)',
       },
       '-=1.0',
    )
@@ -371,8 +382,8 @@ function animateHeroSection() {
          {
             autoAlpha: 0,
             scale: 0.2,
-            rotationY: -180, // 뒤집힌 상태에서 시작
-            filter: 'brightness(3) blur(20px)', // 밝게 빛나며 블러 처리된 상태
+            rotationY: -180,
+            filter: 'brightness(3) blur(20px)',
          },
          {
             duration: 2.5,
@@ -383,21 +394,20 @@ function animateHeroSection() {
             ease: 'expo.out',
          },
          '<+=1.0',
-      ); // 배경이 나타나기 시작하고 1초 뒤에 등장
+      );
 
    // 5️⃣ 최종 텍스트 색상 정리
    tl.to(
       regularChars,
       {
-         duration: 1.5,
-         color: '#5c3422',
+         duration: 1,
+         color: '#98755b',
          ease: 'power2.inOut',
       },
       '-=2.0',
    );
 }
 
-// ... initializeApp 함수 안에서 animateHeroSection(); 호출은 그대로 유지 ...
 // =============================================================================
 // [4. 이벤트 핸들러 및 유틸리티 (Event Handlers & Utilities)]
 // =============================================================================
